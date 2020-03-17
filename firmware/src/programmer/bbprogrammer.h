@@ -46,11 +46,15 @@ namespace programmer
         bool isProgramming = false;
         SoftwareSPI* spi;
 
+    private:
+        byte execCommand(const byte b1, const byte b2 = 0, const byte b3 = 0, const byte b4 = 0);
+
     public:
-        BBProgrammer(byte p_sck, byte p_mosi, byte p_miso, byte p_reset);
+        BBProgrammer(const byte p_sck, const byte p_mosi, const byte p_miso, const byte p_reset);
         ~BBProgrammer();
 
-        bool startProgramming(unsigned int tries);
+        bool startProgramming(const unsigned int tries);
         void stopProgramming();
+        void readSignature(byte(&signature)[3]);
     };
 }

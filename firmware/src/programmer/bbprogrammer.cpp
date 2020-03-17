@@ -116,4 +116,22 @@ namespace programmer
         else
             Serial.println("Programming mode allready ended.");
     }
+
+    byte BBProgrammer::execCommand(byte b1, byte b2, byte b3, byte b4)
+    {
+        noInterrupts();
+        this->spi->transfer(b1);
+        this->spi->transfer(b2);
+        this->spi->transfer(b3);
+        byte answer = this->spi->transfer(b4);
+        interrupts();
+
+        return answer;
+    }
+
+    void BBProgrammer::readSignature(byte(&signature)[3])
+    {
+        for (byte i = 0; i < 3; i++)
+            signature[i] = execCommand(readSignatureByte, 0, i);
+    }
 }
