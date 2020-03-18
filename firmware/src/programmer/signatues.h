@@ -1,14 +1,5 @@
 #pragma once
 
-// meaning of positions in above array
-enum {
-    lowFuse,
-    highFuse,
-    extFuse,
-    lockByte,
-    calibrationByte
-};
-
 // structure to hold signature and other relevant data about each chip
 typedef struct {
     byte sig[3];                // chip signature
@@ -22,6 +13,15 @@ typedef struct {
 
 #define kb (unsigned int)1024
 #define NO_FUSE (byte)0xFF
+
+enum
+{
+    lowFuse,
+    highFuse,
+    extFuse,
+    lockFuse,
+    calibrationFuse
+};
 
 // see Atmega datasheets
 const Signature signatures[] PROGMEM =
