@@ -50,9 +50,11 @@ namespace programmer
             readLockByte = 0x58, readLockByteArg2 = 0x00,
 
             readProgramMemory = 0x20,
-            writeProgramMemory = 0x4C,
+            writeProgramMemoryPage = 0x4C,
             loadExtendedAddressByte = 0x4D,
-            loadProgramMemory = 0x40,
+
+            loadProgramMemoryPageLow = 0x40,
+            loadProgramMemoryPageHigh = 0x48,
         };
 
     public:
