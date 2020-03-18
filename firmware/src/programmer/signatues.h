@@ -1,14 +1,5 @@
 #pragma once
 
-// Signatures.h
-//
-// Signatures and extra information for known chips
-//
-// Author: Nick Gammon
-
-// copy of fuses/lock bytes found for this processor
-byte fuses[5];
-
 // meaning of positions in above array
 enum {
     lowFuse,
@@ -27,14 +18,13 @@ typedef struct {
     unsigned long pageSize;      // flash programming page size (bytes)
     byte fuseWithBootloaderSize; // ie. one of: lowFuse, highFuse, extFuse
     bool timedWrites;            // true if pollUntilReady won't work by polling the chip
-} signatureType;
+} Signature;
 
-const unsigned long kb = 1024;
-const byte NO_FUSE = 0xFF;
-
+#define kb (unsigned int)1024
+#define NO_FUSE (byte)0xFF
 
 // see Atmega datasheets
-const signatureType signatures[] PROGMEM =
+const Signature signatures[] PROGMEM =
 {
     //     signature        description   flash size   bootloader  flash  fuse     timed
     //                                                     size    page    to      writes
@@ -105,5 +95,3 @@ const signatureType signatures[] PROGMEM =
      { { 0x1E, 0xA8, 0x02 }, "ATmega256rfr2", 256 * kb, 1 * kb,   256,  highFuse, false },
 
 };  // end of signatures
-
-

@@ -129,10 +129,47 @@ namespace programmer
         return answer;
     }
 
-    void BBProgrammer::readSignature(byte(&signature)[3])
+    bool BBProgrammer::readSignature()
     {
+        byte signature[] = { 0x00, 0x00, 0x00 };
+
         for (byte i = 0; i < 3; i++)
             signature[i] = execCommand(readSignatureByte, 0, i);
+
+
+        if (signature[0] == 0x00)
+        {
+            // Lock byte should be set. Erase must be isued!
+            Serial.println("Device ID reads 0x00. Lock could be set.");
+            return false;
+        }
+        else
+        {
+            Signature currentSignature;
+            for (byte j = 0; j < NUMITEMS(signatures); j++)
+            {
+                // Copy from PROGMEM to Memory
+                memcpy_P(&currentSignature, &signatures[j], sizeof currentSignature);
+                if (memcmp(signature, currentSignature.sig, sizeof signature) == 0)
+                {
+                    // Signature found and known
+                    this->signatureIndex = j;
+                    return true;
+                }
+            } 
+            
+            Serial.println("Error: Unrecogized signature. Chip is not supported by this program.");
+            return false;
+        }
+    }
+
+    Signature* BBProgrammer::getSignature() const
+    {
+        Signature* currentSignature = new Signature();
+
+        // Copy from PROGMEM to Memory
+        memcpy_P(currentSignature, &signatures[this->signatureIndex], sizeof *currentSignature);
+        return currentSignature;
     }
 
     void BBProgrammer::erase()
