@@ -7,6 +7,10 @@
 #endif
 
 #include "../softwarespi/SoftwareSPI.h"
+#include "signatues.h"
+
+#define NUMITEMS(arg) ((unsigned int) (sizeof (arg) / sizeof (arg [0])))
+#define UNKNOWN_SIGNATURE 255
 
 namespace programmer
 {
@@ -45,6 +49,7 @@ namespace programmer
     private:
         bool isProgramming = false;
         SoftwareSPI* spi;
+        byte signatureIndex = UNKNOWN_SIGNATURE;
 
     private:
         byte execCommand(const byte b1, const byte b2 = 0, const byte b3 = 0, const byte b4 = 0);
@@ -56,7 +61,8 @@ namespace programmer
         bool startProgramming(const unsigned int tries);
         void stopProgramming();
 
-        void readSignature(byte(&signature)[3]);
+        bool readSignature();
+        Signature* getSignature() const;
         void erase();
     };
 }

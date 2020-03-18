@@ -1,12 +1,10 @@
 #define XSTR(s) STR(s)
 #define STR(s) #s
 
-#define NUMITEMS(arg) ((unsigned int) (sizeof (arg) / sizeof (arg [0])))
 #define __PVERSION__ "pre-0.01"
 #define DEBUG 0
 
 #include "src/programmer/bbprogrammer.h"
-#include "src/programmer/signatues.h"
 
 #define P_SCK 7
 #define P_MISO 6
@@ -43,36 +41,8 @@ void setup()
     
     delay(1000);
     Serial.println("\n-> Reading Signature.");
-    byte signature[] = { 0x00, 0x00, 0x00 };
-    programmer.readSignature(signature);
-    Serial.print("Read signature: ");
-    Serial.print(signature[0], HEX);
-    Serial.print(signature[1], HEX);
-    Serial.println(signature[2], HEX);
-
-    if (signature[0] == 0x00)
-        Serial.println("Device ID reads 0x00. Lock could be set.");
-    else
-    {
-        bool knownSignature = false;
-        signatureType currentSignature;
-        for (byte j = 0; j < NUMITEMS(signatures); j++)
-        {
-            // Copy from PROGMEM to Memory
-            memcpy_P(&currentSignature, &signatures[j], sizeof currentSignature);
-            if (memcmp(signature, currentSignature.sig, sizeof signature) == 0)
-            {
-                knownSignature = true;
-                Serial.print("Processor = ");
-                Serial.println(currentSignature.desc);
-                Serial.print("Flash memory size = ");
-                Serial.print(currentSignature.flashSize, DEC);
-                Serial.println(" bytes.");
-            }  // end of signature found
-        }  // end of for each signature
-        if (!knownSignature)
-            Serial.println("Unrecogized signature.");
-    }
+    if (programmer.readSignature())
+        printSignature(programmer.getSignature());
 
     delay(1000);
     Serial.print("\n-> Erasing CHIP.");
@@ -82,6 +52,15 @@ void setup()
     delay(1000);
     Serial.println("\n-> Leaving Programming mode.");
     programmer.stopProgramming();
+}
+
+void printSignature(Signature* signature)
+{
+    Serial.print("Processor = ");
+    Serial.println(signature->desc);
+    Serial.print("Flash memory size = ");
+    Serial.print(signature->flashSize, DEC);
+    Serial.println(" bytes.");
 }
 
 void loop() 
