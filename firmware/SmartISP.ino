@@ -4,6 +4,10 @@
 #define __PVERSION__ "pre-0.01"
 #define DEBUG false
 
+// External Dependencies
+#include <SPI.h>
+#include <SdFat.h>
+
 #include "src/programmer/bbprogrammer.h"
 
 #define P_SCK 7
@@ -43,9 +47,18 @@ void printSignature(const Signature* signature)
 {
     Serial.print("Processor = ");
     Serial.println(signature->desc);
+
     Serial.print("Flash memory size = ");
     Serial.print(signature->flashSize, DEC);
     Serial.println(" bytes.");
+
+    Serial.print("Flash page size = ");
+    Serial.print(signature->pageSize, DEC);
+    Serial.println(" bytes.");
+
+    Serial.print("Bootloader section size = ");
+    Serial.print(signature->baseBootSize, DEC);
+    Serial.println(" (*1/2/4/8) bytes.");
 }
 
 void setup()
@@ -55,7 +68,35 @@ void setup()
 
     Serial.println("\n\nStone Labs. Smart ISP");
     Serial.println("Verion " XSTR(__PVERSION__) " compiled at " __DATE__ " " __TIME__ " using Arduino IDE version " XSTR(ARDUINO));
+    
 
+    //
+    // SD CARD
+    //
+
+    Serial.print("-> Initializing SD card...");
+    SdFat sd;
+    if (!sd.begin(3, SPI_HALF_SPEED)) 
+        sd.initErrorHalt();
+
+    Serial.println(" [OK]");
+
+    SdFile file;
+    // open next file in root.  The volume working directory, vwd, is root
+    while (file.openNext(sd.vwd(), O_READ)) 
+    {
+        Serial.print("|-- ");
+        file.printName(&Serial);
+        Serial.print(" ");
+        file.printModifyDateTime(&Serial);
+        Serial.println("");
+        file.close();
+    }
+
+
+    //
+    // PROGRAMMER
+    //
     Serial.println("\nEnter 'G' to start.");
     while (Serial.read() != 'G');
 
@@ -79,12 +120,17 @@ void setup()
 
     delay(1000);
     Serial.println("\n-> Reading Signature.");
-    if (programmer.readSignature())
-        printSignature(programmer.getSignature());
+    if (!programmer.readSignature())
+    {
+        Serial.println("Chip locked! Issue erase. [ABORT]");
+        return;
+    }
+    const Signature* signature = programmer.getSignature();
+    printSignature(signature);
 
     delay(1000);
     Serial.print("\n-> Erasing CHIP.");
-    programmer.erase();
+    //programmer.erase();
     Serial.println(" [OK]");
 
     delay(1000);
@@ -94,6 +140,8 @@ void setup()
     const BBProgrammer::Fuse& fuse = programmer.getFuses();
     printFuses(fuse);
 
+    Serial.print("\n-> Reading Fuses.");
+    // TODO
 
     delay(1000);
     Serial.println("\n-> Leaving Programming mode.");
