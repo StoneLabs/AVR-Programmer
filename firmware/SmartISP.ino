@@ -8,10 +8,10 @@
 #include "src/programmer/bbprogrammer.h"
 #include "src/programmer/signatues.h"
 
-#define P_SCK 13
-#define P_MISO 12
-#define P_MOSI 11
-#define P_RESET 10
+#define P_SCK 7
+#define P_MISO 6
+#define P_MOSI 5
+#define P_RESET 4
 
 void setup()
 {
@@ -50,26 +50,34 @@ void setup()
     Serial.print(signature[1], HEX);
     Serial.println(signature[2], HEX);
 
-    bool knownSignature = false;
-    signatureType currentSignature;
-    for (byte j = 0; j < NUMITEMS(signatures); j++)
+    if (signature[0] == 0x00)
+        Serial.println("Device ID reads 0x00. Lock could be set.");
+    else
     {
-        // Copy from PROGMEM to Memory
-        memcpy_P(&currentSignature, &signatures[j], sizeof currentSignature);
-        if (memcmp(signature, currentSignature.sig, sizeof signature) == 0)
+        bool knownSignature = false;
+        signatureType currentSignature;
+        for (byte j = 0; j < NUMITEMS(signatures); j++)
         {
-            knownSignature = true;
-            Serial.print("Processor = ");
-            Serial.println(currentSignature.desc);
-            Serial.print("Flash memory size = ");
-            Serial.print(currentSignature.flashSize, DEC);
-            Serial.println(" bytes.");
-            return;
-        }  // end of signature found
-    }  // end of for each signature
-    if (!knownSignature)
-        Serial.println("Unrecogized signature.");
+            // Copy from PROGMEM to Memory
+            memcpy_P(&currentSignature, &signatures[j], sizeof currentSignature);
+            if (memcmp(signature, currentSignature.sig, sizeof signature) == 0)
+            {
+                knownSignature = true;
+                Serial.print("Processor = ");
+                Serial.println(currentSignature.desc);
+                Serial.print("Flash memory size = ");
+                Serial.print(currentSignature.flashSize, DEC);
+                Serial.println(" bytes.");
+            }  // end of signature found
+        }  // end of for each signature
+        if (!knownSignature)
+            Serial.println("Unrecogized signature.");
+    }
 
+    delay(1000);
+    Serial.print("\n-> Erasing CHIP.");
+    programmer.erase();
+    Serial.println(" [OK]");
 
     delay(1000);
     Serial.println("\n-> Leaving Programming mode.");
@@ -80,3 +88,4 @@ void loop()
 {
   
 }
+
