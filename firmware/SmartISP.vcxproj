@@ -112,6 +112,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="image.h" />
     <ClInclude Include="src\softwarespi\SoftwareSPI.h" />
     <ClInclude Include="src\programmer\bbprogrammer.h" />
     <ClInclude Include="src\programmer\signatues.h" />
