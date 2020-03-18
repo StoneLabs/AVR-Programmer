@@ -57,12 +57,12 @@ namespace programmer
             // Enter programming mode
             noInterrupts();
 #if DEBUG > 0
-            answer1 = this->spi->transfer(progamEnable);
+            answer1 = this->spi->transfer(programEnable);
             answer2 = this->spi->transfer(programAcknowledge);
             answer  = this->spi->transfer(0x1);
             answer4 = this->spi->transfer(0x2);
 #else
-            this->spi->transfer(progamEnable);
+            this->spi->transfer(programEnable);
             this->spi->transfer(programAcknowledge);
             answer = this->spi->transfer(0x1);
             this->spi->transfer(0x2);
@@ -71,7 +71,7 @@ namespace programmer
 
             /// Debug
 #if DEBUG > 0
-            Serial.print("\nSPI write: 0x"); Serial.print(progamEnable, HEX);
+            Serial.print("\nSPI write: 0x"); Serial.print(programEnable, HEX);
             Serial.print(" 0x"); Serial.print(programAcknowledge, HEX);
             Serial.print(" 0x"); Serial.print(0x1, HEX);
             Serial.print(" 0x"); Serial.println(0x2, HEX);
@@ -133,5 +133,14 @@ namespace programmer
     {
         for (byte i = 0; i < 3; i++)
             signature[i] = execCommand(readSignatureByte, 0, i);
+    }
+
+    void BBProgrammer::erase()
+    {
+        execCommand(programEnable, chipErase);
+        delay(40);  // for timed wait chips e.g. ATmega8
+
+        while ((execCommand(pollReady) & 1) == 1)
+        {}  // wait till ready
     }
 }

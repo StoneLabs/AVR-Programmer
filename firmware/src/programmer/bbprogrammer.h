@@ -12,9 +12,9 @@ namespace programmer
 {
     // programming commands to send via SPI to the chip
     enum {
-        progamEnable = 0xAC,
+        programEnable = 0xAC,
 
-        /* writes are preceded by progamEnable */
+        /* writes are preceded by programEnable */
         /**/ chipErase = 0x80,
         /**/ writeLockByte = 0xE0,
         /**/ writeLowFuseByte = 0xA0,
@@ -55,6 +55,8 @@ namespace programmer
 
         bool startProgramming(const unsigned int tries);
         void stopProgramming();
+
         void readSignature(byte(&signature)[3]);
+        void erase();
     };
 }
