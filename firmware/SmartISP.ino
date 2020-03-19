@@ -4,6 +4,31 @@
 #define __PVERSION__ "pre-0.01"
 #define DEBUG false
 
+// Line format :
+// 
+// : nnaaaatt(data)ss
+// 
+// Where :
+// : = a colon
+// 
+// (All of below in hex format)
+// 
+// nn = length of data part
+// aaaa = address(eg.where to write data)
+// tt = transaction type:
+//  00 = data
+//  01 = end of file
+//  02 = extended segment address (data * 0x10 is added to all subsequent data entries)
+//  03 = start segment address  (NOT SUPPORTED)
+//  04 = linear address         (NOT SUPPORTED)
+//  05 = start linear address   (NOT SUPPORTED)
+// (data) = variable length data (most common are 16 and 32 bytes)
+// ss = sumcheck
+// 
+//
+// Line length for max 32 data bytes (64 chars):
+#define HEX_LINE_LENGTH 76
+
 // External Dependencies
 #include <SPI.h>
 #include <SdFat.h>
@@ -140,8 +165,30 @@ void setup()
     const BBProgrammer::Fuse& fuse = programmer.getFuses();
     printFuses(fuse);
 
-    Serial.print("\n-> Reading Fuses.");
-    // TODO
+    Serial.println("\n-> Reading HEX source /Blink.hex.");
+    if (!file.open("Blink.hex"), O_READ)
+    {
+        Serial.println("Error: Couldn't open source file.");
+        return;
+    }
+
+    char lineBuffer[HEX_LINE_LENGTH];
+    unsigned int index = 0; // Current write index in `lineBuffer`
+    while (file.available()) {
+        lineBuffer[index] = file.read();
+        if (lineBuffer[index] == 0x0A) // Newline byte in ASCII
+        {
+            // lineBuffer contains a single line with newline at the end
+            Serial.print("Processing: ");
+            Serial.print(lineBuffer);
+
+            // Clear all writen bytes and return to first.
+            // index will be -1 after this but increased below
+            do { lineBuffer[index] = 0x00; } while (index-- > 0);
+        }
+        index++;
+    }
+    file.close();
 
     delay(1000);
     Serial.println("\n-> Leaving Programming mode.");
