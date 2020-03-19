@@ -28,6 +28,7 @@
 //
 // Line length for max 32 data bytes (64 chars):
 #define HEX_LINE_LENGTH 76
+#define HEX_MAX_DATALEN 32
 
 // External Dependencies
 #include <SPI.h>
@@ -86,9 +87,157 @@ void printSignature(const Signature* signature)
     Serial.println(F(" (*1/2/4/8) bytes."));
 }
 
+byte hexton(byte h)
+{
+    // Convert ascii HEX to number
+    if (h >= '0' && h <= '9')
+        return(h - '0');
+    if (h >= 'A' && h <= 'F')
+        return((h - 'A') + 10);
+
+    Serial.println(F("Invalid HEX."));
+    while (true) {};
+}
+byte twos_complement(byte val)
+{
+    return -(unsigned int)val;
+}
+
+// Returns lowest address behind current page. (so min addr >= pageaddr + pagesize) 
+unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const unsigned long pageaddr, const unsigned long pagesize, byte* pagebuffer)
+{
+    // Back to begining of file.
+    file->rewind();
+
+    // 'empty' the page by filling it with 0xFF's
+    for (unsigned long i = 0; i < pagesize; i++)
+        pagebuffer[i] = 0xFF;
+
+    // Allocate and initialize line buffer
+    char* lineBuffer = new char[HEX_LINE_LENGTH];
+    for (unsigned int i = 0; i < HEX_LINE_LENGTH; i++)
+        lineBuffer[i] = 0x00;
+
+    unsigned int index = 0; // Current write index in `lineBuffer`
+    char charBuffer;
+
+    // Metadata of lines
+    byte l_bytecount = 0x0;
+    unsigned long l_address = 0x0;
+    byte l_recordtype = 0x0;
+    byte l_checksum = 0x0;
+
+    // Return variable:
+    // Smallest address after current frame
+    unsigned long smallestAfter = 0UL - 1UL; // Largest unsigned long
+
+    // Read file 
+    while (file->available()) {
+        charBuffer = file->read();
+
+        if (charBuffer == 0x13) // Carriage return in ASCII
+            continue; //ignore CR
+        else if (charBuffer == 0x0A) // Newline byte in ASCII
+        {
+            // lineBuffer contains a single line without newline at the end
+#if DEBUG            
+            Serial.println(lineBuffer);
+#endif
+
+            if (lineBuffer[0] != ':')
+            {
+                Serial.println(F("Invalid hex file (1)"));
+                while (true) {};
+            }
+            
+            // Read line `metadata`
+            l_bytecount = hexton(lineBuffer[1]) << 4 | hexton(lineBuffer[2]);
+            l_address = l_address | hexton(lineBuffer[3]) << 12;
+            l_address = l_address | hexton(lineBuffer[4]) << 8;
+            l_address = l_address | hexton(lineBuffer[5]) << 4;
+            l_address = l_address | hexton(lineBuffer[6]) << 0;
+            l_recordtype = hexton(lineBuffer[7]) << 4 | hexton(lineBuffer[8]);
+
+            if (l_bytecount > HEX_MAX_DATALEN)
+            {
+                Serial.println(F("HEX Data too long to process"));
+                while (true) {};
+            }
+            l_checksum = hexton(lineBuffer[9 + l_bytecount *2]) << 4 | hexton(lineBuffer[10 + l_bytecount * 2]);
+
+            if (l_bytecount > HEX_MAX_DATALEN)
+            {
+                Serial.println(F("HEX Data too long to process"));
+                while (true) {};
+            }
+            if (l_recordtype < 0 || l_recordtype > 2)
+            {
+                Serial.println(F("Unsupported HEX entry."));
+                while (true) {};
+            }
+            if (l_address + l_bytecount > flashsize)
+            {
+                Serial.println(F("HEX not in flash bounds!"));
+                while (true) {};
+            }
+
+            // Checksum check
+            byte calcCheckSum = 0x00;
+            for (byte i = 1; i < 9 + l_bytecount * 2; i += 2) // From 1 to last databyte
+                calcCheckSum += hexton(lineBuffer[i + 0]) << 4 |
+                hexton(lineBuffer[i + 1]);
+
+            if (twos_complement(calcCheckSum) != l_checksum)
+            {
+                Serial.println(F("Line checksum mismatch!"));
+                while (true) {};
+            }
+
+            // Data Type
+            if (l_recordtype == 0x00)
+            {
+                // Page adding
+                for (byte i = 9; i < 9 + l_bytecount * 2; i += 2) // From first to last databyte
+                {
+                    // Write to page buffer if address is in current `page area`
+                    if (l_address >= pageaddr && l_address - pageaddr < pagesize)
+                    {
+                        pagebuffer[l_address - pageaddr] =
+                            hexton(lineBuffer[i + 0]) << 4 | hexton(lineBuffer[i + 1]);
+#if DEBUG
+                        Serial.print("Writing to paging buffer: ");
+                        Serial.print(hexton(lineBuffer[i + 0]) << 4 | hexton(lineBuffer[i + 1]), HEX);
+                        Serial.print(" at ");
+                        Serial.println(l_address - pageaddr, HEX);
+#endif
+                    }
+                    if (l_address >= pageaddr + pagesize && l_address < smallestAfter)
+                    {
+                        smallestAfter = l_address;
+                    }
+                    l_address++;
+                }
+            }
+
+            // Clear all writen bytes and return to first.
+            // index will be -1 after this but increased below
+            do { lineBuffer[index] = 0x00; } while (index-- > 0);
+        }
+        else
+            lineBuffer[index] = charBuffer; // Write character to lineBuffer
+
+        index++;
+    }
+
+    // Clean up
+    delete[] lineBuffer;
+
+    return smallestAfter;
+}
+
 void setup()
 {
-    Serial.begin(9600);
+    Serial.begin(115200);
     while (!Serial) {}
 
     Serial.println(F("\n\nStone Labs. Smart ISP"));
@@ -165,30 +314,62 @@ void setup()
     const BBProgrammer::Fuse& fuse = programmer.getFuses();
     printFuses(fuse);
 
-    Serial.println(F("\n-> Reading HEX source /Blink.hex."));
+    Serial.println(F("\n-> Flashing HEX source /Blink.hex."));
     if (!file.open("Blink.hex"), O_READ)
     {
         Serial.println(F("Error: Couldn't open source file."));
         return;
     }
     
-    char lineBuffer[HEX_LINE_LENGTH];
-    unsigned int index = 0; // Current write index in `lineBuffer`
-    while (file.available()) {
-        lineBuffer[index] = file.read();
-        if (lineBuffer[index] == 0x0A) // Newline byte in ASCII
-        {
-            // lineBuffer contains a single line with newline at the end
-            Serial.print(F("Processing: "));
-            Serial.print(lineBuffer);
+    // Iterate over all pages in target flash
+    // and fill them with readImagePage(...).
+    // Then write them to the target.
+    byte* page = new byte[signature->pageSize];
+    unsigned long pageaddr = 0x00;
+    unsigned long nextSmallest = 0x00; // Next smallest address
+    while (pageaddr < signature->flashSize) {
+//#if DEBUG
+        Serial.print(F("Processing page 0x"));
+        Serial.print(pageaddr, HEX);
+        Serial.print(F(" - 0x"));
+        Serial.print(pageaddr + signature->pageSize - 1, HEX);
+        Serial.print(F("..."));
+//#endif
 
-            // Clear all writen bytes and return to first.
-            // index will be -1 after this but increased below
-            do { lineBuffer[index] = 0x00; } while (index-- > 0);
+        // Skip if next smallest address is not inside this page.
+        if (nextSmallest <= pageaddr + signature->pageSize - 1)
+        {
+            nextSmallest = readImagePage(&file, signature->flashSize, pageaddr, signature->pageSize, page);
+
+            boolean blankpage = true;
+            for (uint8_t i = 0; i < signature->pageSize; i++)
+                if (page[i] != 0xFF)
+                    blankpage = false;
+
+            if (!blankpage)
+            {
+//#if DEBUG
+                Serial.print(F(" [OK: NS="));
+                Serial.print(nextSmallest, HEX);
+//#endif
+                Serial.print(F("] flashing..."));
+                //TODO
+                Serial.println(F(" [TODO]"));
+            }
+//#if DEBUG
+            else
+                Serial.println(F(" [EMPTY]"));
+//#endif
         }
-        index++;
+//#if DEBUG
+        else
+            Serial.println(F(" [SKIP]"));
+//#endif
+        pageaddr += signature->pageSize;
     }
+
     file.close();
+    delete[] page;
 
     delay(1000);
     Serial.println(F("\n-> Leaving Programming mode."));
