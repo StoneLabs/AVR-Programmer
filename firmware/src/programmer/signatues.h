@@ -8,9 +8,9 @@ typedef struct {
     unsigned int baseBootSize;   // base bootloader size (others are multiples of 2/4/8)
     unsigned long pageSize;      // flash programming page size (bytes)
     byte fuseWithBootloaderSize; // ie. one of: lowFuse, highFuse, extFuse
-    bool timedWrites;            // true if pollUntilReady won't work by polling the chip
-    byte safetyMaskOne;          // All bits in high that must be unprogrammed: one  (i.e. val & safetyMaskOne  != safetyMaskOne is forbidden)
-    byte safetyMaskZero;         // All bits in high that must be   programmed: zero (i.e. val & safetyMaskZero != 0             is forbidden)
+    bool timedWrites;            // true if pollUntilReady won't work by polling the chip // NOT IMPLEMENTED
+    byte safetyMaskOne;          // All bits in high that must be unprogrammed: one  (i.e. (val & safetyMaskOne ) != safetyMaskOne is forbidden)
+    byte safetyMaskZero;         // All bits in high that must be   programmed: zero (i.e. (val & safetyMaskZero) != 0             is forbidden)
 } Signature;
 
 #define NO_FUSE (byte)0xFF
@@ -27,6 +27,8 @@ enum
 // see Atmega datasheets
 const Signature signatures[] PROGMEM =
 {
+    // Currently only bootloader fuse = high is supported!
+
     //     signature        description   flash size   bootloader  flash   bootloader  timed    Safety      Safety
     //                                                     size    page     fuse       writes   Mask One    Mask Zero
     //                                                             size   

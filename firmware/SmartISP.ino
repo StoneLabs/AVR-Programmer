@@ -154,7 +154,7 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
             
             // Read line `metadata`
             l_bytecount = hexton(lineBuffer[1]) << 4 | hexton(lineBuffer[2]);
-            l_address = l_address | hexton(lineBuffer[3]) << 12;
+            l_address = hexton(lineBuffer[3]) << 12;
             l_address = l_address | hexton(lineBuffer[4]) << 8;
             l_address = l_address | hexton(lineBuffer[5]) << 4;
             l_address = l_address | hexton(lineBuffer[6]) << 0;
@@ -172,11 +172,16 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
                 Serial.println(F("HEX Data too long to process"));
                 while (true) {};
             }
-            if (l_recordtype < 0 || l_recordtype > 2)
+            if (l_recordtype < 0 || l_recordtype > 3)
             {
                 Serial.println(F("Unsupported HEX entry."));
                 while (true) {};
             }
+
+#if DEBUG
+            if (l_recordtype == 3)
+                Serial.println(F("Warning: HEX contains 'Start Segment Address'. Entry will be ignored."));
+#endif
 
             // Checksum check
             byte calcCheckSum = 0x00;
@@ -331,7 +336,7 @@ void setup()
 
     delay(1000);
     Serial.print(F("\n-> Erasing CHIP."));
-    //programmer.erase();
+    programmer.erase();
     Serial.println(F(" [OK]"));
 
     delay(1000);
@@ -341,8 +346,8 @@ void setup()
     const BBProgrammer::Fuse& fuse = programmer.getFuses();
     printFuses(fuse);
 
-    Serial.println(F("\n-> Flashing HEX source /optiboot.hex."));
-    if (!file.open("optiboot.hex"), O_READ)
+    Serial.println(F("\n-> Flashing HEX source /Blink_bl.hex."));
+    if (!file.open("Blink_bl_wierd.hex "), O_READ)
     {
         Serial.println(F("Error: Couldn't open source file."));
         return;
@@ -437,15 +442,57 @@ void setup()
 
     // Flashing done. Show user feedback
     Serial.println(F("Flashing complete."));
+
+    // Change bootloader fuse
+    if (signature->fuseWithBootloaderSize != highFuse)
+    {
+        Serial.println(F("Bootloader fuse setting for current chip not supported!"));
+        while (true) {};
+    }
+
+    // Bootloader fuse:
+    // http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf page 243 and 239
+    byte newBootloaderFuse = 0x0;
     if (lowestBootLoader == signature->flashSize)
+    {
         Serial.println(F("No bootlaoder detected."));
+        newBootloaderFuse = (fuse.high & 0b11111000) | 0b001; // Application reset at 0x0000
+    }
     else
     {
         Serial.print(F("Bootloader detected at 0x"));
         Serial.println(lowestBootLoader, HEX);
-        Serial.println(F("Changing bootloader fuse... [TODO]"));
-    }
 
+        // bootloader fuse depending on bootloader location
+        if (lowestBootLoader == (signature->flashSize - signature->baseBootSize))
+            newBootloaderFuse = (fuse.high & 0b11111000) | 0b110;
+        else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 2))
+            newBootloaderFuse = (fuse.high & 0b11111000) | 0b100;
+        else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 4))
+            newBootloaderFuse = (fuse.high & 0b11111000) | 0b010;
+        else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 8))
+            newBootloaderFuse = (fuse.high & 0b11111000) | 0b000;
+    }
+    Serial.print(F("Changing high fuse: "));
+    Serial.print(fuse.high, BIN);
+    Serial.print(F(" -> "));
+    Serial.print(newBootloaderFuse, BIN);
+    Serial.print(F("..."));
+
+    // Write new fuse
+    programmer.setHighFuse(newBootloaderFuse);
+    Serial.println(F(" [OK]"));
+
+    // Change low fuse for external clock
+    Serial.print(F("Changing low fuse: "));
+    Serial.print(fuse.low, BIN);
+    Serial.print(F(" -> "));
+    Serial.print(0xff, BIN);
+    Serial.print(F("..."));
+
+    // Write new fuse
+    programmer.setLowFuse(0xff);
+    Serial.println(F(" [OK]"));
 
     delay(1000);
     Serial.println(F("\n-> Leaving Programming mode."));
