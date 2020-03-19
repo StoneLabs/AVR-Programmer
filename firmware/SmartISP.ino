@@ -205,9 +205,9 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
                 l_address_offset *= 0x10; // Multiply by 16
 
 #if DEBUG
-                Serial.print("Read Extended Segment Address record: ");
+                Serial.print(F("Read Extended Segment Address record: "));
                 Serial.print(l_address_offset, HEX);
-                Serial.println(" set as offset!");
+                Serial.println(F(" set as offset!"));
 #endif
             }
             // Apply offset from previous 'Extended Segment Addresses'
@@ -232,9 +232,9 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
                         pagebuffer[l_address - pageaddr] =
                             hexton(lineBuffer[i + 0]) << 4 | hexton(lineBuffer[i + 1]);
 #if DEBUG
-                        Serial.print("Writing to paging buffer: ");
+                        Serial.print(F("Writing to paging buffer: "));
                         Serial.print(hexton(lineBuffer[i + 0]) << 4 | hexton(lineBuffer[i + 1]), HEX);
-                        Serial.print(" at ");
+                        Serial.print(F(" at "));
                         Serial.println(l_address - pageaddr, HEX);
 #endif
                     }
@@ -341,8 +341,8 @@ void setup()
     const BBProgrammer::Fuse& fuse = programmer.getFuses();
     printFuses(fuse);
 
-    Serial.println(F("\n-> Flashing HEX source /Blink.hex."));
-    if (!file.open("Blink.hex"), O_READ)
+    Serial.println(F("\n-> Flashing HEX source /optiboot.hex."));
+    if (!file.open("optiboot.hex"), O_READ)
     {
         Serial.println(F("Error: Couldn't open source file."));
         return;
@@ -379,13 +379,19 @@ void setup()
                 Serial.print(F(" [OK: NS="));
                 Serial.print(nextSmallest, HEX);
 //#endif
-                Serial.print(F("] flashing..."));
-                //TODO
-                Serial.println(F(" [TODO]"));
+                Serial.print(F("] -> Flashing..."));
+                
+                programmer.flashPage(pageaddr, page);
+
+                Serial.println(F(" [FLASHED]"));
             }
 //#if DEBUG
             else
-                Serial.println(F(" [EMPTY]"));
+            {
+                Serial.print(F(" [EMPTY NS="));
+                Serial.print(nextSmallest, HEX);
+                Serial.println(F("]"));
+            }
 //#endif
         }
 //#if DEBUG

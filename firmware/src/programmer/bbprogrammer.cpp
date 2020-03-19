@@ -194,9 +194,7 @@ namespace programmer
         //execCommand(programEnable, writeLowFuseByte, 0, 0xFF);
     }
     void BBProgrammer::pollUntilReady()
-    {
-        delay(40);  // for timed wait chips e.g. ATmega8
-         
+    {         
         // wait till ready
         while ((execCommand(pollReady) & 1) == 1) {}
     }
@@ -204,6 +202,36 @@ namespace programmer
     const BBProgrammer::Fuse& BBProgrammer::getFuses() const
     {
         return this->fuses;
+    }
+
+    void BBProgrammer::flashPage(unsigned long pageaddr, byte* pagebuffer)
+    {
+        // Check if signature has been read.
+        if (this->signature == nullptr)
+        {
+            Serial.println(F("Attempting to flash page without signature!"));
+            while (true) {};
+        }
+        
+        for (unsigned long addr = 0; addr < this->signature->pageSize / 2; addr++)
+        {
+            byte lowAddr = addr & 0xFFUL;
+            byte highAddr = (addr & 0xFF00UL) >> 8;
+            
+            execCommand(loadProgramMemoryPageLow, highAddr, lowAddr, pagebuffer[addr * 2]);
+            execCommand(loadProgramMemoryPageHigh, highAddr, lowAddr, pagebuffer[addr * 2 + 1]);
+        }
+
+        // Commiting the page buffer to the flash 
+        // with 'writeProgramMemoryPage' is done in 
+        // word addressing. (e.g. page 0x0080-0x00FF would
+        // be committed with $4C 00 40 00.
+        unsigned long pageWordAddr = pageaddr / 2;
+        byte pageWordAddrLow = pageWordAddr & 0xFFUL;
+        byte pageWordAddrHigh = (pageWordAddr & 0xFF00UL) >> 8;
+
+        execCommand(writeProgramMemoryPage, pageWordAddrHigh, pageWordAddrLow, 0x00);
+        pollUntilReady();
     }
 
     void BBProgrammer::erase()

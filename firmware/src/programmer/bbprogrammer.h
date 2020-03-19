@@ -89,6 +89,7 @@ namespace programmer
         void readFuses();
         const Fuse& getFuses() const;
 
+        void flashPage(unsigned long pageaddr, byte* pagebuffer);
         void erase();
     };
 }
