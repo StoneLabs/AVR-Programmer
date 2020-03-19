@@ -204,6 +204,35 @@ namespace programmer
         return this->fuses;
     }
 
+    void BBProgrammer::setHighFuse(const byte fuse)
+    {
+#if SAFETY_CHECKS
+        // Check if signature has been read.
+        if (this->signature == nullptr)
+        {
+            Serial.println(F("Attempting to write high fuse without signature!"));
+            while (true) {};
+        }
+
+        // Confirm with safety mask
+        if ((fuse & signature->safetyMaskOne) != signature->safetyMaskOne ||
+            (fuse & signature->safetyMaskZero) != 0)
+        {
+            Serial.println(F("WARNING: ILLEGAL FUSE CONFIGURATION. ABORTING EXECUTION."));
+            while (true) {};
+        }
+
+        execCommand(programEnable, writeHighFuseByte, 0x00, fuse);
+        pollUntilReady();
+#endif
+    }
+
+    void BBProgrammer::setLowFuse(const byte fuse)
+    {
+        execCommand(programEnable, writeLowFuseByte, 0x00, fuse);
+        pollUntilReady();
+    }
+
     void BBProgrammer::flashPage(unsigned long pageaddr, byte* pagebuffer)
     {
         // Check if signature has been read.
