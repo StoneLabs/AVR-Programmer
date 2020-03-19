@@ -104,6 +104,7 @@ byte twos_complement(byte val)
 }
 
 // Returns lowest address behind current page. (so min addr >= pageaddr + pagesize) 
+// More information on HEX file: https://en.wikipedia.org/wiki/Intel_HEX
 unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const unsigned long pageaddr, const unsigned long pagesize, byte* pagebuffer)
 {
     // Back to begining of file.
@@ -123,6 +124,7 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
 
     // Metadata of lines
     byte l_bytecount = 0x0;
+    unsigned long l_address_offset = 0x0;
     unsigned long l_address = 0x0;
     byte l_recordtype = 0x0;
     byte l_checksum = 0x0;
@@ -175,11 +177,6 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
                 Serial.println(F("Unsupported HEX entry."));
                 while (true) {};
             }
-            if (l_address + l_bytecount > flashsize)
-            {
-                Serial.println(F("HEX not in flash bounds!"));
-                while (true) {};
-            }
 
             // Checksum check
             byte calcCheckSum = 0x00;
@@ -193,9 +190,39 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
                 while (true) {};
             }
 
+            // 'Extended Segment Address' entry
+            // Data field (16 bits) is multiplied by 16 and added to each
+            // subsequent data entry address
+            if (l_recordtype == 0x02)
+            {
+                // Get 16 bit data field
+                l_address_offset = 0x00;
+                l_address_offset = l_address_offset | hexton(lineBuffer[9]) << 12;
+                l_address_offset = l_address_offset | hexton(lineBuffer[10]) << 8;
+                l_address_offset = l_address_offset | hexton(lineBuffer[11]) << 4;
+                l_address_offset = l_address_offset | hexton(lineBuffer[12]) << 0;
+
+                l_address_offset *= 0x10; // Multiply by 16
+
+#if DEBUG
+                Serial.print("Read Extended Segment Address record: ");
+                Serial.print(l_address_offset, HEX);
+                Serial.println(" set as offset!");
+#endif
+            }
+            // Apply offset from previous 'Extended Segment Addresses'
+            l_address += l_address_offset;
+
             // Data Type
             if (l_recordtype == 0x00)
             {
+                // Check for valid Data record address range (i.e. is it in flash bounds?)
+                if (l_address + l_bytecount > flashsize)
+                {
+                    Serial.println(F("HEX not in flash bounds!"));
+                    while (true) {};
+                }
+
                 // Page adding
                 for (byte i = 9; i < 9 + l_bytecount * 2; i += 2) // From first to last databyte
                 {
