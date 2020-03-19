@@ -354,6 +354,10 @@ void setup()
     byte* page = new byte[signature->pageSize];
     unsigned long pageaddr = 0x00;
     unsigned long nextSmallest = 0x00; // Next smallest address
+    
+    // If a bootloader is found at the entry points
+    // it will be save in lowestBootLoader.
+    unsigned long lowestBootLoader = signature->flashSize;
     while (pageaddr < signature->flashSize) {
 //#if DEBUG
         Serial.print(F("Processing page 0x"));
@@ -378,12 +382,39 @@ void setup()
 //#if DEBUG
                 Serial.print(F(" [OK: NS="));
                 Serial.print(nextSmallest, HEX);
-//#endif
                 Serial.print(F("] -> Flashing..."));
+//#endif
                 
                 programmer.flashPage(pageaddr, page);
 
-                Serial.println(F(" [FLASHED]"));
+//#if DEBUG
+                Serial.print(F(" [FLASHED]"));
+//#endif
+
+                // Check bootloader positions *(1/2/4/8)
+                for (int i = 1; i <= 8; i *= 2)
+                {
+                    // Possible bootlaoder position in current page?
+                    unsigned long bootloaderAddress = signature->flashSize - signature->baseBootSize * i;
+                    if (bootloaderAddress < pageaddr || bootloaderAddress > pageaddr + signature->pageSize - 1)
+                        continue; // If not skip this position
+
+                    unsigned long bootloaderPageAddress = bootloaderAddress - pageaddr;
+
+                    // Check if bootloader position caintains instruction
+                    if (page[bootloaderPageAddress] != 0xFF)
+                    {
+//#if DEBUG
+                        Serial.print(F(" Found bootloader at 0x"));
+                        Serial.print(signature->flashSize - signature->baseBootSize, HEX);
+//#endif
+                        if (bootloaderAddress < lowestBootLoader)
+                            lowestBootLoader = bootloaderAddress;
+                    }
+                }
+//#if DEBUG
+                Serial.println();
+//#endif
             }
 //#if DEBUG
             else
@@ -403,6 +434,18 @@ void setup()
 
     file.close();
     delete[] page;
+
+    // Flashing done. Show user feedback
+    Serial.println(F("Flashing complete."));
+    if (lowestBootLoader == signature->flashSize)
+        Serial.println(F("No bootlaoder detected."));
+    else
+    {
+        Serial.print(F("Bootloader detected at 0x"));
+        Serial.println(lowestBootLoader, HEX);
+        Serial.println(F("Changing bootloader fuse... [TODO]"));
+    }
+
 
     delay(1000);
     Serial.println(F("\n-> Leaving Programming mode."));
