@@ -42,48 +42,48 @@
 
 void printFuses(const programmer::BBProgrammer::Fuse& fuse)
 {
-    Serial.print("Low fuse: ");
+    Serial.print(F("Low fuse: "));
     Serial.print(fuse.low, HEX);
-    Serial.print(" = ");
+    Serial.print(F(" = "));
     Serial.println(fuse.low, BIN);
 
-    Serial.print("High fuse: ");
+    Serial.print(F("High fuse: "));
     Serial.print(fuse.high, HEX);
-    Serial.print(" = ");
+    Serial.print(F(" = "));
     Serial.println(fuse.high, BIN);
 
-    Serial.print("Extended fuse: ");
+    Serial.print(F("Extended fuse: "));
     Serial.print(fuse.extended, HEX);
-    Serial.print(" = ");
+    Serial.print(F(" = "));
     Serial.println(fuse.extended, BIN);
 
-    Serial.print("Lock Byte: ");
+    Serial.print(F("Lock Byte: "));
     Serial.print(fuse.lock, HEX);
-    Serial.print(" = ");
+    Serial.print(F(" = "));
     Serial.println(fuse.lock, BIN);
 
-    Serial.print("Calibration byte: ");
+    Serial.print(F("Calibration byte: "));
     Serial.print(fuse.calibration, HEX);
-    Serial.print(" = ");
+    Serial.print(F(" = "));
     Serial.println(fuse.calibration, BIN);
 }
 
 void printSignature(const Signature* signature)
 {
-    Serial.print("Processor = ");
+    Serial.print(F("Processor = "));
     Serial.println(signature->desc);
 
-    Serial.print("Flash memory size = ");
+    Serial.print(F("Flash memory size = "));
     Serial.print(signature->flashSize, DEC);
-    Serial.println(" bytes.");
+    Serial.println(F(" bytes."));
 
-    Serial.print("Flash page size = ");
+    Serial.print(F("Flash page size = "));
     Serial.print(signature->pageSize, DEC);
-    Serial.println(" bytes.");
+    Serial.println(F(" bytes."));
 
-    Serial.print("Bootloader section size = ");
+    Serial.print(F("Bootloader section size = "));
     Serial.print(signature->baseBootSize, DEC);
-    Serial.println(" (*1/2/4/8) bytes.");
+    Serial.println(F(" (*1/2/4/8) bytes."));
 }
 
 void setup()
@@ -91,7 +91,7 @@ void setup()
     Serial.begin(9600);
     while (!Serial) {}
 
-    Serial.println("\n\nStone Labs. Smart ISP");
+    Serial.println(F("\n\nStone Labs. Smart ISP"));
     Serial.println("Verion " XSTR(__PVERSION__) " compiled at " __DATE__ " " __TIME__ " using Arduino IDE version " XSTR(ARDUINO));
     
 
@@ -99,22 +99,22 @@ void setup()
     // SD CARD
     //
 
-    Serial.print("-> Initializing SD card...");
+    Serial.print(F("-> Initializing SD card..."));
     SdFat sd;
     if (!sd.begin(3, SPI_HALF_SPEED)) 
         sd.initErrorHalt();
 
-    Serial.println(" [OK]");
+    Serial.println(F(" [OK]"));
 
     SdFile file;
     // open next file in root.  The volume working directory, vwd, is root
     while (file.openNext(sd.vwd(), O_READ)) 
     {
-        Serial.print("|-- ");
+        Serial.print(F("|-- "));
         file.printName(&Serial);
-        Serial.print(" ");
+        Serial.print(F(" "));
         file.printModifyDateTime(&Serial);
-        Serial.println("");
+        Serial.println(F(""));
         file.close();
     }
 
@@ -122,10 +122,10 @@ void setup()
     //
     // PROGRAMMER
     //
-    Serial.println("\nEnter 'G' to start.");
+    Serial.println(F("\nEnter 'G' to start."));
     while (Serial.read() != 'G');
 
-    Serial.println("\n-> Starting 8 Mhz Clock on Pin 9.");
+    Serial.println(F("\n-> Starting 8 Mhz Clock on Pin 9."));
 
     // set up 8 MHz timer on PIN 10 (OC1B)
     // https://arduino.stackexchange.com/questions/16698/arduino-constant-clock-output
@@ -137,41 +137,41 @@ void setup()
 
     using namespace programmer;
 
-    Serial.println("\n-> Entering Programming mode.");
+    Serial.println(F("\n-> Entering Programming mode."));
     BBProgrammer programmer = BBProgrammer(P_SCK, P_MOSI, P_MISO, P_RESET);
     if (!programmer.startProgramming(5))
         return;
 
 
     delay(1000);
-    Serial.println("\n-> Reading Signature.");
+    Serial.println(F("\n-> Reading Signature."));
     if (!programmer.readSignature())
     {
-        Serial.println("Chip locked! Issue erase. [ABORT]");
+        Serial.println(F("Chip locked! Issue erase. [ABORT]"));
         return;
     }
     const Signature* signature = programmer.getSignature();
     printSignature(signature);
 
     delay(1000);
-    Serial.print("\n-> Erasing CHIP.");
+    Serial.print(F("\n-> Erasing CHIP."));
     //programmer.erase();
-    Serial.println(" [OK]");
+    Serial.println(F(" [OK]"));
 
     delay(1000);
-    Serial.print("\n-> Reading Fuses.");
+    Serial.print(F("\n-> Reading Fuses."));
     programmer.readFuses();
-    Serial.println(" [OK]");
+    Serial.println(F(" [OK]"));
     const BBProgrammer::Fuse& fuse = programmer.getFuses();
     printFuses(fuse);
 
-    Serial.println("\n-> Reading HEX source /Blink.hex.");
+    Serial.println(F("\n-> Reading HEX source /Blink.hex."));
     if (!file.open("Blink.hex"), O_READ)
     {
-        Serial.println("Error: Couldn't open source file.");
+        Serial.println(F("Error: Couldn't open source file."));
         return;
     }
-
+    
     char lineBuffer[HEX_LINE_LENGTH];
     unsigned int index = 0; // Current write index in `lineBuffer`
     while (file.available()) {
@@ -179,7 +179,7 @@ void setup()
         if (lineBuffer[index] == 0x0A) // Newline byte in ASCII
         {
             // lineBuffer contains a single line with newline at the end
-            Serial.print("Processing: ");
+            Serial.print(F("Processing: "));
             Serial.print(lineBuffer);
 
             // Clear all writen bytes and return to first.
@@ -191,7 +191,7 @@ void setup()
     file.close();
 
     delay(1000);
-    Serial.println("\n-> Leaving Programming mode.");
+    Serial.println(F("\n-> Leaving Programming mode."));
     programmer.stopProgramming();
 }
 

@@ -22,11 +22,11 @@ namespace programmer
     // http://ww1.microchip.com/downloads/en/appnotes/atmel-0943-in-system-programming_applicationnote_avr910.pdf
     bool BBProgrammer::startProgramming(unsigned int tries)
     {
-        Serial.print("Attempting to enter programming mode ...");
+        Serial.print(F("Attempting to enter programming mode ..."));
 
         if (this->isProgramming)
         {
-            Serial.print("Error: Allready in programming mode.");
+            Serial.print(F("Error: Allready in programming mode."));
             return false;
         }
         
@@ -71,14 +71,14 @@ namespace programmer
 
             /// Debug
 #if DEBUG
-            Serial.print("\nSPI write: 0x"); Serial.print(programEnable, HEX);
-            Serial.print(" 0x"); Serial.print(programAcknowledge, HEX);
-            Serial.print(" 0x"); Serial.print(0x1, HEX);
-            Serial.print(" 0x"); Serial.println(0x2, HEX);
-            Serial.print("SPI read: 0x"); Serial.print(answer1, HEX);
-            Serial.print(" 0x"); Serial.print(answer2, HEX);
-            Serial.print(" 0x"); Serial.print(answer, HEX);
-            Serial.print(" 0x"); Serial.println(answer4, HEX);
+            Serial.print(F("\nSPI write: 0x")); Serial.print(programEnable, HEX);
+            Serial.print(F(" 0x")); Serial.print(programAcknowledge, HEX);
+            Serial.print(F(" 0x")); Serial.print(0x1, HEX);
+            Serial.print(F(" 0x")); Serial.println(0x2, HEX);
+            Serial.print(F("SPI read: 0x")); Serial.print(answer1, HEX);
+            Serial.print(F(" 0x")); Serial.print(answer2, HEX);
+            Serial.print(F(" 0x")); Serial.print(answer, HEX);
+            Serial.print(F(" 0x")); Serial.println(answer4, HEX);
 #endif
 
             delay(1000);
@@ -88,17 +88,17 @@ namespace programmer
             // We will however assume it did :D
             if (answer != programAcknowledge)
             {
-                Serial.print(".");
+                Serial.print(F("."));
                 if (++timeout >= tries)
                 {
-                    Serial.println(" [FAILED]");
+                    Serial.println(F(" [FAILED]"));
                     this->isProgramming = false;
                     return false;
                 }
             }
         } while (answer != programAcknowledge);
 
-        Serial.println(" [OK]");
+        Serial.println(F(" [OK]"));
         this->isProgramming = true;
         return true;
     }
@@ -111,10 +111,10 @@ namespace programmer
             this->spi->end();
             this->isProgramming = false;
 
-            Serial.println("Programming mode ended.");
+            Serial.println(F("Programming mode ended."));
         }
         else
-            Serial.println("Programming mode allready ended.");
+            Serial.println(F("Programming mode allready ended."));
     }
 
     byte BBProgrammer::execCommand(byte b1, byte b2, byte b3, byte b4)
@@ -133,7 +133,7 @@ namespace programmer
     {
         if (!this->isProgramming)
         {
-            Serial.print("Error: Not in programming mode.");
+            Serial.print(F("Error: Not in programming mode."));
             return false;
         }
 
@@ -146,7 +146,7 @@ namespace programmer
         if (signature[0] == 0x00)
         {
             // Lock byte should be set. Erase must be isued!
-            Serial.println("Device ID reads 0x00. Lock could be set.");
+            Serial.println(F("Device ID reads 0x00. Lock could be set."));
             return false;
         }
         else
@@ -165,7 +165,7 @@ namespace programmer
                 }
             } 
             
-            Serial.println("Error: Unrecogized signature. Chip is not supported by this program.");
+            Serial.println(F("Error: Unrecogized signature. Chip is not supported by this program."));
             return false;
         }
     }
@@ -179,7 +179,7 @@ namespace programmer
     {
         if (!this->isProgramming)
         {
-            Serial.print("Error: Not in programming mode.");
+            Serial.print(F("Error: Not in programming mode."));
             return;
         }
 
@@ -210,7 +210,7 @@ namespace programmer
     {
         if (!this->isProgramming)
         {
-            Serial.print("Error: Not in programming mode.");
+            Serial.print(F("Error: Not in programming mode."));
             return;
         }
 
