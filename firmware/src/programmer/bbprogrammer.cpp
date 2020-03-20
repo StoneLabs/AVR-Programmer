@@ -22,19 +22,18 @@ namespace programmer
     // http://ww1.microchip.com/downloads/en/appnotes/atmel-0943-in-system-programming_applicationnote_avr910.pdf
     bool BBProgrammer::startProgramming(unsigned int tries)
     {
-        Serial.print(F("Attempting to enter programming mode ..."));
+        Debug(DEBUG_INFO, F("Attempting to enter programming mode ..."));
 
         if (this->isProgramming)
         {
-            Serial.print(F("Error: Allready in programming mode."));
+            Debug(DEBUG_INFO, F(" allready in programming mode."));
             return false;
         }
         
         unsigned int timeout = 0;
-#if DEBUG
+#if DEBUG >= DEBUG_ALL
         byte answer1;
         byte answer2;
-        byte answer3;
         byte answer4;
 #endif
         byte answer;
@@ -56,7 +55,7 @@ namespace programmer
 
             // Enter programming mode
             noInterrupts();
-#if DEBUG
+#if DEBUG >= DEBUG_ALL
             answer1 = this->spi->transfer(programEnable);
             answer2 = this->spi->transfer(programAcknowledge);
             answer  = this->spi->transfer(0x1);
@@ -69,16 +68,17 @@ namespace programmer
 #endif
             interrupts();
 
-            /// Debug
-#if DEBUG
-            Serial.print(F("\nSPI write: 0x")); Serial.print(programEnable, HEX);
-            Serial.print(F(" 0x")); Serial.print(programAcknowledge, HEX);
-            Serial.print(F(" 0x")); Serial.print(0x1, HEX);
-            Serial.print(F(" 0x")); Serial.println(0x2, HEX);
-            Serial.print(F("SPI read: 0x")); Serial.print(answer1, HEX);
-            Serial.print(F(" 0x")); Serial.print(answer2, HEX);
-            Serial.print(F(" 0x")); Serial.print(answer, HEX);
-            Serial.print(F(" 0x")); Serial.println(answer4, HEX);
+            // Debug
+#if DEBUG >= DEBUG_ALL
+            Debug(DEBUG_ALL, F("\nSPI write: 0x")); Debug(DEBUG_ALL, programEnable, HEX);
+            Debug(DEBUG_ALL, F(" 0x")); Debug(DEBUG_ALL, programAcknowledge, HEX);
+            Debug(DEBUG_ALL, F(" 0x")); Debug(DEBUG_ALL, 0x1, HEX);
+            Debug(DEBUG_ALL, F(" 0x")); Debugln(DEBUG_ALL, 0x2, HEX);
+
+            Debug(DEBUG_ALL, F("SPI read: 0x")); Debug(DEBUG_ALL, answer1, HEX);
+            Debug(DEBUG_ALL, F(" 0x")); Debug(DEBUG_ALL, answer2, HEX);
+            Debug(DEBUG_ALL, F(" 0x")); Debug(DEBUG_ALL, answer, HEX);
+            Debug(DEBUG_ALL, F(" 0x")); Debugln(DEBUG_ALL, answer4, HEX);
 #endif
 
             delay(1000);
@@ -88,17 +88,17 @@ namespace programmer
             // We will however assume it did :D
             if (answer != programAcknowledge)
             {
-                Serial.print(F("."));
+                Debug(DEBUG_INFO, F("."));
                 if (++timeout >= tries)
                 {
-                    Serial.println(F(" [FAILED]"));
+                    Debug(DEBUG_INFO, F(" [FAILED]"));
                     this->isProgramming = false;
                     return false;
                 }
             }
         } while (answer != programAcknowledge);
 
-        Serial.println(F(" [OK]"));
+        Debug(DEBUG_INFO, F(" [OK]"));
         this->isProgramming = true;
         return true;
     }
@@ -111,31 +111,47 @@ namespace programmer
             this->spi->end();
             this->isProgramming = false;
 
-            Serial.println(F("Programming mode ended."));
+            Debugln(DEBUG_INFO, F("Programming mode ended."));
         }
         else
-            Serial.println(F("Programming mode allready ended."));
+            Debugln(DEBUG_INFO, F("Programming mode allready ended."));
     }
 
     byte BBProgrammer::execCommand(byte b1, byte b2, byte b3, byte b4)
     {
+#if DEBUG >= DEBUG_ALL
+        noInterrupts();
+        byte answer1 = this->spi->transfer(b1);
+        byte answer2 = this->spi->transfer(b2);
+        byte answer3 = this->spi->transfer(b3);
+        byte answer = this->spi->transfer(b4);
+        interrupts();
+
+        Debug(DEBUG_ALL, F("\nSPI write: 0x")); Debug(DEBUG_ALL, b1, HEX);
+        Debug(DEBUG_ALL, F(" 0x")); Debug(DEBUG_ALL, b2, HEX);
+        Debug(DEBUG_ALL, F(" 0x")); Debug(DEBUG_ALL, b3, HEX);
+        Debug(DEBUG_ALL, F(" 0x")); Debugln(DEBUG_ALL, b4, HEX);
+
+        Debug(DEBUG_ALL, F("SPI read: 0x")); Debug(DEBUG_ALL, answer1, HEX);
+        Debug(DEBUG_ALL, F(" 0x")); Debug(DEBUG_ALL, answer2, HEX);
+        Debug(DEBUG_ALL, F(" 0x")); Debug(DEBUG_ALL, answer3, HEX);
+        Debug(DEBUG_ALL, F(" 0x")); Debugln(DEBUG_ALL, answer, HEX);
+#else
         noInterrupts();
         this->spi->transfer(b1);
         this->spi->transfer(b2);
         this->spi->transfer(b3);
         byte answer = this->spi->transfer(b4);
         interrupts();
-
+#endif
+        
         return answer;
     }
 
     bool BBProgrammer::readSignature()
     {
         if (!this->isProgramming)
-        {
-            Serial.print(F("Error: Not in programming mode."));
-            return false;
-        }
+            HaltError(F("Error: Not in programming mode."));
 
         byte signature[] = { 0x00, 0x00, 0x00 };
 
@@ -146,8 +162,7 @@ namespace programmer
         if (signature[0] == 0x00)
         {
             // Lock byte should be set. Erase must be isued!
-            Serial.println(F("Device ID reads 0x00. Lock could be set."));
-            return false;
+            Debugln(DEBUG_INFO, F("Device ID reads 0x00. Lock could be set."));
         }
         else
         {
@@ -165,9 +180,10 @@ namespace programmer
                 }
             } 
             
-            Serial.println(F("Error: Unrecogized signature. Chip is not supported by this program."));
-            return false;
+            HaltError(F("Error: Unrecogized signature. Chip is not supported by this program."));
         }
+
+        return false;
     }
 
     const Signature* BBProgrammer::getSignature() const
@@ -178,10 +194,7 @@ namespace programmer
     void BBProgrammer::readFuses()
     {
         if (!this->isProgramming)
-        {
-            Serial.print(F("Error: Not in programming mode."));
-            return;
-        }
+            HaltError(F("Error: Not in programming mode."));
 
         this->fuses.low = execCommand(readLowFuseByte, readLowFuseByteArg2);
         this->fuses.high = execCommand(readHighFuseByte, readHighFuseByteArg2);
@@ -209,17 +222,17 @@ namespace programmer
 #if SAFETY_CHECKS
         // Check if signature has been read.
         if (this->signature == nullptr)
-        {
-            Serial.println(F("Attempting to write high fuse without signature!"));
-            while (true) {};
-        }
+            HaltError(F("Attempting to write high fuse without signature!"));
 
         // Confirm with safety mask
         if ((fuse & signature->safetyMaskOne) != signature->safetyMaskOne ||
             (fuse & signature->safetyMaskZero) != 0)
         {
-            Serial.println(F("WARNING: ILLEGAL FUSE CONFIGURATION. ABORTING EXECUTION."));
-            while (true) {};
+            HaltError(F("WARNING: ILLEGAL FUSE CONFIGURATION. ABORTING EXECUTION."));
+            
+            // Just for safety so a broken HaltError doesn't
+            // lead to bricked chips!
+            while (true) {}; 
         }
 
         execCommand(programEnable, writeHighFuseByte, 0x00, fuse);
@@ -237,10 +250,7 @@ namespace programmer
     {
         // Check if signature has been read.
         if (this->signature == nullptr)
-        {
-            Serial.println(F("Attempting to flash page without signature!"));
-            while (true) {};
-        }
+            HaltError(F("Attempting to flash page without signature!"));
         
         for (unsigned long addr = 0; addr < this->signature->pageSize / 2; addr++)
         {
@@ -266,10 +276,7 @@ namespace programmer
     void BBProgrammer::erase()
     {
         if (!this->isProgramming)
-        {
-            Serial.print(F("Error: Not in programming mode."));
-            return;
-        }
+            HaltError(F("Error: Not in programming mode."));
 
         execCommand(programEnable, chipErase);
         this->pollUntilReady();
