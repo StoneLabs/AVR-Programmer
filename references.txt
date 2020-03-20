@@ -1,0 +1,28 @@
+###
+### In service programming references
+###
+
+Datasheet on ATMega ISP Programming
+http://ww1.microchip.com/downloads/en/appnotes/atmel-0943-in-system-programming_applicationnote_avr910.pdf
+
+Blog post on ISP Programing
+https://www.element14.com/community/docs/DOC-71526/l/atmega328p-isp-programming-commands-in-spi-mode
+
+AVR Instruction Set
+http://ww1.microchip.com/downloads/en/devicedoc/atmel-0856-avr-instruction-set-manual.pdf
+
+ATMega328 Datasheet
+http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf
+
+ATMega328 Fuse quick reference
+http://www.martyncurrey.com/arduino-atmega-328p-fuse-settings/
+
+ATMega328 clock output on OCR1A/OCR1B:
+https://arduino.stackexchange.com/questions/16698/arduino-constant-clock-output
+
+###
+### LCD 
+###
+
+GUISlicer
+https://github.com/ImpulseAdventure/GUIslice
