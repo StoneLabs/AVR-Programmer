@@ -2,7 +2,6 @@
 #define STR(s) #s
 
 #define __PVERSION__ "pre-0.01"
-#define DEBUG false
 
 // Line format :
 // 
@@ -30,6 +29,11 @@
 #define HEX_LINE_LENGTH 76
 #define HEX_MAX_DATALEN 32
 
+// Include debug before all others so that
+// the DEBUG definition will be used in subsqeuent
+// includes. Debug level can be changed in debug.h
+#include "src/debug.h"
+
 // External Dependencies
 #include <SPI.h>
 #include <SdFat.h>
@@ -43,48 +47,48 @@
 
 void printFuses(const programmer::BBProgrammer::Fuse& fuse)
 {
-    Serial.print(F("Low fuse: "));
-    Serial.print(fuse.low, HEX);
-    Serial.print(F(" = "));
-    Serial.println(fuse.low, BIN);
+    Debug(DEBUG_INFO, F("Low fuse: "));
+    Debug(DEBUG_INFO, fuse.low, HEX);
+    Debug(DEBUG_INFO, F(" = "));
+    Debugln(DEBUG_INFO, fuse.low, BIN);
 
-    Serial.print(F("High fuse: "));
-    Serial.print(fuse.high, HEX);
-    Serial.print(F(" = "));
-    Serial.println(fuse.high, BIN);
+    Debug(DEBUG_INFO, F("High fuse: "));
+    Debug(DEBUG_INFO, fuse.high, HEX);
+    Debug(DEBUG_INFO, F(" = "));
+    Debugln(DEBUG_INFO, fuse.high, BIN);
 
-    Serial.print(F("Extended fuse: "));
-    Serial.print(fuse.extended, HEX);
-    Serial.print(F(" = "));
-    Serial.println(fuse.extended, BIN);
+    Debug(DEBUG_INFO, F("Extended fuse: "));
+    Debug(DEBUG_INFO, fuse.extended, HEX);
+    Debug(DEBUG_INFO, F(" = "));
+    Debugln(DEBUG_INFO, fuse.extended, BIN);
 
-    Serial.print(F("Lock Byte: "));
-    Serial.print(fuse.lock, HEX);
-    Serial.print(F(" = "));
-    Serial.println(fuse.lock, BIN);
+    Debug(DEBUG_INFO, F("Lock Byte: "));
+    Debug(DEBUG_INFO, fuse.lock, HEX);
+    Debug(DEBUG_INFO, F(" = "));
+    Debugln(DEBUG_INFO, fuse.lock, BIN);
 
-    Serial.print(F("Calibration byte: "));
-    Serial.print(fuse.calibration, HEX);
-    Serial.print(F(" = "));
-    Serial.println(fuse.calibration, BIN);
+    Debug(DEBUG_INFO, F("Calibration byte: "));
+    Debug(DEBUG_INFO, fuse.calibration, HEX);
+    Debug(DEBUG_INFO, F(" = "));
+    Debugln(DEBUG_INFO, fuse.calibration, BIN);
 }
 
 void printSignature(const Signature* signature)
 {
-    Serial.print(F("Processor = "));
-    Serial.println(signature->desc);
+    Debug(DEBUG_INFO, F("Processor = "));
+    Debugln(DEBUG_INFO, signature->desc);
 
-    Serial.print(F("Flash memory size = "));
-    Serial.print(signature->flashSize, DEC);
-    Serial.println(F(" bytes."));
+    Debug(DEBUG_INFO, F("Flash memory size = "));
+    Debug(DEBUG_INFO, signature->flashSize, DEC);
+    Debugln(DEBUG_INFO, F(" bytes."));
 
-    Serial.print(F("Flash page size = "));
-    Serial.print(signature->pageSize, DEC);
-    Serial.println(F(" bytes."));
+    Debug(DEBUG_INFO, F("Flash page size = "));
+    Debug(DEBUG_INFO, signature->pageSize, DEC);
+    Debugln(DEBUG_INFO, F(" bytes."));
 
-    Serial.print(F("Bootloader section size = "));
-    Serial.print(signature->baseBootSize, DEC);
-    Serial.println(F(" (*1/2/4/8) bytes."));
+    Debug(DEBUG_INFO, F("Bootloader section size = "));
+    Debug(DEBUG_INFO, signature->baseBootSize, DEC);
+    Debugln(DEBUG_INFO, F(" (*1/2/4/8) bytes."));
 }
 
 byte hexton(byte h)
@@ -95,8 +99,7 @@ byte hexton(byte h)
     if (h >= 'A' && h <= 'F')
         return((h - 'A') + 10);
 
-    Serial.println(F("Invalid HEX."));
-    while (true) {};
+    HaltError(F("Invalid HEX number."));
 }
 byte twos_complement(byte val)
 {
@@ -142,15 +145,11 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
         else if (charBuffer == 0x0A) // Newline byte in ASCII
         {
             // lineBuffer contains a single line without newline at the end
-#if DEBUG            
-            Serial.println(lineBuffer);
-#endif
+            Debugln(DEBUG_VERBOSE, lineBuffer);
 
+            // Check for colon at line begining
             if (lineBuffer[0] != ':')
-            {
-                Serial.println(F("Invalid hex file (1)"));
-                while (true) {};
-            }
+                HaltError(F("Invalid hex file (1)"));
             
             // Read line `metadata`
             l_bytecount = hexton(lineBuffer[1]) << 4 | hexton(lineBuffer[2]);
@@ -161,27 +160,18 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
             l_recordtype = hexton(lineBuffer[7]) << 4 | hexton(lineBuffer[8]);
 
             if (l_bytecount > HEX_MAX_DATALEN)
-            {
-                Serial.println(F("HEX Data too long to process"));
-                while (true) {};
-            }
+                HaltError(F("HEX Data too long to process"));
+
             l_checksum = hexton(lineBuffer[9 + l_bytecount *2]) << 4 | hexton(lineBuffer[10 + l_bytecount * 2]);
 
             if (l_bytecount > HEX_MAX_DATALEN)
-            {
-                Serial.println(F("HEX Data too long to process"));
-                while (true) {};
-            }
-            if (l_recordtype < 0 || l_recordtype > 3)
-            {
-                Serial.println(F("Unsupported HEX entry."));
-                while (true) {};
-            }
+                HaltError(F("HEX Data too long to process"));
 
-#if DEBUG
+            if (l_recordtype < 0 || l_recordtype > 3)
+                HaltError(F("Unsupported HEX entry."));
+
             if (l_recordtype == 3)
-                Serial.println(F("Warning: HEX contains 'Start Segment Address'. Entry will be ignored."));
-#endif
+                Debugln(DEBUG_VERBOSE, F("HEX contains 'Start Segment Address'. Entry will be ignored."));
 
             // Checksum check
             byte calcCheckSum = 0x00;
@@ -190,10 +180,7 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
                 hexton(lineBuffer[i + 1]);
 
             if (twos_complement(calcCheckSum) != l_checksum)
-            {
-                Serial.println(F("Line checksum mismatch!"));
-                while (true) {};
-            }
+                HaltError(F("Line checksum mismatch!"));
 
             // 'Extended Segment Address' entry
             // Data field (16 bits) is multiplied by 16 and added to each
@@ -209,11 +196,9 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
 
                 l_address_offset *= 0x10; // Multiply by 16
 
-#if DEBUG
-                Serial.print(F("Read Extended Segment Address record: "));
-                Serial.print(l_address_offset, HEX);
-                Serial.println(F(" set as offset!"));
-#endif
+                Debug(DEBUG_VERBOSE, F("Read Extended Segment Address record: "));
+                Debug(DEBUG_VERBOSE, l_address_offset, HEX);
+                Debugln(DEBUG_VERBOSE, F(" set as offset!"));
             }
             // Apply offset from previous 'Extended Segment Addresses'
             l_address += l_address_offset;
@@ -223,10 +208,7 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
             {
                 // Check for valid Data record address range (i.e. is it in flash bounds?)
                 if (l_address + l_bytecount > flashsize)
-                {
-                    Serial.println(F("HEX not in flash bounds!"));
-                    while (true) {};
-                }
+                    HaltError(F("HEX not in flash bounds!"));
 
                 // Page adding
                 for (byte i = 9; i < 9 + l_bytecount * 2; i += 2) // From first to last databyte
@@ -236,12 +218,11 @@ unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const u
                     {
                         pagebuffer[l_address - pageaddr] =
                             hexton(lineBuffer[i + 0]) << 4 | hexton(lineBuffer[i + 1]);
-#if DEBUG
-                        Serial.print(F("Writing to paging buffer: "));
-                        Serial.print(hexton(lineBuffer[i + 0]) << 4 | hexton(lineBuffer[i + 1]), HEX);
-                        Serial.print(F(" at "));
-                        Serial.println(l_address - pageaddr, HEX);
-#endif
+
+                        Debug(DEBUG_VERBOSE, F("Writing to paging buffer: "));
+                        Debug(DEBUG_VERBOSE, hexton(lineBuffer[i + 0]) << 4 | hexton(lineBuffer[i + 1]), HEX);
+                        Debug(DEBUG_VERBOSE, F(" at "));
+                        Debugln(DEBUG_VERBOSE, l_address - pageaddr, HEX);
                     }
                     if (l_address >= pageaddr + pagesize && l_address < smallestAfter)
                     {
@@ -272,41 +253,46 @@ void setup()
     Serial.begin(115200);
     while (!Serial) {}
 
-    Serial.println(F("\n\nStone Labs. Smart ISP"));
-    Serial.println("Verion " XSTR(__PVERSION__) " compiled at " __DATE__ " " __TIME__ " using Arduino IDE version " XSTR(ARDUINO));
+    Debugln(DEBUG_INFO, F("\n\nStone Labs. Smart ISP"));
+    Debugln(DEBUG_INFO, F("Verion " XSTR(__PVERSION__) " compiled at " __DATE__ " " __TIME__ " using Arduino IDE version " XSTR(ARDUINO)  " Debug level " XSTR(DEBUG)));
     
-
     //
     // SD CARD
     //
 
-    Serial.print(F("-> Initializing SD card..."));
+    Debug(DEBUG_INFO, F("\n-> Initializing SD card..."));
     SdFat sd;
     if (!sd.begin(3, SPI_HALF_SPEED)) 
         sd.initErrorHalt();
 
-    Serial.println(F(" [OK]"));
+    Debugln(DEBUG_INFO, F(" [OK]"));
 
     SdFile file;
-    // open next file in root.  The volume working directory, vwd, is root
+    
+    // List all files in root directory.
+    // The volume working directory, vwd, is root.
+#if DEBUG >= DEBUG_INFO
     while (file.openNext(sd.vwd(), O_READ)) 
     {
-        Serial.print(F("|-- "));
+        Debug(DEBUG_INFO, F("|-- "));
         file.printName(&Serial);
-        Serial.print(F(" "));
+        Debug(DEBUG_INFO, F(" "));
         file.printModifyDateTime(&Serial);
-        Serial.println(F(""));
+        Debugln(DEBUG_INFO, F(""));
         file.close();
     }
+#endif
 
 
     //
     // PROGRAMMER
     //
-    Serial.println(F("\nEnter 'G' to start."));
+    Debugln(DEBUG_INFO, F("\nEnter 'G' to start."));
+#if DEBUG >= DEBUG_INFO
     while (Serial.read() != 'G');
+#endif
 
-    Serial.println(F("\n-> Starting 8 Mhz Clock on Pin 9."));
+    Debugln(DEBUG_INFO, F("\n-> Starting 8 Mhz Clock on Pin 9."));
 
     // set up 8 MHz timer on PIN 10 (OC1B)
     // https://arduino.stackexchange.com/questions/16698/arduino-constant-clock-output
@@ -318,38 +304,35 @@ void setup()
 
     using namespace programmer;
 
-    Serial.println(F("\n-> Entering Programming mode."));
+    Debugln(DEBUG_INFO, F("\n-> Entering Programming mode."));
     BBProgrammer programmer = BBProgrammer(P_SCK, P_MOSI, P_MISO, P_RESET);
     if (!programmer.startProgramming(5))
-        return;
+        HaltError(F("Couldn't enter Programming mode!"));
 
 
     delay(1000);
-    Serial.println(F("\n-> Reading Signature."));
+    Debugln(DEBUG_INFO, F("\n-> Reading Signature."));
     if (!programmer.readSignature())
-    {
-        Serial.println(F("Chip locked! Issue erase. [ABORT]"));
-        return;
-    }
+        HaltError(F("Chip locked! Issue erase. [ABORT]"));
     const Signature* signature = programmer.getSignature();
     printSignature(signature);
 
     delay(1000);
-    Serial.print(F("\n-> Erasing CHIP."));
+    Debug(DEBUG_INFO, F("\n-> Erasing CHIP."));
     programmer.erase();
-    Serial.println(F(" [OK]"));
+    Debugln(DEBUG_INFO, F(" [OK]"));
 
     delay(1000);
-    Serial.print(F("\n-> Reading Fuses."));
+    Debug(DEBUG_INFO, F("\n-> Reading Fuses."));
     programmer.readFuses();
-    Serial.println(F(" [OK]"));
+    Debugln(DEBUG_INFO, F(" [OK]"));
     const BBProgrammer::Fuse& fuse = programmer.getFuses();
     printFuses(fuse);
 
-    Serial.println(F("\n-> Flashing HEX source /Blink_bl.hex."));
+    Debugln(DEBUG_INFO, F("\n-> Flashing HEX source /Blink_bl_wierd.hex."));
     if (!file.open("Blink_bl_wierd.hex "), O_READ)
     {
-        Serial.println(F("Error: Couldn't open source file."));
+        Debugln(DEBUG_INFO, F("Error: Couldn't open source file."));
         return;
     }
     
@@ -364,13 +347,11 @@ void setup()
     // it will be save in lowestBootLoader.
     unsigned long lowestBootLoader = signature->flashSize;
     while (pageaddr < signature->flashSize) {
-//#if DEBUG
-        Serial.print(F("Processing page 0x"));
-        Serial.print(pageaddr, HEX);
-        Serial.print(F(" - 0x"));
-        Serial.print(pageaddr + signature->pageSize - 1, HEX);
-        Serial.print(F("..."));
-//#endif
+        Debug(DEBUG_DEBUG, F("Processing page 0x"));
+        Debug(DEBUG_DEBUG, pageaddr, HEX);
+        Debug(DEBUG_DEBUG, F(" - 0x"));
+        Debug(DEBUG_DEBUG, pageaddr + signature->pageSize - 1, HEX);
+        Debug(DEBUG_DEBUG, F("..."));
 
         // Skip if next smallest address is not inside this page.
         if (nextSmallest <= pageaddr + signature->pageSize - 1)
@@ -384,17 +365,13 @@ void setup()
 
             if (!blankpage)
             {
-//#if DEBUG
-                Serial.print(F(" [OK: NS="));
-                Serial.print(nextSmallest, HEX);
-                Serial.print(F("] -> Flashing..."));
-//#endif
+                Debug(DEBUG_DEBUG, F(" [OK: NS="));
+                Debug(DEBUG_DEBUG, nextSmallest, HEX);
+                Debug(DEBUG_DEBUG, F("] -> Flashing..."));
                 
                 programmer.flashPage(pageaddr, page);
 
-//#if DEBUG
-                Serial.print(F(" [FLASHED]"));
-//#endif
+                Debug(DEBUG_DEBUG, F(" [FLASHED]"));
 
                 // Check bootloader positions *(1/2/4/8)
                 for (int i = 1; i <= 8; i *= 2)
@@ -409,31 +386,23 @@ void setup()
                     // Check if bootloader position caintains instruction
                     if (page[bootloaderPageAddress] != 0xFF)
                     {
-//#if DEBUG
-                        Serial.print(F(" Found bootloader at 0x"));
-                        Serial.print(signature->flashSize - signature->baseBootSize, HEX);
-//#endif
+                        Debug(DEBUG_DEBUG, F(" Found bootloader at 0x"));
+                        Debug(DEBUG_DEBUG, signature->flashSize - signature->baseBootSize, HEX);
                         if (bootloaderAddress < lowestBootLoader)
                             lowestBootLoader = bootloaderAddress;
                     }
                 }
-//#if DEBUG
-                Serial.println();
-//#endif
+                Debugln(DEBUG_DEBUG);
             }
-//#if DEBUG
             else
             {
-                Serial.print(F(" [EMPTY NS="));
-                Serial.print(nextSmallest, HEX);
-                Serial.println(F("]"));
+                Debug(DEBUG_DEBUG, F(" [EMPTY NS="));
+                Debug(DEBUG_DEBUG, nextSmallest, HEX);
+                Debugln(DEBUG_DEBUG, F("]"));
             }
-//#endif
         }
-//#if DEBUG
         else
-            Serial.println(F(" [SKIP]"));
-//#endif
+            Debugln(DEBUG_DEBUG, F(" [SKIP]"));
         pageaddr += signature->pageSize;
     }
 
@@ -441,27 +410,24 @@ void setup()
     delete[] page;
 
     // Flashing done. Show user feedback
-    Serial.println(F("Flashing complete."));
+    Debugln(DEBUG_INFO, F("Flashing complete."));
 
     // Change bootloader fuse
     if (signature->fuseWithBootloaderSize != highFuse)
-    {
-        Serial.println(F("Bootloader fuse setting for current chip not supported!"));
-        while (true) {};
-    }
+        HaltError(F("Bootloader fuse setting for current chip not supported!"));
 
     // Bootloader fuse:
     // http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf page 243 and 239
     byte newBootloaderFuse = 0x0;
     if (lowestBootLoader == signature->flashSize)
     {
-        Serial.println(F("No bootlaoder detected."));
+        Debugln(DEBUG_INFO, F("No bootlaoder detected."));
         newBootloaderFuse = (fuse.high & 0b11111000) | 0b001; // Application reset at 0x0000
     }
     else
     {
-        Serial.print(F("Bootloader detected at 0x"));
-        Serial.println(lowestBootLoader, HEX);
+        Debug(DEBUG_INFO, F("Bootloader detected at 0x"));
+        Debugln(DEBUG_INFO, lowestBootLoader, HEX);
 
         // bootloader fuse depending on bootloader location
         if (lowestBootLoader == (signature->flashSize - signature->baseBootSize))
@@ -473,29 +439,29 @@ void setup()
         else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 8))
             newBootloaderFuse = (fuse.high & 0b11111000) | 0b000;
     }
-    Serial.print(F("Changing high fuse: "));
-    Serial.print(fuse.high, BIN);
-    Serial.print(F(" -> "));
-    Serial.print(newBootloaderFuse, BIN);
-    Serial.print(F("..."));
+    Debug(DEBUG_INFO, F("Changing high fuse: "));
+    Debug(DEBUG_INFO, fuse.high, BIN);
+    Debug(DEBUG_INFO, F(" -> "));
+    Debug(DEBUG_INFO, newBootloaderFuse, BIN);
+    Debug(DEBUG_INFO, F("..."));
 
     // Write new fuse
     programmer.setHighFuse(newBootloaderFuse);
-    Serial.println(F(" [OK]"));
+    Debugln(DEBUG_INFO, F(" [OK]"));
 
     // Change low fuse for external clock
-    Serial.print(F("Changing low fuse: "));
-    Serial.print(fuse.low, BIN);
-    Serial.print(F(" -> "));
-    Serial.print(0xff, BIN);
-    Serial.print(F("..."));
+    Debug(DEBUG_INFO, F("Changing low fuse: "));
+    Debug(DEBUG_INFO, fuse.low, BIN);
+    Debug(DEBUG_INFO, F(" -> "));
+    Debug(DEBUG_INFO, 0xff, BIN);
+    Debug(DEBUG_INFO, F("..."));
 
     // Write new fuse
     programmer.setLowFuse(0xff);
-    Serial.println(F(" [OK]"));
+    Debugln(DEBUG_INFO, F(" [OK]"));
 
     delay(1000);
-    Serial.println(F("\n-> Leaving Programming mode."));
+    Debugln(DEBUG_INFO, F("\n-> Leaving Programming mode."));
     programmer.stopProgramming();
 }
 

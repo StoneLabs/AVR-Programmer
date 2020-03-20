@@ -7,6 +7,7 @@
 #endif
 
 #include "../softwarespi/SoftwareSPI.h"
+#include "../debug.h"
 #include "signatues.h"
 
 #define NUMITEMS(arg) ((unsigned int) (sizeof (arg) / sizeof (arg [0])))
