@@ -113,11 +113,19 @@
     <None Include="firmware-uim.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="page_main.h" />
+    <ClInclude Include="src\pages\emptyPage.h" />
+    <ClInclude Include="src\pages\delayPage.h" />
+    <ClInclude Include="src\pageManager.h" />
+    <ClInclude Include="src\page.h" />
+    <ClInclude Include="src\pages\mainPage.h" />
     <ClInclude Include="__vm\.firmware-uim.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="page_main.cpp" />
+    <ClCompile Include="src\pages\emptyPage.cpp" />
+    <ClCompile Include="src\pages\delayPage.cpp" />
+    <ClCompile Include="src\pageManager.cpp" />
+    <ClCompile Include="src\page.cpp" />
+    <ClCompile Include="src\pages\mainPage.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
