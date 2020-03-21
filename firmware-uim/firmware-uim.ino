@@ -1,9 +1,11 @@
-#include "page_main.h"
+#include "src/page.h"
+#include "src/pageManager.h"
+#include "src/pages/mainPage.h"
+#include "src/pages/delayPage.h"
 #include <SSD1306AsciiWire.h>
 
 SSD1306AsciiWire display;
-
-MainPage *mainpage = new MainPage();
+PageManager* ui;
 
 void setup() {
     Serial.begin(9600);
@@ -18,33 +20,34 @@ void setup() {
     pinMode(6, INPUT_PULLUP);
     pinMode(7, INPUT_PULLUP);
 
+    // Setup page manager with main menu as start page
+    ui = new PageManager(&display);
+    ui->changePage(new DelayPage(ui, 5000, new MainPage(ui)));
+
     // Pin change interrupt mask for D5,6,7
     PCMSK2 = bit(PCINT21) | bit(PCINT22) | bit(PCINT23);
     PCIFR |= bit(PCIF2);    // clear any outstanding interrupts on Interrupt block 2
     PCICR |= bit(PCIE2);    // enable pin change interrupts on Interrupt block 2 (D0-7)
-
-    mainpage->render(&display);
 }
 
 bool press5 = false, press6 = false, press7 = false;
 void loop()
 {
-    if (press5)
-    {
-        mainpage->left();
-        mainpage->render(&display);
-        press5 = false;
+    ui->updatePage();
+    if (press5) 
+    { 
+        ui->left();
+        press5 = false; 
     }
-    if (press6)
+    if (press6) 
     {
-        mainpage->right();
-        mainpage->render(&display);
-        press6 = false;
+        ui->right();
+        press6 = false; 
     }
-    if (press7)
+    if (press7) 
     {
-        mainpage->confirm();
-        press7 = false;
+        ui->confirm();
+        press7 = false; 
     }
 }
 
