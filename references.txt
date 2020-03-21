@@ -26,3 +26,6 @@ https://arduino.stackexchange.com/questions/16698/arduino-constant-clock-output
 
 GUISlicer
 https://github.com/ImpulseAdventure/GUIslice
+
+Interupt vectors
+https://arduino.stackexchange.com/questions/30968/how-do-interrupts-work-on-the-arduino-uno-and-similar-boards/30969#30969
