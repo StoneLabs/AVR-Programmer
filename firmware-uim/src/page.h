@@ -21,8 +21,8 @@ protected:
 	PageManager* pageManager;
 
 protected:
-	void write_entry_line(SSD1306Ascii* display, byte index, const char* text);
-
+	byte getTabIndex() const;
+	 
 public:
 	Page(PageManager* manager);
 	virtual ~Page();

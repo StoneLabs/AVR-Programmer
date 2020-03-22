@@ -15,5 +15,7 @@ class MainPage : public Page
 public:
 	MainPage(PageManager* manager);
 	void confirm() override;
+
+	void initRender(SSD1306Ascii* display) override;
 	void render(SSD1306Ascii *display) override;
 };
