@@ -23,6 +23,7 @@ void setup() {
 enum : byte
 {
     cmd_ping = 0x01,
+    cmd_readSignature = 0x10,
 };
 
 void loop() 
@@ -43,6 +44,13 @@ void loop()
         Serial.print(" (ping dl=2000)");
         delay(2000);
         answer.data[0] = cmd_ping;
+        break;
+      case cmd_readSignature:
+        Serial.print(" (read sig dl=4000)");
+        delay(4000);
+        answer.data[0] = 0x1E; //
+        answer.data[1] = 0x95; // ATmega328P
+        answer.data[2] = 0x0F; //
         break;
       default:
         Serial.print(" (unknown cmd)");
