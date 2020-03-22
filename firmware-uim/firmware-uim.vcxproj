@@ -114,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="I2CHelper.h" />
+    <ClInclude Include="src\pages\loadingPage.h" />
     <ClInclude Include="src\pages\emptyPage.h" />
     <ClInclude Include="src\pages\delayPage.h" />
     <ClInclude Include="src\pageManager.h" />
@@ -123,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="I2CHelper.cpp" />
+    <ClCompile Include="src\pages\loadingPage.cpp" />
     <ClCompile Include="src\pages\emptyPage.cpp" />
     <ClCompile Include="src\pages\delayPage.cpp" />
     <ClCompile Include="src\pageManager.cpp" />

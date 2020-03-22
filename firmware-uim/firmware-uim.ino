@@ -1,6 +1,8 @@
+
 #include "src/page.h"
 #include "src/pageManager.h"
 #include "src/pages/mainPage.h"
+#include "src/pages/loadingPage.h"
 #include "src/pages/delayPage.h"
 #include "I2CHelper.h"
 
@@ -42,7 +44,7 @@ void setup() {
 
     // Setup page manager with main menu as start page
     ui = new PageManager(&display);
-    ui->changePage(new DelayPage(ui, 5000, new MainPage(ui)));
+    ui->changePage(new DelayPage(ui, new MainPage(ui), 5000));
 
     // Pin change interrupt mask for D5,6,7
     PCMSK2 = bit(PCINT21) | bit(PCINT22) | bit(PCINT23);

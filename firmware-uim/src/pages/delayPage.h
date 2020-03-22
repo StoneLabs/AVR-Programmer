@@ -8,27 +8,16 @@
 
 #include <SSD1306Ascii.h>
 #include "../pageManager.h"
-#include "../page.h"
+#include "loadingPage.h"
 #include "mainPage.h"
 
-class DelayPage : public Page
+class DelayPage : public LoadingPage
 {
 private:
-	unsigned long initMillis = 0UL;
-	unsigned long lastRender = 0UL;
 	unsigned long delayMillis = 0UL;
-	Page* targetPage;
-
-	const char* message = "Loading... ";
-	byte symbol = 0;
-	byte symbolOffset = 0;
 
 public:
-	DelayPage(PageManager* manager, unsigned long timeout, Page* targetPage);
+	DelayPage(PageManager* manager, Page* targetPage, unsigned long timeout);
 
-	void update() override;
-	bool needsRender() override;
-
-	void initRender(SSD1306Ascii* display) override;
-	void render(SSD1306Ascii* display) override;
+	bool changePage() override;
 };
