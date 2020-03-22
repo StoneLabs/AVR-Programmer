@@ -2,6 +2,10 @@
 
 void programmer_request(byte command)
 {
+#if DEBUG
+    Serial.print(F("-> 0x"));
+    Serial.println(command, HEX);
+#endif
     // Send command to Programmer
     Wire.beginTransmission(PROGRAMMER_ADDRESS);
     Wire.write(command);
@@ -20,6 +24,19 @@ bool programmer_answer(Answer& value)
     for (unsigned int i = 0; i < sizeof value; i++)
         *(p++) = Wire.read();
 
+#if DEBUG
+    Serial.print(F("<- BUSY="));
+    Serial.print(value.busy, DEC);
+    Serial.print(F(" CMD=0x"));
+    Serial.print(value.cmd, HEX);
+    Serial.print(F(" DATA="));
+    for (int i = 0; i < PROGRAMMER_DATASIZE; i++)
+    {
+        Serial.print(" 0x");
+        Serial.print(value.data[i], HEX);
+    }
+    Serial.println();
+#endif
     // Return true if answer is ready => not busy
     return !value.busy;
 }

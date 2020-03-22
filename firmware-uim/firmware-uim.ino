@@ -1,9 +1,9 @@
-
 #include "src/page.h"
 #include "src/pageManager.h"
 #include "src/pages/mainPage.h"
 #include "src/pages/loadingPage.h"
 #include "src/pages/delayPage.h"
+#include "src/pages/initPage.h"
 #include "I2CHelper.h"
 
 #include <SSD1306AsciiWire.h>
@@ -19,37 +19,23 @@ void setup() {
     Serial.println(F("Welcome. STONE LABS(TM)"));
     display.begin(&Adafruit128x64, 0x3C);
     display.setFont(Adafruit5x7);
-
-    Answer answer;
-    programmer_requestanswer(cmd_ping, answer);
-
-    Serial.print("Busy: ");
-    Serial.println(answer.busy);
-    Serial.print("Command: ");
-    Serial.println(answer.cmd);
-    for (int i = 0; i < PROGRAMMER_DATASIZE; i++)
-    {
-        Serial.print(" 0x");
-        Serial.print(answer.data[i], HEX);
-    }
-    Serial.println(" EOT");
-
-    programmer_requestanswer(0x2, answer);
     
+    // Give programmer time to start and accept commands
+    delay(1000);
 
     // Setup input button
     pinMode(5, INPUT_PULLUP);
     pinMode(6, INPUT_PULLUP);
     pinMode(7, INPUT_PULLUP);
 
-    // Setup page manager with main menu as start page
-    ui = new PageManager(&display);
-    ui->changePage(new DelayPage(ui, new MainPage(ui), 5000));
-
     // Pin change interrupt mask for D5,6,7
     PCMSK2 = bit(PCINT21) | bit(PCINT22) | bit(PCINT23);
     PCIFR |= bit(PCIF2);    // clear any outstanding interrupts on Interrupt block 2
     PCICR |= bit(PCIE2);    // enable pin change interrupts on Interrupt block 2 (D0-7)
+
+    // Setup page manager with init page as start page
+    ui = new PageManager(&display);
+    ui->changePage(new InitPage(ui, new MainPage(ui)));
 }
 
 bool press5 = false, press6 = false, press7 = false;

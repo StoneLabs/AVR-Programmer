@@ -49,6 +49,9 @@ void PageManager::changePage(Page* page)
 	delete this->currentPage;
 	this->currentPage = page;
 
+	// Init page
+	this->currentPage->init();
+
 	// Render the target once
 	this->display->clear();
 	this->currentPage->initRender(this->display);

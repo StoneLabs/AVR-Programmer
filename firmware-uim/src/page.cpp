@@ -14,6 +14,10 @@ Page::~Page()
 {
 }
 
+void Page::init()
+{
+}
+
 void Page::left()
 {
     this->tabIndex--;
