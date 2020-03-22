@@ -10,12 +10,23 @@ void MainPage::confirm()
     //todo
 }
 
+void MainPage::initRender(SSD1306Ascii* display)
+{
+    display->println("STONE LABS (TM) ISP.");
+    display->println("  Read signature.");
+    display->println("  Erase chip.");
+    display->println("  Write HEX file.");
+    display->println("  Set fuses.");
+}
+
 void MainPage::render(SSD1306Ascii *display)
 {
-	display->clear();
-    display->println("STONE LABS (TM) ISP.");
-    this->write_entry_line(display, 0, "Read signature.");
-    this->write_entry_line(display, 1, "Erase chip.");
-    this->write_entry_line(display, 2, "Write HEX file.");
-    this->write_entry_line(display, 3, "Set fuses.");
+    for (int i = 0; i < 4; i++)
+    {
+        display->setCursor(0, i + 1);
+        if (this->getTabIndex() == i)
+            display->print('>');
+        else
+            display->print(' ');
+    }
 }

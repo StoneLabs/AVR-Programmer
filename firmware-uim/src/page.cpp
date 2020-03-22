@@ -1,5 +1,9 @@
 #include "page.h"
 
+byte Page::getTabIndex() const
+{
+    return this->tabIndex;
+}
 
 Page::Page(PageManager* manager)
 {
@@ -37,14 +41,4 @@ bool Page::needsRender()
 
 void Page::initRender(SSD1306Ascii* display)
 {
-}
-
-void Page::write_entry_line(SSD1306Ascii* display, byte index, const char* text)
-{
-    if (this->tabIndex == index)
-        display->print("> ");
-    else
-        display->print("  ");
-
-    display->println(text);
 }
