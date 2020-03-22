@@ -27,6 +27,7 @@ public:
 	Page(PageManager* manager);
 	virtual ~Page();
 
+	virtual void init(); // Called when page gets active page
 	virtual void left();
 	virtual void right();
 	virtual void update();

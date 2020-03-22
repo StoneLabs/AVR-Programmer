@@ -10,6 +10,7 @@
 
 #define PROGRAMMER_ADDRESS 0x08
 #define PROGRAMMER_DATASIZE 30
+#define DEBUG true
 
 typedef struct {
     bool busy;

@@ -5,19 +5,20 @@
 
 struct i2canswer
 {
-  bool busy = false;
+  bool busy = true;
   byte cmd;
   byte data[30];
 };
+i2canswer answer;
 
 void setup() {
   Wire.begin(0x08);                // join i2c bus with address #8
   Wire.onRequest(requestEvent);
   Wire.onReceive(receiveEvent);
   Serial.begin(9600);           // start serial for output
+  Serial.println("Now accepting commands...");
+  answer.busy = false;
 }
-
-i2canswer answer;
 
 enum : byte
 {
@@ -39,7 +40,8 @@ void loop()
     switch (answer.cmd)
     {
       case cmd_ping:
-        Serial.print(" (ping)");
+        Serial.print(" (ping dl=2000)");
+        delay(2000);
         answer.data[0] = cmd_ping;
         break;
       default:
