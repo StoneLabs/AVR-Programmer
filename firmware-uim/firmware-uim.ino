@@ -2,18 +2,38 @@
 #include "src/pageManager.h"
 #include "src/pages/mainPage.h"
 #include "src/pages/delayPage.h"
+#include "I2CHelper.h"
+
 #include <SSD1306AsciiWire.h>
+#include <Wire.h>
 
 SSD1306AsciiWire display;
 PageManager* ui;
 
 void setup() {
     Serial.begin(9600);
-
+    
     // Connect screen
     Serial.println(F("Welcome. STONE LABS(TM)"));
     display.begin(&Adafruit128x64, 0x3C);
     display.setFont(Adafruit5x7);
+
+    Answer answer;
+    programmer_requestanswer(cmd_ping, answer);
+
+    Serial.print("Busy: ");
+    Serial.println(answer.busy);
+    Serial.print("Command: ");
+    Serial.println(answer.cmd);
+    for (int i = 0; i < PROGRAMMER_DATASIZE; i++)
+    {
+        Serial.print(" 0x");
+        Serial.print(answer.data[i], HEX);
+    }
+    Serial.println(" EOT");
+
+    programmer_requestanswer(0x2, answer);
+    
 
     // Setup input button
     pinMode(5, INPUT_PULLUP);

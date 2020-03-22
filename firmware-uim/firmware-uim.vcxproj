@@ -113,6 +113,7 @@
     <None Include="firmware-uim.ino" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="I2CHelper.h" />
     <ClInclude Include="src\pages\emptyPage.h" />
     <ClInclude Include="src\pages\delayPage.h" />
     <ClInclude Include="src\pageManager.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="__vm\.firmware-uim.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="I2CHelper.cpp" />
     <ClCompile Include="src\pages\emptyPage.cpp" />
     <ClCompile Include="src\pages\delayPage.cpp" />
     <ClCompile Include="src\pageManager.cpp" />
