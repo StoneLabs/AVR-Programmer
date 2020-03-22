@@ -39,6 +39,11 @@ void PageManager::updatePage()
 		this->render();
 }
 
+void PageManager::cancelPage()
+{
+	this->cancelInit = true;
+}
+
 void PageManager::render()
 {
 	this->currentPage->render(this->display);
@@ -50,10 +55,14 @@ void PageManager::changePage(Page* page)
 	this->currentPage = page;
 
 	// Init page
+	this->cancelInit = false;
 	this->currentPage->init();
 
-	// Render the target once
-	this->display->clear();
-	this->currentPage->initRender(this->display);
-	this->render();
+	if (!this->cancelInit)
+	{
+		// Render the target once
+		this->display->clear();
+		this->currentPage->initRender(this->display);
+		this->render();
+	}
 }

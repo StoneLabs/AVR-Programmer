@@ -9,6 +9,7 @@
 #include <SSD1306Ascii.h>
 #include "../page.h"
 #include "../pageManager.h"
+#include "signatureInitPage.h"
 
 class MainPage : public Page
 {

@@ -15,9 +15,10 @@ class DelayPage : public LoadingPage
 {
 private:
 	unsigned long delayMillis = 0UL;
+	Page* targetPage;
 
 public:
-	DelayPage(PageManager* manager, Page* targetPage, unsigned long timeout);
+	DelayPage(PageManager* manager, Page* targetPage, unsigned long timeout, char* message);
 
-	bool changePage() override;
+	void update() override;
 };

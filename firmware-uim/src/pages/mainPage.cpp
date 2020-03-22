@@ -7,7 +7,14 @@ MainPage::MainPage(PageManager* manager)
 
 void MainPage::confirm()
 {
-    //todo
+    switch (this->getTabIndex())
+    {
+    case 0:
+        this->pageManager->changePage(new SignatureInitPage(this->pageManager));
+        break;
+    default:
+        break;
+    }
 }
 
 void MainPage::initRender(SSD1306Ascii* display)

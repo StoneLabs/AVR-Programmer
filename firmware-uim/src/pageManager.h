@@ -15,6 +15,7 @@ class PageManager
 private:
 	Page* currentPage = nullptr;
 	SSD1306Ascii* display;
+	bool cancelInit = false;
 
 public:
 	PageManager(SSD1306Ascii* display);
@@ -24,6 +25,7 @@ public:
 	void right();
 	void confirm();
 	void updatePage();
+	void cancelPage();
 
 	void render();
 	void changePage(Page* page);
