@@ -12,15 +12,15 @@
 #include "loadingPage.h"
 #include "mainPage.h"
 
-class InitPage : public LoadingPage
+class MainInitPage : public LoadingPage
 {
 private:
 	unsigned long delayMillis = 0UL;
 	Answer answer;
 
 public:
-	InitPage(PageManager* manager, Page* targetPage);
+	MainInitPage(PageManager* manager);
 
 	void init() override;
-	bool changePage() override;
+	void update() override;
 };

@@ -1,12 +1,14 @@
 #include "delayPage.h"
 
-DelayPage::DelayPage(PageManager* manager, Page* targetPage, unsigned long time)
-	: LoadingPage (manager, targetPage)
+DelayPage::DelayPage(PageManager* manager, Page* targetPage, unsigned long time, char* message)
+	: LoadingPage (manager, message)
 {
+	this->targetPage = targetPage;
 	this->delayMillis = time;
 }
 
-bool DelayPage::changePage()
+void DelayPage::update()
 {
-	return millis() - this->getInitMillis() > this->delayMillis;
+	if (millis() - this->getInitMillis() > this->delayMillis)
+		this->pageManager->changePage(this->targetPage);
 }

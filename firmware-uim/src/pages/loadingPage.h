@@ -9,15 +9,13 @@
 #include <SSD1306Ascii.h>
 #include "../pageManager.h"
 #include "../page.h"
-#include "mainPage.h"
 
 class LoadingPage : public Page
 {
 private:
 	unsigned long initMillis = 0;
-	Page* targetPage;
 
-	const char* message = "Loading... ";
+	const char* message;
 	byte symbol = 0;
 	byte symbolOffset = 0;
 
@@ -25,11 +23,10 @@ protected:
 	unsigned long getInitMillis();
 
 public:
-	LoadingPage(PageManager* manager, Page* targetPage);
+	LoadingPage(PageManager* manager, const char* message);
 
-	void update() override;
+	void update() override = 0;
 	bool needsRender() override;
-	virtual bool changePage() = 0; // Implemented by subclass
 
 	void initRender(SSD1306Ascii* display) override;
 	void render(SSD1306Ascii* display) override;

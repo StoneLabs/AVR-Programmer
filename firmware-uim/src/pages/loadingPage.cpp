@@ -1,21 +1,15 @@
 #include "loadingPage.h"
 
-LoadingPage::LoadingPage(PageManager* manager, Page* targetPage)
+LoadingPage::LoadingPage(PageManager* manager, const char* message)
 	: Page(manager)
 {
 	this->initMillis = millis();
-	this->targetPage = targetPage;
+	this->message = message;
 }
 
 unsigned long LoadingPage::getInitMillis()
 {
 	return this->initMillis;
-}
-
-void LoadingPage::update()
-{
-	if (this->changePage())
-		this->pageManager->changePage(this->targetPage);
 }
 
 bool LoadingPage::needsRender()

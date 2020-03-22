@@ -21,6 +21,7 @@ typedef struct {
 enum : byte
 {
     cmd_ping = 0x01,
+    cmd_readSignature = 0x10,
 };
 
 void programmer_request(byte command);

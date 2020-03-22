@@ -14,5 +14,5 @@ class EmptyPage : public Page
 {
 public:
 	EmptyPage(PageManager* manager);
-	void render(SSD1306Ascii* display) override;
+	void initRender(SSD1306Ascii* display) override;
 };

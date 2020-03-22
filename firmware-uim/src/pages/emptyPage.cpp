@@ -5,6 +5,6 @@ EmptyPage::EmptyPage(PageManager* manager)
 {
 }
 
-void EmptyPage::render(SSD1306Ascii* display)
+void EmptyPage::initRender(SSD1306Ascii* display)
 {
 }

@@ -7,18 +7,19 @@
 #endif
 
 #include <SSD1306Ascii.h>
+#include "../../I2CHelper.h"
 #include "../pageManager.h"
 #include "loadingPage.h"
-#include "mainPage.h"
+#include "signaturePage.h"
 
-class DelayPage : public LoadingPage
+class SignatureInitPage : public LoadingPage
 {
 private:
-	unsigned long delayMillis = 0UL;
-	Page* targetPage;
+	Answer answer;
 
 public:
-	DelayPage(PageManager* manager, Page* targetPage, unsigned long timeout, char* message);
+	SignatureInitPage(PageManager* manager);
 
+	void init() override;
 	void update() override;
 };

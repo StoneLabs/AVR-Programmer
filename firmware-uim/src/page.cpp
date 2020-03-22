@@ -43,6 +43,6 @@ bool Page::needsRender()
     return false;
 }
 
-void Page::initRender(SSD1306Ascii* display)
+void Page::render(SSD1306Ascii* display)
 {
 }

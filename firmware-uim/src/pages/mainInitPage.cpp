@@ -1,26 +1,25 @@
-#include "initPage.h"
+#include "mainInitPage.h"
 
-InitPage::InitPage(PageManager* manager, Page* targetPage)
-	: LoadingPage(manager, targetPage)
+MainInitPage::MainInitPage(PageManager* manager)
+	: LoadingPage(manager, (char*)"Loading...")
 {
 }
 
-void InitPage::init()
+void MainInitPage::init()
 {
 	programmer_request(cmd_ping);
 }
 
-bool InitPage::changePage()
+void MainInitPage::update()
 {
 	if (programmer_answer(answer))
 	{
 		if (answer.cmd == cmd_ping && answer.data[0] == cmd_ping)
-			return true;
+			this->pageManager->changePage(new MainPage(this->pageManager));
 		else
 		{
 			Serial.println(F("CRITICAL: Invalid response to ping command."));
 			while (true) {};
 		}
 	}
-	return false;
 }
