@@ -28,16 +28,23 @@ enum
     calibrationFuse = 4,
 };
 
+#define SFN_LENGTH 13
 enum : byte
 {
-    // Meta operations
+    //// Meta operations
     cmd_ping = 0x01,
 
-    // Read operations
+    // Open next file return data looks as follows:
+    // data[0] = bool fileFound? // false means rewind is needed, last file
+    // data[1-28] = char[] SFN
+    // will cycle around if end is reached
+    cmd_openNextFile = 0x02,
+
+    //// Read operations
     cmd_readSignature = 0x10,
     cmd_readFuses = 0x11,
 
-    // Write operations
+    //// Write operations
     cmd_erase = 0x20,
 };
 

@@ -117,6 +117,8 @@
     <ClInclude Include="I2CHelper.h" />
     <ClInclude Include="src\displayUtils.h" />
     <ClInclude Include="src\pages\erasePage.h" />
+    <ClInclude Include="src\pages\flashSelectInitPage.h" />
+    <ClInclude Include="src\pages\flashSelectPage.h" />
     <ClInclude Include="src\pages\lockedDevicePage.h" />
     <ClInclude Include="src\pages\readFusesInitPage.h" />
     <ClInclude Include="src\pages\readFusesPage.h" />
@@ -130,6 +132,7 @@
     <ClInclude Include="src\page.h" />
     <ClInclude Include="src\pages\mainPage.h" />
     <ClInclude Include="src\signatures.h" />
+    <ClInclude Include="src\tabPage.h" />
     <ClInclude Include="__vm\.firmware-uim.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +140,8 @@
     <ClCompile Include="src\displayUtils.cpp" />
     <ClCompile Include="src\pages\eraseInitPage.cpp" />
     <ClCompile Include="src\pages\erasePage.cpp" />
+    <ClCompile Include="src\pages\flashSelectInitPage.cpp" />
+    <ClCompile Include="src\pages\flashSelectPage.cpp" />
     <ClCompile Include="src\pages\lockedDevicePage.cpp" />
     <ClCompile Include="src\pages\readFusesInitPage.cpp" />
     <ClCompile Include="src\pages\readFusesPage.cpp" />
@@ -149,6 +154,7 @@
     <ClCompile Include="src\pageManager.cpp" />
     <ClCompile Include="src\page.cpp" />
     <ClCompile Include="src\pages\mainPage.cpp" />
+    <ClCompile Include="src\tabPage.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

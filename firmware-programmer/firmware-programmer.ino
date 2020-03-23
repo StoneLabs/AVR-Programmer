@@ -20,18 +20,27 @@
 
 using namespace programmer;
 
+#define SFN_LENGTH 13
+
 enum : byte
 {
-    // Meta operations
+    //// Meta operations
     cmd_ping = 0x01,
 
-    // Read operations
+    // Open next file (will cycle around)
+    cmd_openNextFile = 0x02,
+
+    // Rewinds to first file in directory
+    cmd_rewindFile = 0x03,
+
+    //// Read operations
     cmd_readSignature = 0x10,
     cmd_readFuses = 0x11,
 
-    // Write operations
+    //// Write operations
     cmd_erase = 0x20,
 };
+
 
 typedef struct {
     bool busy;
@@ -89,6 +98,7 @@ void setup() {
         file.close();
     }
 #endif
+    sd.vwd()->rewind();
     
     Debugln(DEBUG_INFO, F("\n-> Initializing Programmer."));
     bbprogrammer = new BBProgrammer(P_SCK, P_MOSI, P_MISO, P_RESET);
@@ -150,6 +160,61 @@ void loop()
 
             Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
             bbprogrammer->stopProgramming();
+            break;
+        case cmd_openNextFile:
+            Debugln(DEBUG_INFO, F("-> Opening next file"));
+
+            { // Explicit block for case variable foundFile and file_sfn
+
+                bool foundFile = false;
+                while (file.openNext(sd.vwd(), O_READ))
+                {
+                    foundFile = true;
+
+                    Debugln(DEBUG_INFO, F("Opened file."));
+                    Debug(DEBUG_INFO, F("Name: "));
+#if DEBUG >= DEBUG_INFO
+                    file.printName(&Serial);
+#endif
+                    Debug(DEBUG_INFO, F(" SFN: "));
+#if DEBUG >= DEBUG_INFO
+                    file.printSFN(&Serial);
+#endif
+
+                    // Copy SFN in tmp buffer
+                    char file_sfn[SFN_LENGTH];
+                    file.getSFN(file_sfn); // 13. char is 0x00
+
+                    // Get length and compare last 4 bytes with .HEX or .hex
+                    byte file_sfn_length = strlen(file_sfn);
+                    if (file_sfn_length > 4 &&
+                        (strcmp(file_sfn + file_sfn_length - 4, ".hex") == 0 ||
+                            strcmp(file_sfn + file_sfn_length - 4, ".HEX") == 0))
+                    {
+                        // Files is .hex => copy tmp buffer to answer buffer
+                        Debugln(DEBUG_INFO, F(" [OK: .HEX]"));
+                        memcpy(answer.data, file_sfn, SFN_LENGTH);
+
+                        file.close();
+                        break;
+                    }
+                    else
+                    {
+                        // Files is not .hex => open next file via while
+                        Debugln(DEBUG_INFO, F(" [IGNORE]"));
+                        file.close();
+                        continue;
+                    }
+                }
+                if (!foundFile)
+                {
+                    // Not a single file was found
+                    //  Rewind working directory and return
+                    //  empty buffer.
+                    sd.vwd()->rewind();
+                    Debugln(DEBUG_INFO, F("No file found. Rewinding."));
+                }
+            }
             break;
         default:
             break;

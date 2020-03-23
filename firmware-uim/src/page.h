@@ -16,15 +16,8 @@ class PageManager;
 
 class Page
 {
-private:
-	byte tabIndex = 0x00;
-	const byte tabLength = 4; // 4 Entries
-
 protected:
 	PageManager* pageManager;
-
-protected:
-	byte getTabIndex() const;
 	 
 public:
 	Page(PageManager* manager);

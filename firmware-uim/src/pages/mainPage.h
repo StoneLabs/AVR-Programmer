@@ -7,13 +7,14 @@
 #endif
 
 #include <SSD1306Ascii.h>
-#include "../page.h"
+#include "../tabPage.h"
 #include "../pageManager.h"
 #include "signatureInitPage.h"
 #include "eraseInitPage.h"
 #include "readFusesInitPage.h"
+#include "flashSelectInitPage.h"
 
-class MainPage : public Page
+class MainPage : public TabPage
 {
 public:
 	MainPage(PageManager* manager);

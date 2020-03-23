@@ -1,7 +1,7 @@
 #include "mainPage.h"
 
 MainPage::MainPage(PageManager* manager)
-    : Page (manager)
+    : TabPage ( manager, 4 )
 {
 }
 
@@ -14,6 +14,9 @@ void MainPage::confirm()
         break;
     case 1:
         this->pageManager->changePage(new EraseInitPage(this->pageManager));
+        break;
+    case 2:
+        this->pageManager->changePage(new FlashSelectInitPage(this->pageManager));
         break;
     case 3:
         this->pageManager->changePage(new ReadFusesInitPage(this->pageManager));
