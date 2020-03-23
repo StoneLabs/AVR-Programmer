@@ -10,6 +10,7 @@
 
 #define PROGRAMMER_ADDRESS 0x08
 #define PROGRAMMER_DATASIZE 29
+#define ACTIVE_POLL_DELAY_MS 50
 #define DEBUG true
 
 typedef struct {

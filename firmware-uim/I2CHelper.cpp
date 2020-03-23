@@ -39,6 +39,11 @@ bool programmer_answer(Answer& value)
     Serial.print(value.error, HEX);
     Serial.println();
 #endif
+
+    // Dont spam the programmer with requests
+    if (value.busy)
+        delay(ACTIVE_POLL_DELAY_MS);
+
     // Return true if answer is ready => not busy
     return !value.busy;
 }
