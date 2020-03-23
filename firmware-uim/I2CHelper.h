@@ -15,7 +15,8 @@
 typedef struct {
     bool busy;
     byte cmd;
-    byte data[30];
+    byte data[29];
+    byte error;
 } Answer;
 
 enum : byte

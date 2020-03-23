@@ -6,10 +6,6 @@ namespace programmer
     {
         // Setup software SPI
         this->spi = new SoftwareSPI(p_sck, p_mosi, p_miso, p_reset);
-        this->spi->begin();
-
-        // Reset target chip!
-        this->spi->select();
     }
 
     BBProgrammer::~BBProgrammer()
@@ -17,17 +13,35 @@ namespace programmer
         if (this->isProgramming)
             stopProgramming();
         delete this->spi;
+        if (this->signature != nullptr)
+            delete this->signature;
     }
 
     // http://ww1.microchip.com/downloads/en/appnotes/atmel-0943-in-system-programming_applicationnote_avr910.pdf
     bool BBProgrammer::startProgramming(unsigned int tries)
     {
+        // Start SPI
+        this->spi->begin();
+
+        // Reset target chip!
+        this->spi->select();
+
         Debug(DEBUG_INFO, F("Attempting to enter programming mode ..."));
+
+        // Clear members from last programming
+        if (this->signature != nullptr)
+        {
+            Debug(DEBUG_DEBUG, F("Cleared programming members from last programming session."));
+            delete this->signature;
+            this->signature = nullptr;
+        }
+        this->fuses = Fuse();
+
 
         if (this->isProgramming)
         {
             Debug(DEBUG_INFO, F(" allready in programming mode."));
-            return false;
+            return true;
         }
         
         unsigned int timeout = 0;
@@ -81,6 +95,7 @@ namespace programmer
             Debug(DEBUG_ALL, F(" 0x")); Debugln(DEBUG_ALL, answer4, HEX);
 #endif
 
+            // Delay for next attempt
             delay(1000);
 
             // Target confirmes received programming enabable instructure.
@@ -91,14 +106,14 @@ namespace programmer
                 Debug(DEBUG_INFO, F("."));
                 if (++timeout >= tries)
                 {
-                    Debug(DEBUG_INFO, F(" [FAILED]"));
+                    Debugln(DEBUG_INFO, F(" [FAILED]"));
                     this->isProgramming = false;
                     return false;
                 }
             }
         } while (answer != programAcknowledge);
 
-        Debug(DEBUG_INFO, F(" [OK]"));
+        Debugln(DEBUG_INFO, F(" [OK]"));
         this->isProgramming = true;
         return true;
     }
@@ -148,6 +163,16 @@ namespace programmer
         return answer;
     }
 
+    void BBProgrammer::readSignatureBytes(byte& b1, byte& b2, byte& b3)
+    {
+        if (!this->isProgramming)
+            HaltError(F("Error: Not in programming mode."));
+
+        b1 = execCommand(readSignatureByte, 0, 0);
+        b2 = execCommand(readSignatureByte, 0, 1);
+        b3 = execCommand(readSignatureByte, 0, 2);
+    }
+
     bool BBProgrammer::readSignature()
     {
         if (!this->isProgramming)
@@ -166,7 +191,9 @@ namespace programmer
         }
         else
         {
-            delete this->signature;
+            if (this->signature != nullptr)
+                delete this->signature;
+
             Signature* currentSignature = new Signature();
             for (byte j = 0; j < NUMITEMS(signatures); j++)
             {
