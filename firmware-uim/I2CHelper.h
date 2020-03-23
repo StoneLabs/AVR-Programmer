@@ -20,8 +20,14 @@ typedef struct {
 
 enum : byte
 {
+    // Meta operations
     cmd_ping = 0x01,
+
+    // Read operations
     cmd_readSignature = 0x10,
+
+    // Write operations
+    cmd_erase = 0x20,
 };
 
 void programmer_request(byte command);

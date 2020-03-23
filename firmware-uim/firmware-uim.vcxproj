@@ -113,8 +113,10 @@
     <None Include="firmware-uim.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\displayUtils.h" />
+    <ClInclude Include="src\pages\eraseInitPage.h" />
     <ClInclude Include="I2CHelper.h" />
+    <ClInclude Include="src\displayUtils.h" />
+    <ClInclude Include="src\pages\erasePage.h" />
     <ClInclude Include="src\pages\lockedDevicePage.h" />
     <ClInclude Include="src\pages\signatureInitPage.h" />
     <ClInclude Include="src\pages\signaturePage.h" />
@@ -131,6 +133,8 @@
   <ItemGroup>
     <ClCompile Include="I2CHelper.cpp" />
     <ClCompile Include="src\displayUtils.cpp" />
+    <ClCompile Include="src\pages\eraseInitPage.cpp" />
+    <ClCompile Include="src\pages\erasePage.cpp" />
     <ClCompile Include="src\pages\lockedDevicePage.cpp" />
     <ClCompile Include="src\pages\signatureInitPage.cpp" />
     <ClCompile Include="src\pages\signaturePage.cpp" />

@@ -10,6 +10,7 @@
 #include "../page.h"
 #include "../pageManager.h"
 #include "signatureInitPage.h"
+#include "eraseInitPage.h"
 
 class MainPage : public Page
 {
