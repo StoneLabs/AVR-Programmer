@@ -19,7 +19,7 @@ void setup() {
     
     // Give programmer time to start and accept commands
     delay(1000);
-
+    
     // Setup input button
     pinMode(5, INPUT_PULLUP);
     pinMode(6, INPUT_PULLUP);

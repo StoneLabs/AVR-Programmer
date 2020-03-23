@@ -35,6 +35,8 @@ bool programmer_answer(Answer& value)
         Serial.print(" 0x");
         Serial.print(value.data[i], HEX);
     }
+    Serial.print(F(" ERR=0x"));
+    Serial.print(value.error, HEX);
     Serial.println();
 #endif
     // Return true if answer is ready => not busy
