@@ -27,6 +27,7 @@ enum : byte
 
     // Read operations
     cmd_readSignature = 0x10,
+    cmd_readFuses = 0x11,
 
     // Write operations
     cmd_erase = 0x20,
@@ -130,6 +131,26 @@ void loop()
             Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
             bbprogrammer->stopProgramming();
             break;
+        case cmd_readFuses:
+            // Read fuse bytes
+            Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
+            if (!bbprogrammer->startProgramming(5))
+                HaltError(F("Couldn't enter Programming mode!"));
+
+            Debug(DEBUG_INFO, F("\n-> Reading Fuses."));
+            bbprogrammer->readFuses();
+            printFuses(bbprogrammer->getFuses());
+
+            // Answer with fuse bytes
+            answer.data[lowFuse] = bbprogrammer->getFuses().low;
+            answer.data[highFuse] = bbprogrammer->getFuses().high;
+            answer.data[extFuse] = bbprogrammer->getFuses().extended;
+            answer.data[lockFuse] = bbprogrammer->getFuses().lock;
+            answer.data[calibrationFuse] = bbprogrammer->getFuses().calibration;
+
+            Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
+            bbprogrammer->stopProgramming();
+            break;
         default:
             break;
         }
@@ -171,23 +192,6 @@ void wwsetup()
 
 
     delay(1000);
-    Debugln(DEBUG_INFO, F("\n-> Reading Signature."));
-    if (!programmer.readSignature())
-        HaltError(F("Chip locked! Issue erase. [ABORT]"));
-    const Signature* signature = programmer.getSignature();
-    printSignature(signature);
-
-    delay(1000);
-    Debug(DEBUG_INFO, F("\n-> Erasing CHIP."));
-    programmer.erase();
-    Debugln(DEBUG_INFO, F(" [OK]"));
-
-    delay(1000);
-    Debug(DEBUG_INFO, F("\n-> Reading Fuses."));
-    programmer.readFuses();
-    Debugln(DEBUG_INFO, F(" [OK]"));
-    const BBProgrammer::Fuse& fuse = programmer.getFuses();
-    printFuses(fuse);
 
     Debugln(DEBUG_INFO, F("\n-> Flashing HEX source /Blink_bl_wierd.hex."));
     if (!file.open("Blink_bl_wierd.hex "), O_READ)

@@ -11,6 +11,7 @@
 #include "../pageManager.h"
 #include "signatureInitPage.h"
 #include "eraseInitPage.h"
+#include "readFusesInitPage.h"
 
 class MainPage : public Page
 {
