@@ -1,6 +1,6 @@
 #include "src/page.h"
 #include "src/pageManager.h"
-#include "src/pages/mainInitPage.h"
+#include "src/pages/bootPage.h"
 #include "I2CHelper.h"
 
 #include <SSD1306AsciiWire.h>
@@ -11,14 +11,12 @@ PageManager* ui;
 
 void setup() {
     Serial.begin(115200);
+    while (!Serial) {};
     
     // Connect screen
     Serial.println(F("Welcome. STONE LABS(TM)"));
     display.begin(&Adafruit128x64, 0x3C);
     display.setFont(Adafruit5x7);
-    
-    // Give programmer time to start and accept commands
-    delay(1000);
     
     // Setup input button
     pinMode(5, INPUT_PULLUP);
@@ -32,7 +30,7 @@ void setup() {
 
     // Setup page manager with init page as start page
     ui = new PageManager(&display);
-    ui->changePage(new MainInitPage(ui));
+    ui->changePage(new BootPage(ui));
 }
 
 bool press5 = false, press6 = false, press7 = false;
