@@ -12,6 +12,9 @@ void MainPage::confirm()
     case 0:
         this->pageManager->changePage(new SignatureInitPage(this->pageManager));
         break;
+    case 1:
+        this->pageManager->changePage(new EraseInitPage(this->pageManager));
+        break;
     default:
         break;
     }
