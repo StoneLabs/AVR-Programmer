@@ -15,7 +15,7 @@ SSD1306AsciiWire display;
 PageManager* ui;
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(115200);
     
     // Connect screen
     Serial.println(F("Welcome. STONE LABS(TM)"));

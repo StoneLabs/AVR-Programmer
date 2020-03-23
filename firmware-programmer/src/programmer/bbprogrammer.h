@@ -84,6 +84,7 @@ namespace programmer
         bool startProgramming(const unsigned int tries);
         void stopProgramming();
 
+        void readSignatureBytes(byte& b1, byte& b2, byte& b3);
         bool readSignature();
         const Signature* getSignature() const;
 

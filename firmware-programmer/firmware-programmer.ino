@@ -3,294 +3,61 @@
 
 #define __PVERSION__ "pre-0.01"
 
-// Line format :
-// 
-// : nnaaaatt(data)ss
-// 
-// Where :
-// : = a colon
-// 
-// (All of below in hex format)
-// 
-// nn = length of data part
-// aaaa = address(eg.where to write data)
-// tt = transaction type:
-//  00 = data
-//  01 = end of file
-//  02 = extended segment address (data * 0x10 is added to all subsequent data entries)
-//  03 = start segment address  (NOT SUPPORTED)
-//  04 = linear address         (NOT SUPPORTED)
-//  05 = start linear address   (NOT SUPPORTED)
-// (data) = variable length data (most common are 16 and 32 bytes)
-// ss = sumcheck
-// 
-//
-// Line length for max 32 data bytes (64 chars):
-#define HEX_LINE_LENGTH 76
-#define HEX_MAX_DATALEN 32
-
-// Include debug before all others so that
-// the DEBUG definition will be used in subsqeuent
-// includes. Debug level can be changed in debug.h
-#include "src/debug.h"
-
 // External Dependencies
 #include <SPI.h>
 #include <SdFat.h>
+#include <Wire.h>
 
+// Debug level can be changed in debug.h
+#include "src/debug.h"
 #include "src/programmer/bbprogrammer.h"
+#include "helper.h"
 
 #define P_SCK 7
 #define P_MISO 6
 #define P_MOSI 5
 #define P_RESET 4
 
-void printFuses(const programmer::BBProgrammer::Fuse& fuse)
+using namespace programmer;
+
+enum : byte
 {
-    Debug(DEBUG_INFO, F("Low fuse: "));
-    Debug(DEBUG_INFO, fuse.low, HEX);
-    Debug(DEBUG_INFO, F(" = "));
-    Debugln(DEBUG_INFO, fuse.low, BIN);
+    // Meta operations
+    cmd_ping = 0x01,
 
-    Debug(DEBUG_INFO, F("High fuse: "));
-    Debug(DEBUG_INFO, fuse.high, HEX);
-    Debug(DEBUG_INFO, F(" = "));
-    Debugln(DEBUG_INFO, fuse.high, BIN);
+    // Read operations
+    cmd_readSignature = 0x10,
 
-    Debug(DEBUG_INFO, F("Extended fuse: "));
-    Debug(DEBUG_INFO, fuse.extended, HEX);
-    Debug(DEBUG_INFO, F(" = "));
-    Debugln(DEBUG_INFO, fuse.extended, BIN);
+    // Write operations
+    cmd_erase = 0x20,
+};
 
-    Debug(DEBUG_INFO, F("Lock Byte: "));
-    Debug(DEBUG_INFO, fuse.lock, HEX);
-    Debug(DEBUG_INFO, F(" = "));
-    Debugln(DEBUG_INFO, fuse.lock, BIN);
+typedef struct {
+    bool busy;
+    byte cmd;
+    byte data[29];
+    byte error;
+} Answer;
 
-    Debug(DEBUG_INFO, F("Calibration byte: "));
-    Debug(DEBUG_INFO, fuse.calibration, HEX);
-    Debug(DEBUG_INFO, F(" = "));
-    Debugln(DEBUG_INFO, fuse.calibration, BIN);
-}
 
-void printSignature(const Signature* signature)
-{
-    Debug(DEBUG_INFO, F("Processor = "));
-    Debugln(DEBUG_INFO, signature->desc);
+// Global variables
+Answer answer;
+SdFat sd;
+SdFile file;
 
-    Debug(DEBUG_INFO, F("Flash memory size = "));
-    Debug(DEBUG_INFO, signature->flashSize, DEC);
-    Debugln(DEBUG_INFO, F(" bytes."));
+BBProgrammer* bbprogrammer = nullptr;
 
-    Debug(DEBUG_INFO, F("Flash page size = "));
-    Debug(DEBUG_INFO, signature->pageSize, DEC);
-    Debugln(DEBUG_INFO, F(" bytes."));
-
-    Debug(DEBUG_INFO, F("Bootloader section size = "));
-    Debug(DEBUG_INFO, signature->baseBootSize, DEC);
-    Debugln(DEBUG_INFO, F(" (*1/2/4/8) bytes."));
-}
-
-byte hexton(byte h)
-{
-    // Convert ascii HEX to number
-    if (h >= '0' && h <= '9')
-        return(h - '0');
-    if (h >= 'A' && h <= 'F')
-        return((h - 'A') + 10);
-
-    HaltError(F("Invalid HEX number."));
-}
-byte twos_complement(byte val)
-{
-    return -(unsigned int)val;
-}
-
-// Returns lowest address behind current page. (so min addr >= pageaddr + pagesize) 
-// More information on HEX file: https://en.wikipedia.org/wiki/Intel_HEX
-unsigned long readImagePage(SdFile *file, const unsigned long flashsize, const unsigned long pageaddr, const unsigned long pagesize, byte* pagebuffer)
-{
-    // Back to begining of file.
-    file->rewind();
-
-    // 'empty' the page by filling it with 0xFF's
-    for (unsigned long i = 0; i < pagesize; i++)
-        pagebuffer[i] = 0xFF;
-
-    // Allocate and initialize line buffer
-    char* lineBuffer = new char[HEX_LINE_LENGTH];
-    for (unsigned int i = 0; i < HEX_LINE_LENGTH; i++)
-        lineBuffer[i] = 0x00;
-
-    unsigned int index = 0; // Current write index in `lineBuffer`
-    char charBuffer;
-
-    // Metadata of lines
-    byte l_bytecount = 0x0;
-    unsigned long l_address_offset = 0x0;
-    unsigned long l_address = 0x0;
-    byte l_recordtype = 0x0;
-    byte l_checksum = 0x0;
-
-    // Return variable:
-    // Smallest address after current frame
-    unsigned long smallestAfter = 0UL - 1UL; // Largest unsigned long
-
-    // Read file 
-    while (file->available()) {
-        charBuffer = file->read();
-
-        if (charBuffer == 0x13) // Carriage return in ASCII
-            continue; //ignore CR
-        else if (charBuffer == 0x0A) // Newline byte in ASCII
-        {
-            // lineBuffer contains a single line without newline at the end
-            Debugln(DEBUG_VERBOSE, lineBuffer);
-
-            // Check for colon at line begining
-            if (lineBuffer[0] != ':')
-                HaltError(F("Invalid hex file (1)"));
-            
-            // Read line `metadata`
-            l_bytecount = hexton(lineBuffer[1]) << 4 | hexton(lineBuffer[2]);
-            l_address = hexton(lineBuffer[3]) << 12;
-            l_address = l_address | hexton(lineBuffer[4]) << 8;
-            l_address = l_address | hexton(lineBuffer[5]) << 4;
-            l_address = l_address | hexton(lineBuffer[6]) << 0;
-            l_recordtype = hexton(lineBuffer[7]) << 4 | hexton(lineBuffer[8]);
-
-            if (l_bytecount > HEX_MAX_DATALEN)
-                HaltError(F("HEX Data too long to process"));
-
-            l_checksum = hexton(lineBuffer[9 + l_bytecount *2]) << 4 | hexton(lineBuffer[10 + l_bytecount * 2]);
-
-            if (l_bytecount > HEX_MAX_DATALEN)
-                HaltError(F("HEX Data too long to process"));
-
-            if (l_recordtype < 0 || l_recordtype > 3)
-                HaltError(F("Unsupported HEX entry."));
-
-            if (l_recordtype == 3)
-                Debugln(DEBUG_VERBOSE, F("HEX contains 'Start Segment Address'. Entry will be ignored."));
-
-            // Checksum check
-            byte calcCheckSum = 0x00;
-            for (byte i = 1; i < 9 + l_bytecount * 2; i += 2) // From 1 to last databyte
-                calcCheckSum += hexton(lineBuffer[i + 0]) << 4 |
-                hexton(lineBuffer[i + 1]);
-
-            if (twos_complement(calcCheckSum) != l_checksum)
-                HaltError(F("Line checksum mismatch!"));
-
-            // 'Extended Segment Address' entry
-            // Data field (16 bits) is multiplied by 16 and added to each
-            // subsequent data entry address
-            if (l_recordtype == 0x02)
-            {
-                // Get 16 bit data field
-                l_address_offset = 0x00;
-                l_address_offset = l_address_offset | hexton(lineBuffer[9]) << 12;
-                l_address_offset = l_address_offset | hexton(lineBuffer[10]) << 8;
-                l_address_offset = l_address_offset | hexton(lineBuffer[11]) << 4;
-                l_address_offset = l_address_offset | hexton(lineBuffer[12]) << 0;
-
-                l_address_offset *= 0x10; // Multiply by 16
-
-                Debug(DEBUG_VERBOSE, F("Read Extended Segment Address record: "));
-                Debug(DEBUG_VERBOSE, l_address_offset, HEX);
-                Debugln(DEBUG_VERBOSE, F(" set as offset!"));
-            }
-            // Apply offset from previous 'Extended Segment Addresses'
-            l_address += l_address_offset;
-
-            // Data Type
-            if (l_recordtype == 0x00)
-            {
-                // Check for valid Data record address range (i.e. is it in flash bounds?)
-                if (l_address + l_bytecount > flashsize)
-                    HaltError(F("HEX not in flash bounds!"));
-
-                // Page adding
-                for (byte i = 9; i < 9 + l_bytecount * 2; i += 2) // From first to last databyte
-                {
-                    // Write to page buffer if address is in current `page area`
-                    if (l_address >= pageaddr && l_address - pageaddr < pagesize)
-                    {
-                        pagebuffer[l_address - pageaddr] =
-                            hexton(lineBuffer[i + 0]) << 4 | hexton(lineBuffer[i + 1]);
-
-                        Debug(DEBUG_VERBOSE, F("Writing to paging buffer: "));
-                        Debug(DEBUG_VERBOSE, hexton(lineBuffer[i + 0]) << 4 | hexton(lineBuffer[i + 1]), HEX);
-                        Debug(DEBUG_VERBOSE, F(" at "));
-                        Debugln(DEBUG_VERBOSE, l_address - pageaddr, HEX);
-                    }
-                    if (l_address >= pageaddr + pagesize && l_address < smallestAfter)
-                    {
-                        smallestAfter = l_address;
-                    }
-                    l_address++;
-                }
-            }
-
-            // Clear all writen bytes and return to first.
-            // index will be -1 after this but increased below
-            do { lineBuffer[index] = 0x00; } while (index-- > 0);
-        }
-        else
-            lineBuffer[index] = charBuffer; // Write character to lineBuffer
-
-        index++;
-    }
-
-    // Clean up
-    delete[] lineBuffer;
-
-    return smallestAfter;
-}
-
-void setup()
-{
+void setup() {
     Serial.begin(115200);
     while (!Serial) {}
 
     Debugln(DEBUG_INFO, F("\n\nStone Labs. Smart ISP"));
     Debugln(DEBUG_INFO, F("Verion " XSTR(__PVERSION__) " compiled at " __DATE__ " " __TIME__ " using Arduino IDE version " XSTR(ARDUINO)  " Debug level " XSTR(DEBUG)));
-    
-    //
-    // SD CARD
-    //
 
-    Debug(DEBUG_INFO, F("\n-> Initializing SD card..."));
-    SdFat sd;
-    if (!sd.begin(3, SPI_HALF_SPEED)) 
-        sd.initErrorHalt();
-
-    Debugln(DEBUG_INFO, F(" [OK]"));
-
-    SdFile file;
-    
-    // List all files in root directory.
-    // The volume working directory, vwd, is root.
-#if DEBUG >= DEBUG_INFO
-    while (file.openNext(sd.vwd(), O_READ)) 
-    {
-        Debug(DEBUG_INFO, F("|-- "));
-        file.printName(&Serial);
-        Debug(DEBUG_INFO, F(" "));
-        file.printModifyDateTime(&Serial);
-        Debugln(DEBUG_INFO, F(""));
-        file.close();
-    }
-#endif
-
-
-    //
-    // PROGRAMMER
-    //
-    Debugln(DEBUG_INFO, F("\nEnter 'G' to start."));
-#if DEBUG >= DEBUG_INFO
-    while (Serial.read() != 'G');
-#endif
+    Debugln(DEBUG_INFO, F("\n-> Starting I2C slave mode."));
+    Wire.begin(0x08);                // join i2c bus with address #8
+    Wire.onRequest(requestEvent);
+    Wire.onReceive(receiveEvent);
 
     Debugln(DEBUG_INFO, F("\n-> Starting 8 Mhz Clock on Pin 9."));
 
@@ -302,12 +69,105 @@ void setup()
     TCCR1B = bit(WGM12) | bit(CS10);   // CTC, no prescaling
     OCR1B = 0;       // output every cycle
 
+    Debug(DEBUG_INFO, F("\n-> Initializing SD card..."));
+    if (!sd.begin(3, SPI_HALF_SPEED))
+        sd.initErrorHalt();
+
+    Debugln(DEBUG_INFO, F(" [OK]"));
+
+    // List all files in root directory.
+    // The volume working directory, vwd, is root.
+#if DEBUG >= DEBUG_INFO
+    while (file.openNext(sd.vwd(), O_READ))
+    {
+        Debug(DEBUG_INFO, F("|-- "));
+        file.printName(&Serial);
+        Debug(DEBUG_INFO, F(" "));
+        file.printModifyDateTime(&Serial);
+        Debugln(DEBUG_INFO, F(""));
+        file.close();
+    }
+#endif
+    
+    Debugln(DEBUG_INFO, F("\n-> Initializing Programmer."));
+    bbprogrammer = new BBProgrammer(P_SCK, P_MOSI, P_MISO, P_RESET);
+
+    Debugln(DEBUG_INFO, F("\n-> Now accepting commands."));
+    answer.busy = false;
+}
+
+void loop()
+{
+    if (answer.busy)
+    {
+        Serial.print("\n==> Received command: ");
+        Serial.println(answer.cmd, HEX);
+
+        // PING command returns cmd_ping
+        switch (answer.cmd)
+        {
+        case cmd_ping:
+            Debugln(DEBUG_INFO, F("-> Responsing to ping."));
+            answer.data[0] = cmd_ping;
+            break;
+        case cmd_readSignature:
+            // Read signature bytes
+            Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
+            if (!bbprogrammer->startProgramming(5))
+                HaltError(F("Couldn't enter Programming mode!"));
+            Debugln(DEBUG_INFO, F("-> Reading signature byte."));
+            bbprogrammer->readSignatureBytes(answer.data[0], answer.data[1], answer.data[2]);
+            Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
+            bbprogrammer->stopProgramming();
+            break;
+        case cmd_erase:
+            // Erase Chip signature
+            Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
+            if (!bbprogrammer->startProgramming(5))
+                HaltError(F("Couldn't enter Programming mode!"));
+            Debugln(DEBUG_INFO, F("-> Erasing chip."));
+            bbprogrammer->erase();
+            Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
+            bbprogrammer->stopProgramming();
+            break;
+        default:
+            break;
+        }
+
+        Debugln(DEBUG_INFO, F("-> Command finished."));
+        answer.busy = false;
+    }
+}
+
+// Interrupt handler
+
+void receiveEvent(int HowMany)
+{
+    if (HowMany != 1 || answer.busy == true)
+        return;
+
+    // Clear error byte and busy bit
+    answer.busy = true;
+    answer.error = 0x00;
+
+    // Clear response array
+    for (int i = 0; i < 28; i++)
+        answer.data[i] = 0x00;
+
+    answer.cmd = Wire.read();
+}
+
+void requestEvent()
+{
+    Wire.write((byte*)&answer, sizeof(answer));
+}
+
+#ifdef JUST_FOR_COPY_PASTE
+void wwsetup()
+{
+
     using namespace programmer;
 
-    Debugln(DEBUG_INFO, F("\n-> Entering Programming mode."));
-    BBProgrammer programmer = BBProgrammer(P_SCK, P_MOSI, P_MISO, P_RESET);
-    if (!programmer.startProgramming(5))
-        HaltError(F("Couldn't enter Programming mode!"));
 
 
     delay(1000);
@@ -465,8 +325,8 @@ void setup()
     programmer.stopProgramming();
 }
 
-void loop() 
+void wwloop() 
 {
   
 }
-
+#endif
