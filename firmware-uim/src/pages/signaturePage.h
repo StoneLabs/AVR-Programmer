@@ -18,7 +18,8 @@ class SignaturePage : public Page
 {
 private:
 	byte b1, b2, b3;
-	Signature* signature;
+	Signature signature = Signature();
+	bool signatureKnown = false;
 
 public:
 	SignaturePage(PageManager* manager, byte s1, byte s2, byte s3);

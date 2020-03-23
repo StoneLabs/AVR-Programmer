@@ -22,19 +22,16 @@ void SignaturePage::init()
     for (byte j = 0; j < NUMITEMS(signatures); j++)
     {
         // Copy from PROGMEM to Memory
-        memcpy_P(this->signature, &signatures[j], sizeof * this->signature);
-        if (this->signature->sig[0] == this->b1 &&
-            this->signature->sig[1] == this->b2 &&
-            this->signature->sig[2] == this->b3)
+        memcpy_P(&this->signature, &signatures[j], sizeof this->signature);
+        if (this->signature.sig[0] == this->b1 &&
+            this->signature.sig[1] == this->b2 &&
+            this->signature.sig[2] == this->b3)
         {
             // Signature found and known
+            this->signatureKnown = true;
             return;
         }
     }
-    // Signature not found:
-    // Todo unknown signature screen here.
-    Serial.println(F("Unknown signature"));
-    while (true) {};
 }
 
 
@@ -49,17 +46,20 @@ void SignaturePage::initRender(SSD1306Ascii* display)
     
     // Display HEX signature
 	display->print("HEX: ");
-    DisplayUtils::printHex(display, this->signature->sig[0]);
+    DisplayUtils::printHex(display, this->b1);
     display->print(", ");
-    DisplayUtils::printHex(display, this->signature->sig[1]);
+    DisplayUtils::printHex(display, this->b2);
     display->print(", ");
-    DisplayUtils::printHex(display, this->signature->sig[2]);
+    DisplayUtils::printHex(display, this->b3);
     display->println();
     display->println();
     
     // Display device name
     display->print("-> ");
-    display->println(this->signature->desc);
+    if (this->signatureKnown)
+        display->println(this->signature.desc);
+    else
+        display->println("Unknown signature");
     
     // Display back button in bottom right
     const char* back = "> Back";
