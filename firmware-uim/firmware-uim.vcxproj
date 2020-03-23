@@ -118,6 +118,8 @@
     <ClInclude Include="src\displayUtils.h" />
     <ClInclude Include="src\pages\erasePage.h" />
     <ClInclude Include="src\pages\lockedDevicePage.h" />
+    <ClInclude Include="src\pages\readFusesInitPage.h" />
+    <ClInclude Include="src\pages\readFusesPage.h" />
     <ClInclude Include="src\pages\signatureInitPage.h" />
     <ClInclude Include="src\pages\signaturePage.h" />
     <ClInclude Include="src\pages\mainInitPage.h" />
@@ -136,6 +138,8 @@
     <ClCompile Include="src\pages\eraseInitPage.cpp" />
     <ClCompile Include="src\pages\erasePage.cpp" />
     <ClCompile Include="src\pages\lockedDevicePage.cpp" />
+    <ClCompile Include="src\pages\readFusesInitPage.cpp" />
+    <ClCompile Include="src\pages\readFusesPage.cpp" />
     <ClCompile Include="src\pages\signatureInitPage.cpp" />
     <ClCompile Include="src\pages\signaturePage.cpp" />
     <ClCompile Include="src\pages\mainInitPage.cpp" />

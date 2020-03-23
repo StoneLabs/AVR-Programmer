@@ -1,11 +1,6 @@
 #include "src/page.h"
 #include "src/pageManager.h"
-#include "src/pages/mainPage.h"
-#include "src/pages/loadingPage.h"
-#include "src/pages/delayPage.h"
 #include "src/pages/mainInitPage.h"
-#include "src/pages/signaturePage.h"
-#include "src/pages/signatureInitPage.h"
 #include "I2CHelper.h"
 
 #include <SSD1306AsciiWire.h>

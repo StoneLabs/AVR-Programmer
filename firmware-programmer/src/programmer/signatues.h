@@ -17,11 +17,11 @@ typedef struct {
 
 enum
 {
-    lowFuse,
-    highFuse,
-    extFuse,
-    lockFuse,
-    calibrationFuse
+    lowFuse = 0,
+    highFuse = 1,
+    extFuse = 2,
+    lockFuse = 3,
+    calibrationFuse = 4,
 };
 
 // see Atmega datasheets

@@ -12,8 +12,10 @@ class DisplayUtils
 {
 private:
 	static void printHexDigit(SSD1306Ascii* display, byte data);
+	static void printBinDigit(SSD1306Ascii* display, byte data);
 
 public:
 	static void printHex(SSD1306Ascii* display, byte data);
+	static void printBin(SSD1306Ascii* display, byte data);
 };
 

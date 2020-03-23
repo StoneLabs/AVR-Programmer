@@ -15,6 +15,9 @@ void MainPage::confirm()
     case 1:
         this->pageManager->changePage(new EraseInitPage(this->pageManager));
         break;
+    case 3:
+        this->pageManager->changePage(new ReadFusesInitPage(this->pageManager));
+        break;
     default:
         break;
     }
@@ -26,7 +29,7 @@ void MainPage::initRender(SSD1306Ascii* display)
     display->println("  Read signature.");
     display->println("  Erase chip.");
     display->println("  Write HEX file.");
-    display->println("  Set fuses.");
+    display->println("  Read fuses.");
 }
 
 void MainPage::render(SSD1306Ascii *display)

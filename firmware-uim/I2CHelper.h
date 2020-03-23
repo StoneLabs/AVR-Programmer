@@ -9,7 +9,7 @@
 #include <Wire.h>
 
 #define PROGRAMMER_ADDRESS 0x08
-#define PROGRAMMER_DATASIZE 30
+#define PROGRAMMER_DATASIZE 29
 #define DEBUG true
 
 typedef struct {
@@ -19,6 +19,15 @@ typedef struct {
     byte error;
 } Answer;
 
+enum
+{
+    lowFuse = 0,
+    highFuse = 1,
+    extFuse = 2,
+    lockFuse = 3,
+    calibrationFuse = 4,
+};
+
 enum : byte
 {
     // Meta operations
@@ -26,6 +35,7 @@ enum : byte
 
     // Read operations
     cmd_readSignature = 0x10,
+    cmd_readFuses = 0x11,
 
     // Write operations
     cmd_erase = 0x20,
