@@ -16,9 +16,11 @@ class FlashInitPage : public LoadingPage
 {
 private:
 	Answer answer;
+	char* fileName;
 
 public:
-	FlashInitPage(PageManager* manager);
+	FlashInitPage(PageManager* manager, char* fileName);
+	~FlashInitPage();
 
 	void init() override;
 	void update() override;

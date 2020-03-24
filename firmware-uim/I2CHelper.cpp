@@ -15,7 +15,6 @@ void programmer_request(byte command)
 
 void programmer_request(Command& command)
 {
-
     #if DEBUG
         Serial.print(F("\n-> CMD=0x"));
         Serial.print(command.cmd, HEX);
