@@ -9,17 +9,19 @@
 #include <SSD1306Ascii.h>
 #include "../tabPage.h"
 #include "../pageManager.h"
-#include "writeFuseInputPage.h"
 #include "mainPage.h"
 
-class WriteFuseSelectPage : public TabPage
+class WriteFuseInputPage : public TabPage
 {
 private:
-	byte val_lowFuse, val_highFuse, val_extFuse, val_lockFuse, val_calibration;
 	const char* back = "  Back";
+	const char* ok = "  Confirm";
+	
+	byte fuse;
+	byte fuseValue;
 
 public:
-	WriteFuseSelectPage(PageManager* manager, byte lowFuse, byte highFuse, byte extFuse, byte lockFuse, byte calibration);
+	WriteFuseInputPage(PageManager* manager, byte fuse, byte initValue);
 	void confirm() override;
 
 	void initRender(SSD1306Ascii* display) override;
