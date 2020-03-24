@@ -135,6 +135,7 @@
     <ClInclude Include="src\pageManager.h" />
     <ClInclude Include="src\page.h" />
     <ClInclude Include="src\pages\mainPage.h" />
+    <ClInclude Include="src\pages\writeFuseSelectPage.h" />
     <ClInclude Include="src\signatures.h" />
     <ClInclude Include="src\tabPage.h" />
     <ClInclude Include="__vm\.firmware-uim.vsarduino.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="src\pageManager.cpp" />
     <ClCompile Include="src\page.cpp" />
     <ClCompile Include="src\pages\mainPage.cpp" />
+    <ClCompile Include="src\pages\writeFuseSelectPage.cpp" />
     <ClCompile Include="src\tabPage.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
