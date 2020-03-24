@@ -23,10 +23,17 @@ void FlashSelectPage::confirm()
         this->pageManager->changePage(new FlashSelectInitPage(this->pageManager));
         break;
     case 1:
+    {
         if (!this->fileFound)
             return;
-        this->pageManager->changePage(new FlashInitPage(this->pageManager));
-        break;
+
+        // Copy fileName to new memory location so it wont get deleted on deconstruction
+        // Will be deleted by flash init.
+        char* fileName = new char[SFN_LENGTH];
+        memcpy(fileName, this->fileName, SFN_LENGTH);
+        this->pageManager->changePage(new FlashInitPage(this->pageManager, fileName));
+        break; 
+    }
     case 2:
         this->pageManager->changePage(new MainPage(this->pageManager));
         break;

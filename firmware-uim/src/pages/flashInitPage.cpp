@@ -1,13 +1,28 @@
 #include "flashInitPage.h"
 
-FlashInitPage::FlashInitPage(PageManager* manager)
+FlashInitPage::FlashInitPage(PageManager* manager, char* fileName)
 	: LoadingPage ( manager, "Flashing file..." )
 {
+	this->fileName = fileName;
+}
+
+FlashInitPage::~FlashInitPage()
+{
+	delete this->fileName;
 }
 
 void FlashInitPage::init()
 {
-	programmer_request(cmd_flashFile);
+	Command command;
+	command.cmd = cmd_flashFile;
+
+	// Init command
+	for (byte i = 0; i < COMMAND_DATASIZE; i++)
+		command.data[i] = 0x00;
+
+	// Copy filename to command data array
+	memcpy(command.data, this->fileName, SFN_LENGTH);
+	programmer_request(command);
 }
 
 void FlashInitPage::update()

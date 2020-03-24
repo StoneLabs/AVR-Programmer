@@ -223,8 +223,9 @@ void loop()
             }
             break;
         case cmd_flashFile:
-            Debugln(DEBUG_INFO, F("\n-> Flashing HEX source /Blink_bl_wierd.hex."));
-            if (!file.open("Blink_bl_wierd.hex "), O_READ)
+            Debug(DEBUG_INFO, F("\n-> Flashing HEX source /"));
+            Debugln(DEBUG_INFO, (char*)command.data);
+            if (!file.open((char*)command.data, O_READ))
                 HaltError(F("Error: Couldn't open source file."));
 
             // Flash file. Will not be closed by flashFile()
