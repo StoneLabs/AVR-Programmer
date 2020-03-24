@@ -11,7 +11,7 @@
 #include "../pageManager.h"
 #include "../signatures.h"
 #include "../displayUtils.h"
-#include "mainInitPage.h"
+#include "mainPage.h"
 #include "lockedDevicePage.h"
 
 class ReadFusesPage : public Page

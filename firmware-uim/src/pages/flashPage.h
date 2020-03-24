@@ -10,7 +10,7 @@
 #include "../../I2CHelper.h"
 #include "../pageManager.h"
 #include "loadingPage.h"
-#include "mainInitPage.h"
+#include "mainPage.h"
 
 class FlashPage : public Page
 {

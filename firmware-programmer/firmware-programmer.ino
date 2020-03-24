@@ -98,16 +98,14 @@ void setup() {
         Debugln(DEBUG_INFO, F(""));
         file.close();
     }
-#endif
     sd.vwd()->rewind();
+#endif
     
     Debugln(DEBUG_INFO, F("\n-> Initializing Programmer."));
     bbprogrammer = new BBProgrammer(P_SCK, P_MOSI, P_MISO, P_RESET);
 
     Debugln(DEBUG_INFO, F("\n-> Now accepting commands."));
     answer.busy = false;
-    pinMode(2, INPUT);
-    delay(10000);
     pinMode(2, OUTPUT);
 }
 

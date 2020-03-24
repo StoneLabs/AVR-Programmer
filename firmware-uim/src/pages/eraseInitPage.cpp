@@ -15,8 +15,11 @@ void EraseInitPage::update()
 	if (programmer_answer(answer))
 	{
 		if (answer.cmd == cmd_erase)
+		{
 			this->pageManager->changePage(
 				new ErasePage(this->pageManager));
+			return;
+		}
 		else
 		{
 			Serial.println(F("CRITICAL: Invalid response to erase command."));

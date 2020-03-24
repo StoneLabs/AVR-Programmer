@@ -9,7 +9,7 @@
 #include <SSD1306Ascii.h>
 #include "../page.h"
 #include "../pageManager.h"
-#include "mainInitPage.h"
+#include "mainPage.h"
 
 class LockedDevicePage : public Page
 {

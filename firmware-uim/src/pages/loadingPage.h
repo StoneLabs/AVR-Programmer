@@ -19,11 +19,15 @@ private:
 	byte symbol = 0;
 	byte symbolOffset = 0;
 
+	byte manualRow = 0;
+	bool manualPos = false;
+
 protected:
 	unsigned long getInitMillis();
 
 public:
 	LoadingPage(PageManager* manager, const char* message);
+	LoadingPage(PageManager* manager, const char* message, byte manualColumn, byte manuelRow);
 
 	void update() override = 0;
 	bool needsRender() override;

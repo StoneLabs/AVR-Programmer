@@ -10,7 +10,7 @@ LockedDevicePage::LockedDevicePage(PageManager* manager, byte s1, byte s2, byte 
 
 void LockedDevicePage::confirm()
 {
-	this->pageManager->changePage(new MainInitPage(this->pageManager));
+	this->pageManager->changePage(new MainPage(this->pageManager));
 }
 
 void LockedDevicePage::initRender(SSD1306Ascii* display)

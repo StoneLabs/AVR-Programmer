@@ -7,7 +7,7 @@ ErasePage::ErasePage(PageManager* manager)
 
 void ErasePage::confirm()
 {
-	this->pageManager->changePage(new MainInitPage(this->pageManager));
+	this->pageManager->changePage(new MainPage(this->pageManager));
 }
 
 void ErasePage::initRender(SSD1306Ascii* display)

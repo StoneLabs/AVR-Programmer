@@ -28,5 +28,12 @@ public:
 	void cancelPage();
 
 	void render();
+
+	// After calling changePage from a class
+	// the calling function must return without
+	// using any member variables as it will be 
+	// deleted during the page change. Accessing
+	// local variables after a call to changePage
+	// will result in unpredictable behavior.
 	void changePage(Page* page);
 };

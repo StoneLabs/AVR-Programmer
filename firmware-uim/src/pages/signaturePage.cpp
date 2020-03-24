@@ -37,7 +37,7 @@ void SignaturePage::init()
 
 void SignaturePage::confirm()
 {
-	this->pageManager->changePage(new MainInitPage(this->pageManager));
+	this->pageManager->changePage(new MainPage(this->pageManager));
 }
 
 void SignaturePage::initRender(SSD1306Ascii* display)

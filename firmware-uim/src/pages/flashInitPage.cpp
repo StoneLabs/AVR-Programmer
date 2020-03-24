@@ -15,7 +15,10 @@ void FlashInitPage::update()
 	if (programmer_answer(answer))
 	{
 		if (answer.cmd == cmd_flashFile)
+		{
 			this->pageManager->changePage(new FlashPage(this->pageManager));
+			return;
+		}
 		else
 		{
 			Serial.println(F("CRITICAL: Invalid response to flash command."));

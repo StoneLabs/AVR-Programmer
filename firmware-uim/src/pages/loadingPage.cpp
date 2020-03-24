@@ -6,6 +6,13 @@ LoadingPage::LoadingPage(PageManager* manager, const char* message)
 	this->initMillis = millis();
 	this->message = message;
 }
+LoadingPage::LoadingPage(PageManager* manager, const char* message, byte manualColumn, byte manualRow)
+	: LoadingPage(manager, message)
+{
+	this->symbolOffset = manualColumn;
+	this->manualRow = manualRow;
+	this->manualPos = true;
+}
 
 unsigned long LoadingPage::getInitMillis()
 {
@@ -27,13 +34,14 @@ bool LoadingPage::needsRender()
 void LoadingPage::initRender(SSD1306Ascii* display)
 {
 	display->print(this->message);
-	this->symbolOffset = display->strWidth(this->message);
+	if (!this->manualPos)
+		this->symbolOffset = display->strWidth(this->message);
 }
 
 void LoadingPage::render(SSD1306Ascii* display)
 {
 	// Require monospace
-	display->setCursor(this->symbolOffset, 0);
+	display->setCursor(this->symbolOffset, this->manualRow);
 
 	switch (this->symbol)
 	{
