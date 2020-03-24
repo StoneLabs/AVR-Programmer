@@ -241,7 +241,7 @@ void loop()
                 byte status = flashFile(&file, bbprogrammer);
                 file.close();
 
-                if (status >= 0x00)
+                if (status > 0x00)
                 {
                     answerError(status);
                     return;
@@ -277,26 +277,27 @@ void loop()
                 {
                 case cmd_writeLowFuse:
                     Debug(DEBUG_INFO, F("-> Writing low fuse to:"));
-                    Debugln(DEBUG_INFO, command.data[0]);
+                    Debugln(DEBUG_INFO, command.data[0], BIN);
                     bbprogrammer->setLowFuse(command.data[0]);
                     break;
                 case cmd_writeHighFuse:
-                    Debugln(DEBUG_INFO, F("-> Writing high fuse."));
-                    Debugln(DEBUG_INFO, command.data[0]);
+                    Debug(DEBUG_INFO, F("-> Writing high fuse."));
+                    Debugln(DEBUG_INFO, command.data[0], BIN);
                     if (!bbprogrammer->setHighFuse(command.data[0]))
                     {
+                        bbprogrammer->stopProgramming();
                         answerError(error_refusedByProgrammer);
                         return;
                     }
                     break;
                 case cmd_writeExtFuse:
-                    Debugln(DEBUG_INFO, F("-> Writing ext. fuse."));
-                    Debugln(DEBUG_INFO, command.data[0]);
+                    Debug(DEBUG_INFO, F("-> Writing ext. fuse."));
+                    Debugln(DEBUG_INFO, command.data[0], BIN);
                     bbprogrammer->setExtFuse(command.data[0]);
                     break;
                 case cmd_writeLockFuse:
-                    Debugln(DEBUG_INFO, F("-> Writing lock bits."));
-                    Debugln(DEBUG_INFO, command.data[0]);
+                    Debug(DEBUG_INFO, F("-> Writing lock bits."));
+                    Debugln(DEBUG_INFO, command.data[0], BIN);
                     bbprogrammer->setLockBits(command.data[0]);
                     break;
                 }
