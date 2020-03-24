@@ -16,6 +16,11 @@ void EraseInitPage::update()
 	{
 		if (answer.cmd == cmd_erase)
 		{
+			if (answer.error > 0x00)
+			{
+				this->pageManager->changePage(new ErrorPage(this->pageManager, answer.error));
+				return;
+			}
 			this->pageManager->changePage(
 				new ErasePage(this->pageManager));
 			return;

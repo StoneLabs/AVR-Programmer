@@ -9,20 +9,17 @@
 #include <SSD1306Ascii.h>
 #include "../../I2CHelper.h"
 #include "../pageManager.h"
+#include "../displayUtils.h"
 #include "loadingPage.h"
-#include "flashPage.h"
-#include "errorPage.h"
+#include "mainPage.h"
 
-class FlashInitPage : public LoadingPage
+class CriticalErrorPage : public Page
 {
 private:
-	Answer answer;
-	char* fileName;
+	byte errorByte;
 
 public:
-	FlashInitPage(PageManager* manager, char* fileName);
-	~FlashInitPage();
+	CriticalErrorPage(PageManager* manager, byte error);
 
-	void init() override;
-	void update() override;
+	void initRender(SSD1306Ascii* display) override;
 };

@@ -9,6 +9,7 @@
 #include "../pageManager.h"
 #include "loadingPage.h"
 #include "erasePage.h"
+#include "errorPage.h"
 
 class EraseInitPage : public LoadingPage
 {

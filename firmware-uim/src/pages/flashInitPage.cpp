@@ -29,6 +29,11 @@ void FlashInitPage::update()
 {
 	if (programmer_answer(answer))
 	{
+		if (answer.error > 0x00)
+		{
+			this->pageManager->changePage(new ErrorPage(this->pageManager, answer.error));
+			return;
+		}
 		if (answer.cmd == cmd_flashFile)
 		{
 			this->pageManager->changePage(new FlashPage(this->pageManager));

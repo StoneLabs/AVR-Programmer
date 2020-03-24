@@ -114,10 +114,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pages\bootPage.h" />
+    <ClInclude Include="src\pages\criticalErrorPage.h" />
     <ClInclude Include="src\pages\eraseInitPage.h" />
     <ClInclude Include="I2CHelper.h" />
     <ClInclude Include="src\displayUtils.h" />
     <ClInclude Include="src\pages\erasePage.h" />
+    <ClInclude Include="src\pages\errorPage.h" />
     <ClInclude Include="src\pages\flashInitPage.h" />
     <ClInclude Include="src\pages\flashPage.h" />
     <ClInclude Include="src\pages\flashSelectInitPage.h" />
@@ -141,8 +143,10 @@
     <ClCompile Include="I2CHelper.cpp" />
     <ClCompile Include="src\displayUtils.cpp" />
     <ClCompile Include="src\pages\bootPage.cpp" />
+    <ClCompile Include="src\pages\criticalErrorPage.cpp" />
     <ClCompile Include="src\pages\eraseInitPage.cpp" />
     <ClCompile Include="src\pages\erasePage.cpp" />
+    <ClCompile Include="src\pages\errorPage.cpp" />
     <ClCompile Include="src\pages\flashInitPage.cpp" />
     <ClCompile Include="src\pages\flashPage.cpp" />
     <ClCompile Include="src\pages\flashSelectInitPage.cpp" />
