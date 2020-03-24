@@ -54,6 +54,10 @@ enum : byte
     //// Write operations
     cmd_erase = 0x20,
     cmd_flashFile = 0x21,
+    cmd_writeLowFuse = 0x22,
+    cmd_writeHighFuse = 0x23,
+    cmd_writeExtFuse = 0x24,
+    cmd_writeLockFuse = 0x25,
 };
 
 enum : byte

@@ -7,7 +7,7 @@ typedef struct {
     unsigned long flashSize;     // how big the flash is (bytes)
     unsigned int baseBootSize;   // base bootloader size (others are multiples of 2/4/8)
     unsigned long pageSize;      // flash programming page size (bytes)
-    byte fuseWithBootloaderSize; // ie. one of: lowFuse, highFuse, extFuse
+    byte fuseWithBootloaderSize; // ie. one of: val_lowFuse, val_highFuse, val_extFuse
     bool timedWrites;            // true if pollUntilReady won't work by polling the chip // NOT IMPLEMENTED
     byte safetyMaskOne;          // All bits in high that must be unprogrammed: one  (i.e. (val & safetyMaskOne ) != safetyMaskOne is forbidden)
     byte safetyMaskZero;         // All bits in high that must be   programmed: zero (i.e. (val & safetyMaskZero) != 0             is forbidden)
