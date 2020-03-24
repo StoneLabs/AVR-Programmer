@@ -153,7 +153,7 @@ void loop()
             if (!bbprogrammer->startProgramming(5))
                 HaltError(F("Couldn't enter Programming mode!"));
 
-            Debug(DEBUG_INFO, F("\n-> Reading Fuses."));
+            Debugln(DEBUG_INFO, F("-> Reading Fuses."));
             bbprogrammer->readFuses();
             printFuses(bbprogrammer->getFuses());
 
