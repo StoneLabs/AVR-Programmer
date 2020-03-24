@@ -39,6 +39,7 @@ enum : byte
 
     //// Write operations
     cmd_erase = 0x20,
+    cmd_flashFile = 0x21,
 };
 
 
@@ -219,6 +220,16 @@ void loop()
                 }
             }
             break;
+        case cmd_flashFile:
+            Debugln(DEBUG_INFO, F("\n-> Flashing HEX source /Blink_bl_wierd.hex."));
+            if (!file.open("Blink_bl_wierd.hex "), O_READ)
+                HaltError(F("Error: Couldn't open source file."));
+
+            // Flash file. Will not be closed by flashFile()
+            flashFile(&file, bbprogrammer);
+
+            file.close();
+
         default:
             break;
         }
@@ -250,155 +261,3 @@ void requestEvent()
 {
     Wire.write((byte*)&answer, sizeof(answer));
 }
-
-#ifdef JUST_FOR_COPY_PASTE
-void wwsetup()
-{
-
-    using namespace programmer;
-
-
-
-    delay(1000);
-
-    Debugln(DEBUG_INFO, F("\n-> Flashing HEX source /Blink_bl_wierd.hex."));
-    if (!file.open("Blink_bl_wierd.hex "), O_READ)
-    {
-        Debugln(DEBUG_INFO, F("Error: Couldn't open source file."));
-        return;
-    }
-    
-    // Iterate over all pages in target flash
-    // and fill them with readImagePage(...).
-    // Then write them to the target.
-    byte* page = new byte[signature->pageSize];
-    unsigned long pageaddr = 0x00;
-    unsigned long nextSmallest = 0x00; // Next smallest address
-    
-    // If a bootloader is found at the entry points
-    // it will be save in lowestBootLoader.
-    unsigned long lowestBootLoader = signature->flashSize;
-    while (pageaddr < signature->flashSize) {
-        Debug(DEBUG_DEBUG, F("Processing page 0x"));
-        Debug(DEBUG_DEBUG, pageaddr, HEX);
-        Debug(DEBUG_DEBUG, F(" - 0x"));
-        Debug(DEBUG_DEBUG, pageaddr + signature->pageSize - 1, HEX);
-        Debug(DEBUG_DEBUG, F("..."));
-
-        // Skip if next smallest address is not inside this page.
-        if (nextSmallest <= pageaddr + signature->pageSize - 1)
-        {
-            nextSmallest = readImagePage(&file, signature->flashSize, pageaddr, signature->pageSize, page);
-
-            boolean blankpage = true;
-            for (uint8_t i = 0; i < signature->pageSize; i++)
-                if (page[i] != 0xFF)
-                    blankpage = false;
-
-            if (!blankpage)
-            {
-                Debug(DEBUG_DEBUG, F(" [OK: NS="));
-                Debug(DEBUG_DEBUG, nextSmallest, HEX);
-                Debug(DEBUG_DEBUG, F("] -> Flashing..."));
-                
-                programmer.flashPage(pageaddr, page);
-
-                Debug(DEBUG_DEBUG, F(" [FLASHED]"));
-
-                // Check bootloader positions *(1/2/4/8)
-                for (int i = 1; i <= 8; i *= 2)
-                {
-                    // Possible bootlaoder position in current page?
-                    unsigned long bootloaderAddress = signature->flashSize - signature->baseBootSize * i;
-                    if (bootloaderAddress < pageaddr || bootloaderAddress > pageaddr + signature->pageSize - 1)
-                        continue; // If not skip this position
-
-                    unsigned long bootloaderPageAddress = bootloaderAddress - pageaddr;
-
-                    // Check if bootloader position caintains instruction
-                    if (page[bootloaderPageAddress] != 0xFF)
-                    {
-                        Debug(DEBUG_DEBUG, F(" Found bootloader at 0x"));
-                        Debug(DEBUG_DEBUG, signature->flashSize - signature->baseBootSize, HEX);
-                        if (bootloaderAddress < lowestBootLoader)
-                            lowestBootLoader = bootloaderAddress;
-                    }
-                }
-                Debugln(DEBUG_DEBUG);
-            }
-            else
-            {
-                Debug(DEBUG_DEBUG, F(" [EMPTY NS="));
-                Debug(DEBUG_DEBUG, nextSmallest, HEX);
-                Debugln(DEBUG_DEBUG, F("]"));
-            }
-        }
-        else
-            Debugln(DEBUG_DEBUG, F(" [SKIP]"));
-        pageaddr += signature->pageSize;
-    }
-
-    file.close();
-    delete[] page;
-
-    // Flashing done. Show user feedback
-    Debugln(DEBUG_INFO, F("Flashing complete."));
-
-    // Change bootloader fuse
-    if (signature->fuseWithBootloaderSize != highFuse)
-        HaltError(F("Bootloader fuse setting for current chip not supported!"));
-
-    // Bootloader fuse:
-    // http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf page 243 and 239
-    byte newBootloaderFuse = 0x0;
-    if (lowestBootLoader == signature->flashSize)
-    {
-        Debugln(DEBUG_INFO, F("No bootlaoder detected."));
-        newBootloaderFuse = (fuse.high & 0b11111000) | 0b001; // Application reset at 0x0000
-    }
-    else
-    {
-        Debug(DEBUG_INFO, F("Bootloader detected at 0x"));
-        Debugln(DEBUG_INFO, lowestBootLoader, HEX);
-
-        // bootloader fuse depending on bootloader location
-        if (lowestBootLoader == (signature->flashSize - signature->baseBootSize))
-            newBootloaderFuse = (fuse.high & 0b11111000) | 0b110;
-        else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 2))
-            newBootloaderFuse = (fuse.high & 0b11111000) | 0b100;
-        else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 4))
-            newBootloaderFuse = (fuse.high & 0b11111000) | 0b010;
-        else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 8))
-            newBootloaderFuse = (fuse.high & 0b11111000) | 0b000;
-    }
-    Debug(DEBUG_INFO, F("Changing high fuse: "));
-    Debug(DEBUG_INFO, fuse.high, BIN);
-    Debug(DEBUG_INFO, F(" -> "));
-    Debug(DEBUG_INFO, newBootloaderFuse, BIN);
-    Debug(DEBUG_INFO, F("..."));
-
-    // Write new fuse
-    programmer.setHighFuse(newBootloaderFuse);
-    Debugln(DEBUG_INFO, F(" [OK]"));
-
-    // Change low fuse for external clock
-    Debug(DEBUG_INFO, F("Changing low fuse: "));
-    Debug(DEBUG_INFO, fuse.low, BIN);
-    Debug(DEBUG_INFO, F(" -> "));
-    Debug(DEBUG_INFO, 0xff, BIN);
-    Debug(DEBUG_INFO, F("..."));
-
-    // Write new fuse
-    programmer.setLowFuse(0xff);
-    Debugln(DEBUG_INFO, F(" [OK]"));
-
-    delay(1000);
-    Debugln(DEBUG_INFO, F("\n-> Leaving Programming mode."));
-    programmer.stopProgramming();
-}
-
-void wwloop() 
-{
-  
-}
-#endif

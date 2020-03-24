@@ -11,6 +11,7 @@
 #include "../pageManager.h"
 #include "mainInitPage.h"
 #include "flashSelectInitPage.h"
+#include "flashInitPage.h"
 
 class FlashSelectPage : public TabPage
 {

@@ -47,6 +47,7 @@ enum : byte
 
     //// Write operations
     cmd_erase = 0x20,
+    cmd_flashFile = 0x21,
 };
 
 void programmer_request(byte command);

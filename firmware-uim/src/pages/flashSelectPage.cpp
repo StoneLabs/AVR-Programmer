@@ -25,7 +25,7 @@ void FlashSelectPage::confirm()
     case 1:
         if (!this->fileFound)
             return;
-        // Flash file
+        this->pageManager->changePage(new FlashInitPage(this->pageManager));
         break;
     case 2:
         this->pageManager->changePage(new MainInitPage(this->pageManager));

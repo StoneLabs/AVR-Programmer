@@ -37,6 +37,7 @@
 
 #include "src/debug.h"
 #include "src/programmer/bbprogrammer.h"
+#include "src/programmer/signatues.h"
 
 // Helper functions
 void printFuses(const programmer::BBProgrammer::Fuse& fuse);
@@ -44,3 +45,5 @@ void printSignature(const Signature* signature);
 byte hexton(byte h);
 byte twos_complement(byte val);
 unsigned long readImagePage(SdFile* file, const unsigned long flashsize, const unsigned long pageaddr, const unsigned long pagesize, byte* pagebuffer);
+
+void flashFile(SdFile* file, programmer::BBProgrammer* bbprogrammer);

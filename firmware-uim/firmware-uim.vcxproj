@@ -118,6 +118,8 @@
     <ClInclude Include="I2CHelper.h" />
     <ClInclude Include="src\displayUtils.h" />
     <ClInclude Include="src\pages\erasePage.h" />
+    <ClInclude Include="src\pages\flashInitPage.h" />
+    <ClInclude Include="src\pages\flashPage.h" />
     <ClInclude Include="src\pages\flashSelectInitPage.h" />
     <ClInclude Include="src\pages\flashSelectPage.h" />
     <ClInclude Include="src\pages\lockedDevicePage.h" />
@@ -142,6 +144,8 @@
     <ClCompile Include="src\pages\bootPage.cpp" />
     <ClCompile Include="src\pages\eraseInitPage.cpp" />
     <ClCompile Include="src\pages\erasePage.cpp" />
+    <ClCompile Include="src\pages\flashInitPage.cpp" />
+    <ClCompile Include="src\pages\flashPage.cpp" />
     <ClCompile Include="src\pages\flashSelectInitPage.cpp" />
     <ClCompile Include="src\pages\flashSelectPage.cpp" />
     <ClCompile Include="src\pages\lockedDevicePage.cpp" />

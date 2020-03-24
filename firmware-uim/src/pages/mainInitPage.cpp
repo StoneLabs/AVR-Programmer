@@ -1,7 +1,7 @@
 #include "mainInitPage.h"
 
 MainInitPage::MainInitPage(PageManager* manager)
-	: LoadingPage(manager, (char*)"Loading...")
+	: LoadingPage(manager, "Loading...")
 {
 }
 
