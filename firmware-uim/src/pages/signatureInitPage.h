@@ -11,6 +11,7 @@
 #include "../pageManager.h"
 #include "loadingPage.h"
 #include "signaturePage.h"
+#include "errorPage.h"
 
 class SignatureInitPage : public LoadingPage
 {

@@ -56,6 +56,15 @@ enum : byte
     cmd_flashFile = 0x21,
 };
 
+enum : byte
+{
+    // Meta errors
+    error_unknownCommand = 0x01,
+
+    // Specific errors
+    error_ProgrammingMode = 0x10,
+};
+
 void programmer_request(byte command);
 void programmer_request(Command& command);
 bool programmer_answer(Answer& value);

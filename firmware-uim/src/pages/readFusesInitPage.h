@@ -11,6 +11,7 @@
 #include "../pageManager.h"
 #include "loadingPage.h"
 #include "readFusesPage.h"
+#include "errorPage.h"
 
 class ReadFusesInitPage : public LoadingPage
 {

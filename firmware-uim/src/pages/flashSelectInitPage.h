@@ -11,6 +11,7 @@
 #include "../pageManager.h"
 #include "loadingPage.h"
 #include "flashSelectPage.h"
+#include "errorPage.h"
 
 class FlashSelectInitPage : public LoadingPage
 {

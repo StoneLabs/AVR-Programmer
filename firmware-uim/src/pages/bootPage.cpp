@@ -25,6 +25,11 @@ void BootPage::update()
             // Command allready send last iteration of update()
             if (programmer_answer(answer))
             {
+                if (answer.error > 0x00)
+                {
+                    this->pageManager->changePage(new CriticalErrorPage(this->pageManager, answer.error));
+                    return;
+                }
                 if (this->answer.cmd == cmd_ping && this->answer.data[0] == cmd_ping)
                 {
                     this->pageManager->changePage(new MainPage(this->pageManager));

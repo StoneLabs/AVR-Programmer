@@ -41,6 +41,14 @@ enum : byte
     cmd_erase = 0x20,
     cmd_flashFile = 0x21,
 };
+enum : byte
+{
+    // Meta errors
+    error_unknownCommand = 0x01,
+
+    // Specific errors
+    error_ProgrammingMode = 0x10,
+};
 
 typedef struct {
     byte cmd;
@@ -113,6 +121,14 @@ void setup() {
     pinMode(2, OUTPUT);
 }
 
+void answerError(byte error)
+{
+    answer.error = error;
+    answer.busy = false;
+    Debug(DEBUG_INFO, F("-> Command failed with error: "));
+    Debugln(DEBUG_INFO, error, HEX);
+}
+
 void loop()
 {
     if (answer.busy)
@@ -131,7 +147,10 @@ void loop()
             // Read signature bytes
             Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
             if (!bbprogrammer->startProgramming(5))
-                HaltError(F("Couldn't enter Programming mode!"));
+            {
+                answerError(error_ProgrammingMode);
+                return;
+            }
             Debugln(DEBUG_INFO, F("-> Reading signature byte."));
             bbprogrammer->readSignatureBytes(answer.data[0], answer.data[1], answer.data[2]);
             Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
@@ -141,7 +160,10 @@ void loop()
             // Erase Chip signature
             Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
             if (!bbprogrammer->startProgramming(5))
-                HaltError(F("Couldn't enter Programming mode!"));
+            {
+                answerError(error_ProgrammingMode);
+                return;
+            }
             Debugln(DEBUG_INFO, F("-> Erasing chip."));
             bbprogrammer->erase();
             Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
@@ -151,7 +173,10 @@ void loop()
             // Read fuse bytes
             Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
             if (!bbprogrammer->startProgramming(5))
-                HaltError(F("Couldn't enter Programming mode!"));
+            {
+                answerError(error_ProgrammingMode);
+                return;
+            }
 
             Debugln(DEBUG_INFO, F("-> Reading Fuses."));
             bbprogrammer->readFuses();

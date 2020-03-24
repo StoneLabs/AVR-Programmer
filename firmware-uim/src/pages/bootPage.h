@@ -11,8 +11,7 @@
 #include "../pageManager.h"
 #include "loadingPage.h"
 #include "mainPage.h"
-
-#define SPLASH_SCREEN
+#include "criticalErrorPage.h"
 
 class BootPage : public LoadingPage
 {
