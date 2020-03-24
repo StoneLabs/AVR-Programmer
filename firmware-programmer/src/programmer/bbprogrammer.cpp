@@ -126,6 +126,13 @@ namespace programmer
             this->spi->end();
             this->isProgramming = false;
 
+            if (this->signature != nullptr)
+            {
+                delete this->signature;
+                this->signature = nullptr;
+            }
+            this->fuses = Fuse();
+
             Debugln(DEBUG_INFO, F("Programming mode ended."));
         }
         else

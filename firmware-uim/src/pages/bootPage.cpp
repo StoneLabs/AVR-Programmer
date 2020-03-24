@@ -38,7 +38,8 @@ void BootPage::update()
                 else
                 {
                     Serial.println(F("Illegal response to ping cmd."));
-                    while (true) {};
+                    this->pageManager->changePage(new CriticalErrorPage(this->pageManager, answer.error));
+                    return;
                 }
             }
 

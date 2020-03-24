@@ -46,7 +46,7 @@ void printSignature(const Signature* signature)
     Debugln(DEBUG_INFO, F(" (*1/2/4/8) bytes."));
 }
 
-byte hexton(byte h)
+byte hexton(byte h, byte& errorFlag)
 {
     // Convert ascii HEX to number
     if (h >= '0' && h <= '9')
@@ -54,7 +54,9 @@ byte hexton(byte h)
     if (h >= 'A' && h <= 'F')
         return((h - 'A') + 10);
 
-    HaltError(F("Invalid HEX number."));
+    Debugln(DEBUG_INFO, F("Invalid HEX number."));
+    errorFlag = error_hexCharSymbol;
+    return 0;
 }
 byte twos_complement(byte val)
 {
@@ -63,7 +65,7 @@ byte twos_complement(byte val)
 
 // Returns lowest address behind current page. (so min addr >= pageaddr + pagesize) 
 // More information on HEX file: https://en.wikipedia.org/wiki/Intel_HEX
-unsigned long readImagePage(SdFile* file, const unsigned long flashsize, const unsigned long pageaddr, const unsigned long pagesize, byte* pagebuffer)
+unsigned long readImagePage(SdFile* file, const unsigned long flashsize, const unsigned long pageaddr, const unsigned long pagesize, byte* pagebuffer, byte& errorFlag)
 {
     // Back to begining of file.
     file->rewind();
@@ -104,26 +106,38 @@ unsigned long readImagePage(SdFile* file, const unsigned long flashsize, const u
 
             // Check for colon at line begining
             if (lineBuffer[0] != ':')
-                HaltError(F("Invalid hex file (1)"));
+            {
+                Debugln(DEBUG_INFO, F("Invalid hex file (1)"));
+                errorFlag = error_hexInvalid;
+                delete[] lineBuffer;
+                return 0x00UL;
+            }
 
             // Read line `metadata`
-            l_bytecount = hexton(lineBuffer[1]) << 4 | hexton(lineBuffer[2]);
-            l_address = hexton(lineBuffer[3]) << 12;
-            l_address = l_address | hexton(lineBuffer[4]) << 8;
-            l_address = l_address | hexton(lineBuffer[5]) << 4;
-            l_address = l_address | hexton(lineBuffer[6]) << 0;
-            l_recordtype = hexton(lineBuffer[7]) << 4 | hexton(lineBuffer[8]);
+            l_bytecount = hexton(lineBuffer[1], errorFlag) << 4 | hexton(lineBuffer[2], errorFlag);
+            l_address = hexton(lineBuffer[3], errorFlag) << 12;
+            l_address = l_address | hexton(lineBuffer[4], errorFlag) << 8;
+            l_address = l_address | hexton(lineBuffer[5], errorFlag) << 4;
+            l_address = l_address | hexton(lineBuffer[6], errorFlag) << 0;
+            l_recordtype = hexton(lineBuffer[7], errorFlag) << 4 | hexton(lineBuffer[8], errorFlag);
 
             if (l_bytecount > HEX_MAX_DATALEN)
-                HaltError(F("HEX Data too long to process"));
+            {
+                Debugln(DEBUG_INFO, F("HEX Row data too long to process"));
+                errorFlag = error_hexLineTooLong;
+                delete[] lineBuffer;
+                return 0x00UL;
+            }
 
-            l_checksum = hexton(lineBuffer[9 + l_bytecount * 2]) << 4 | hexton(lineBuffer[10 + l_bytecount * 2]);
-
-            if (l_bytecount > HEX_MAX_DATALEN)
-                HaltError(F("HEX Data too long to process"));
+            l_checksum = hexton(lineBuffer[9 + l_bytecount * 2], errorFlag) << 4 | hexton(lineBuffer[10 + l_bytecount * 2], errorFlag);
 
             if (l_recordtype < 0 || l_recordtype > 3)
-                HaltError(F("Unsupported HEX entry."));
+            {
+                Debugln(DEBUG_INFO, F("Unsupported HEX entry."));
+                errorFlag = error_hexUnsupportedEntry;
+                delete[] lineBuffer;
+                return 0x00UL;
+            }
 
             if (l_recordtype == 3)
                 Debugln(DEBUG_VERBOSE, F("HEX contains 'Start Segment Address'. Entry will be ignored."));
@@ -131,11 +145,16 @@ unsigned long readImagePage(SdFile* file, const unsigned long flashsize, const u
             // Checksum check
             byte calcCheckSum = 0x00;
             for (byte i = 1; i < 9 + l_bytecount * 2; i += 2) // From 1 to last databyte
-                calcCheckSum += hexton(lineBuffer[i + 0]) << 4 |
-                hexton(lineBuffer[i + 1]);
+                calcCheckSum += hexton(lineBuffer[i + 0], errorFlag) << 4 |
+                hexton(lineBuffer[i + 1], errorFlag);
 
             if (twos_complement(calcCheckSum) != l_checksum)
-                HaltError(F("Line checksum mismatch!"));
+            {
+                Debugln(DEBUG_INFO, F("Line checksum mismatch!"));
+                errorFlag = error_hexCheckSum;
+                delete[] lineBuffer;
+                return 0x00UL;
+            }
 
             // 'Extended Segment Address' entry
             // Data field (16 bits) is multiplied by 16 and added to each
@@ -144,10 +163,10 @@ unsigned long readImagePage(SdFile* file, const unsigned long flashsize, const u
             {
                 // Get 16 bit data field
                 l_address_offset = 0x00;
-                l_address_offset = l_address_offset | hexton(lineBuffer[9]) << 12;
-                l_address_offset = l_address_offset | hexton(lineBuffer[10]) << 8;
-                l_address_offset = l_address_offset | hexton(lineBuffer[11]) << 4;
-                l_address_offset = l_address_offset | hexton(lineBuffer[12]) << 0;
+                l_address_offset = l_address_offset | hexton(lineBuffer[9], errorFlag) << 12;
+                l_address_offset = l_address_offset | hexton(lineBuffer[10], errorFlag) << 8;
+                l_address_offset = l_address_offset | hexton(lineBuffer[11], errorFlag) << 4;
+                l_address_offset = l_address_offset | hexton(lineBuffer[12], errorFlag) << 0;
 
                 l_address_offset *= 0x10; // Multiply by 16
 
@@ -163,7 +182,12 @@ unsigned long readImagePage(SdFile* file, const unsigned long flashsize, const u
             {
                 // Check for valid Data record address range (i.e. is it in flash bounds?)
                 if (l_address + l_bytecount > flashsize)
-                    HaltError(F("HEX not in flash bounds!"));
+                {
+                    Debugln(DEBUG_INFO, F("HEX not in flash bounds!"));
+                    errorFlag = error_hexFlashBounds;
+                    delete[] lineBuffer;
+                    return 0x00UL;
+                }
 
                 // Page adding
                 for (byte i = 9; i < 9 + l_bytecount * 2; i += 2) // From first to last databyte
@@ -172,10 +196,10 @@ unsigned long readImagePage(SdFile* file, const unsigned long flashsize, const u
                     if (l_address >= pageaddr && l_address - pageaddr < pagesize)
                     {
                         pagebuffer[l_address - pageaddr] =
-                            hexton(lineBuffer[i + 0]) << 4 | hexton(lineBuffer[i + 1]);
+                            hexton(lineBuffer[i + 0], errorFlag) << 4 | hexton(lineBuffer[i + 1], errorFlag);
 
                         Debug(DEBUG_VERBOSE, F("Writing to paging buffer: "));
-                        Debug(DEBUG_VERBOSE, hexton(lineBuffer[i + 0]) << 4 | hexton(lineBuffer[i + 1]), HEX);
+                        Debug(DEBUG_VERBOSE, hexton(lineBuffer[i + 0], errorFlag) << 4 | hexton(lineBuffer[i + 1], errorFlag), HEX);
                         Debug(DEBUG_VERBOSE, F(" at "));
                         Debugln(DEBUG_VERBOSE, l_address - pageaddr, HEX);
                     }
@@ -192,7 +216,18 @@ unsigned long readImagePage(SdFile* file, const unsigned long flashsize, const u
             do { lineBuffer[index] = 0x00; } while (index-- > 0);
         }
         else
+        {
+            // Check if line is too long for buffer
+            if (index >= HEX_LINE_LENGTH)
+            {
+                Debugln(DEBUG_INFO, F("HEX line too long!"));
+                errorFlag = error_hexLineTooLong;
+                delete[] lineBuffer;
+                return 0x00UL;
+            }
+
             lineBuffer[index] = charBuffer; // Write character to lineBuffer
+        }
 
         index++;
     }
@@ -203,12 +238,12 @@ unsigned long readImagePage(SdFile* file, const unsigned long flashsize, const u
     return smallestAfter;
 }
 
-void flashFile(SdFile* file, programmer::BBProgrammer* bbprogrammer)
+byte flashFile(SdFile* file, programmer::BBProgrammer* bbprogrammer)
 {
     // Start programming mode
     Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
     if (!bbprogrammer->startProgramming(5))
-        HaltError(F("Couldn't enter Programming mode!"));
+        return error_programmingMode;
 
     Debugln(DEBUG_INFO, F("-> Reading Fuses."));
     bbprogrammer->readFuses();
@@ -240,7 +275,15 @@ void flashFile(SdFile* file, programmer::BBProgrammer* bbprogrammer)
         // Skip if next smallest address is not inside this page.
         if (nextSmallest <= pageaddr + signature->pageSize - 1)
         {
-            nextSmallest = readImagePage(file, signature->flashSize, pageaddr, signature->pageSize, page);
+            byte errorBuffer = 0x00;
+            nextSmallest = readImagePage(file, signature->flashSize, pageaddr, signature->pageSize, page, errorBuffer);
+            if (errorBuffer > 0x00)
+            {
+                // An error was returned while filling the page buffer
+                Debugln(DEBUG_DEBUG, F("Error flag returned by readImagePage(). Aborting flash."));
+                bbprogrammer->stopProgramming();delete[] page;
+                return errorBuffer;
+            }
 
             boolean blankpage = true;
             for (uint8_t i = 0; i < signature->pageSize; i++)
@@ -296,7 +339,11 @@ void flashFile(SdFile* file, programmer::BBProgrammer* bbprogrammer)
 
     // Change bootloader fuse
     if (signature->fuseWithBootloaderSize != highFuse)
-        HaltError(F("Bootloader fuse setting for current chip not supported!"));
+    {
+        // Bootloader setting not supported for current chip
+        bbprogrammer->stopProgramming();
+        return error_bootloaderSupport;
+    }
 
     // Bootloader fuse:
     // http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf page 243 and 239
@@ -344,4 +391,5 @@ void flashFile(SdFile* file, programmer::BBProgrammer* bbprogrammer)
 
     Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
     bbprogrammer->stopProgramming();
+    return 0x00; // No error
 }
