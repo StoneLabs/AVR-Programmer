@@ -57,6 +57,20 @@ void ErrorPage::initRender(SSD1306Ascii* display)
 		display->println(F("Hex file invalid."));
 		display->println(F("Invalid characters."));
 		break;
+	case error_fuseCheckMismatch:
+		display->println(F("Fuse transfer failed."));
+		display->println(F("Please try again!"));
+		break;
+	case error_fuseWithoutSignature:
+		display->println(F("Unknown Signature!"));
+		display->println(F("Try erasing the chip?"));
+		break;
+	case error_refusedByProgrammer:
+		display->println(F("Fuse change refused!"));
+		display->println(F("Security measures are"));
+		display->println(F("in place to prevent"));
+		display->println(F("destructive actions!"));
+		break;
 	default:
 		display->println(F("Unknown error."));
 		break;
