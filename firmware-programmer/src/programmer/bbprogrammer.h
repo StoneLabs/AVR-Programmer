@@ -91,8 +91,10 @@ namespace programmer
         void readFuses();
         const Fuse& getFuses() const;
 
-        void setHighFuse(const byte fuse);
+        bool setHighFuse(const byte fuse);
         void setLowFuse(const byte fuse);
+		void setExtFuse(const byte fuse);
+		void setLockBits(const byte fuse);
 
         void flashPage(unsigned long pageaddr, byte* pagebuffer);
         void erase();

@@ -22,6 +22,7 @@ void WriteFuseInputPage::confirm()
     else if (this->getTabIndex() == 9)
     {
         //OK
+        this->pageManager->changePage(new WriteFuseInitPage(this->pageManager, this->fuse, this->fuseValue));
         return;
     }
 }

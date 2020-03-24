@@ -135,7 +135,9 @@
     <ClInclude Include="src\pageManager.h" />
     <ClInclude Include="src\page.h" />
     <ClInclude Include="src\pages\mainPage.h" />
+    <ClInclude Include="src\pages\writeFuseInitPage.h" />
     <ClInclude Include="src\pages\writeFuseInputPage.h" />
+    <ClInclude Include="src\pages\writeFusePage.h" />
     <ClInclude Include="src\pages\writeFuseSelectInitPage.h" />
     <ClInclude Include="src\pages\writeFuseSelectPage.h" />
     <ClInclude Include="src\signatures.h" />
@@ -165,7 +167,9 @@
     <ClCompile Include="src\pageManager.cpp" />
     <ClCompile Include="src\page.cpp" />
     <ClCompile Include="src\pages\mainPage.cpp" />
+    <ClCompile Include="src\pages\writeFuseInitPage.cpp" />
     <ClCompile Include="src\pages\writeFuseInputPage.cpp" />
+    <ClCompile Include="src\pages\writeFusePage.cpp" />
     <ClCompile Include="src\pages\writeFuseSelectInitPage.cpp" />
     <ClCompile Include="src\pages\writeFuseSelectPage.cpp" />
     <ClCompile Include="src\tabPage.cpp" />

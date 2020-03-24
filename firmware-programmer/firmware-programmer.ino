@@ -113,62 +113,69 @@ void loop()
         switch (answer.cmd)
         {
         case cmd_ping:
-            Debugln(DEBUG_INFO, F("-> Responsing to ping."));
-            answer.data[0] = cmd_ping;
+            {
+                Debugln(DEBUG_INFO, F("-> Responsing to ping."));
+                answer.data[0] = cmd_ping;
+            }
             break;
         case cmd_readSignature:
-            // Read signature bytes
-            Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
-            if (!bbprogrammer->startProgramming(5))
             {
-                answerError(error_programmingMode);
-                return;
+                // Read signature bytes
+                Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
+                if (!bbprogrammer->startProgramming(5))
+                {
+                    answerError(error_programmingMode);
+                    return;
+                }
+                Debugln(DEBUG_INFO, F("-> Reading signature byte."));
+                bbprogrammer->readSignatureBytes(answer.data[0], answer.data[1], answer.data[2]);
+                Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
+                bbprogrammer->stopProgramming();
             }
-            Debugln(DEBUG_INFO, F("-> Reading signature byte."));
-            bbprogrammer->readSignatureBytes(answer.data[0], answer.data[1], answer.data[2]);
-            Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
-            bbprogrammer->stopProgramming();
             break;
         case cmd_erase:
-            // Erase Chip signature
-            Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
-            if (!bbprogrammer->startProgramming(5))
             {
-                answerError(error_programmingMode);
-                return;
+                // Erase Chip signature
+                Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
+                if (!bbprogrammer->startProgramming(5))
+                {
+                    answerError(error_programmingMode);
+                    return;
+                }
+                Debugln(DEBUG_INFO, F("-> Erasing chip."));
+                bbprogrammer->erase();
+                Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
+                bbprogrammer->stopProgramming();
             }
-            Debugln(DEBUG_INFO, F("-> Erasing chip."));
-            bbprogrammer->erase();
-            Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
-            bbprogrammer->stopProgramming();
             break;
         case cmd_readFuses:
-            // Read fuse bytes
-            Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
-            if (!bbprogrammer->startProgramming(5))
             {
-                answerError(error_programmingMode);
-                return;
+                // Read fuse bytes
+                Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
+                if (!bbprogrammer->startProgramming(5))
+                {
+                    answerError(error_programmingMode);
+                    return;
+                }
+
+                Debugln(DEBUG_INFO, F("-> Reading Fuses."));
+                bbprogrammer->readFuses();
+                printFuses(bbprogrammer->getFuses());
+
+                // Answer with fuse bytes
+                answer.data[lowFuse] = bbprogrammer->getFuses().low;
+                answer.data[highFuse] = bbprogrammer->getFuses().high;
+                answer.data[extFuse] = bbprogrammer->getFuses().extended;
+                answer.data[lockFuse] = bbprogrammer->getFuses().lock;
+                answer.data[calibrationFuse] = bbprogrammer->getFuses().calibration;
+
+                Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
+                bbprogrammer->stopProgramming();
             }
-
-            Debugln(DEBUG_INFO, F("-> Reading Fuses."));
-            bbprogrammer->readFuses();
-            printFuses(bbprogrammer->getFuses());
-
-            // Answer with fuse bytes
-            answer.data[lowFuse] = bbprogrammer->getFuses().low;
-            answer.data[highFuse] = bbprogrammer->getFuses().high;
-            answer.data[extFuse] = bbprogrammer->getFuses().extended;
-            answer.data[lockFuse] = bbprogrammer->getFuses().lock;
-            answer.data[calibrationFuse] = bbprogrammer->getFuses().calibration;
-
-            Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
-            bbprogrammer->stopProgramming();
             break;
         case cmd_openNextFile:
-            Debugln(DEBUG_INFO, F("-> Opening next file"));
-
             { // Explicit block for case variable foundFile and file_sfn
+                Debugln(DEBUG_INFO, F("-> Opening next file"));
 
                 bool foundFile = false;
                 while (file.openNext(sd.vwd(), O_READ))
@@ -221,23 +228,82 @@ void loop()
             }
             break;
         case cmd_flashFile:
-            Debug(DEBUG_INFO, F("\n-> Flashing HEX source /"));
-            Debugln(DEBUG_INFO, (char*)command.data);
-            if (!file.open((char*)command.data, O_READ))
             {
-                answerError(error_openFile);
-                return;
+                Debug(DEBUG_INFO, F("\n-> Flashing HEX source /"));
+                Debugln(DEBUG_INFO, (char*)command.data);
+                if (!file.open((char*)command.data, O_READ))
+                {
+                    answerError(error_openFile);
+                    return;
+                }
+
+                // Flash file. Will not be closed by flashFile()
+                byte status = flashFile(&file, bbprogrammer);
+                file.close();
+
+                if (status >= 0x00)
+                {
+                    answerError(status);
+                    return;
+                }
             }
-
-            // Flash file. Will not be closed by flashFile()
-            byte status = flashFile(&file, bbprogrammer);
-            file.close();
-
-            if (status >= 0x00)
+            break;
+        case cmd_writeLowFuse:
+            [[fallthrough]];
+        case cmd_writeHighFuse:
+            [[fallthrough]];
+        case cmd_writeExtFuse:
+            [[fallthrough]];
+        case cmd_writeLockFuse:
             {
-                answerError(status);
-                return;
+                if (command.data[0] != command.data[1])
+                {
+                    answerError(error_fuseCheckMismatch);
+                    return;
+                }
+                // Read signature bytes
+                Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
+                if (!bbprogrammer->startProgramming(5))
+                {
+                    answerError(error_programmingMode);
+                    return;
+                }
+                if (!bbprogrammer->readSignature())
+                {
+                    answerError(error_fuseWithoutSignature);
+                    return;
+                }
+                switch (command.cmd)
+                {
+                case cmd_writeLowFuse:
+                    Debug(DEBUG_INFO, F("-> Writing low fuse to:"));
+                    Debugln(DEBUG_INFO, command.data[0]);
+                    bbprogrammer->setLowFuse(command.data[0]);
+                    break;
+                case cmd_writeHighFuse:
+                    Debugln(DEBUG_INFO, F("-> Writing high fuse."));
+                    Debugln(DEBUG_INFO, command.data[0]);
+                    if (!bbprogrammer->setHighFuse(command.data[0]))
+                    {
+                        answerError(error_refusedByProgrammer);
+                        return;
+                    }
+                    break;
+                case cmd_writeExtFuse:
+                    Debugln(DEBUG_INFO, F("-> Writing ext. fuse."));
+                    Debugln(DEBUG_INFO, command.data[0]);
+                    bbprogrammer->setExtFuse(command.data[0]);
+                    break;
+                case cmd_writeLockFuse:
+                    Debugln(DEBUG_INFO, F("-> Writing lock bits."));
+                    Debugln(DEBUG_INFO, command.data[0]);
+                    bbprogrammer->setLockBits(command.data[0]);
+                    break;
+                }
+                Debugln(DEBUG_INFO, F("-> Ending Programming mode."));
+                bbprogrammer->stopProgramming();
             }
+            break;
         default:
             answerError(error_unknownCommand);
             return;

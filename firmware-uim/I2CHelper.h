@@ -79,6 +79,11 @@ enum : byte
     error_hexCheckSum = 0x33,
     error_hexFlashBounds = 0x34,
     error_hexCharSymbol = 0x35,
+
+    // Fuse writing specific errors
+    error_fuseCheckMismatch = 0x40,
+    error_fuseWithoutSignature = 0x41,
+    error_refusedByProgrammer = 0x42,
 };
 
 void programmer_request(byte command);

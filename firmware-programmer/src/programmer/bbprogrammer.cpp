@@ -251,7 +251,7 @@ namespace programmer
         return this->fuses;
     }
 
-    void BBProgrammer::setHighFuse(const byte fuse)
+    bool BBProgrammer::setHighFuse(const byte fuse)
     {
 #if SAFETY_CHECKS
         // Check if signature has been read.
@@ -262,21 +262,29 @@ namespace programmer
         if ((fuse & signature->safetyMaskOne) != signature->safetyMaskOne ||
             (fuse & signature->safetyMaskZero) != 0)
         {
-            HaltError(F("WARNING: ILLEGAL FUSE CONFIGURATION. ABORTING EXECUTION."));
-            
-            // Just for safety so a broken HaltError doesn't
-            // lead to bricked chips!
-            while (true) {}; 
+            Debugln(DEBUG_ERROR, F("WARNING: ILLEGAL FUSE CONFIGURATION. ABORTING EXECUTION."));
+            return false;
         }
+#endif
 
         execCommand(programEnable, writeHighFuseByte, 0x00, fuse);
         pollUntilReady();
-#endif
+        return true;
     }
 
     void BBProgrammer::setLowFuse(const byte fuse)
     {
         execCommand(programEnable, writeLowFuseByte, 0x00, fuse);
+        pollUntilReady();
+    }
+    void BBProgrammer::setExtFuse(const byte fuse)
+    {
+        execCommand(programEnable, writeExtendedFuseByte, 0x00, fuse);
+        pollUntilReady();
+    }
+    void BBProgrammer::setLockBits(const byte fuse)
+    {
+        execCommand(programEnable, writeLockByte, 0x00, fuse);
         pollUntilReady();
     }
 

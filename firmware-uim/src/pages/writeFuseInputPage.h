@@ -10,6 +10,7 @@
 #include "../tabPage.h"
 #include "../pageManager.h"
 #include "mainPage.h"
+#include "writeFuseInitPage.h"
 
 class WriteFuseInputPage : public TabPage
 {
