@@ -12,7 +12,7 @@ void ErasePage::confirm()
 
 void ErasePage::initRender(SSD1306Ascii* display)
 {
-	display->println("Chip erased.");
+	display->println(F("Chip erased."));
 
 	// Display back button in bottom right
 	const char* back = "> Back";

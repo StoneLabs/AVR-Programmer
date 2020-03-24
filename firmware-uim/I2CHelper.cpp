@@ -21,7 +21,7 @@ void programmer_request(Command& command)
         Serial.print(F(" DATA="));
         for (int i = 0; i < COMMAND_DATASIZE; i++)
         {
-            Serial.print(" 0x");
+            Serial.print(F(" 0x"));
             Serial.print(command.data[i], HEX);
         }
         Serial.println();

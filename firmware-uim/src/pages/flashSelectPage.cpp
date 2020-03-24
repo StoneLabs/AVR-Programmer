@@ -44,19 +44,19 @@ void FlashSelectPage::confirm()
 
 void FlashSelectPage::initRender(SSD1306Ascii* display)
 {
-    display->println("Select file to Flash");
+    display->println(F("Select file to Flash"));
     display->println();
     if (this->fileFound)
     {
-        display->print("/");
+        display->print(F("/"));
         display->println(this->fileName);
     }
     else
-        display->println("No more files.");
+        display->println(F("No more files."));
 
     display->println();
-    display->println("  Next file");
-    display->println("  Flash file");
+    display->println(F("  Next file"));
+    display->println(F("  Flash file"));
 
     // Display back button in bottom right
     display->setCursor(DISPLAY_COLUMNS - display->strWidth(back), DISPLAY_ROWS - 1);
@@ -67,19 +67,19 @@ void FlashSelectPage::render(SSD1306Ascii* display)
 {
     display->setCursor(0, 4);
     if (this->getTabIndex() == 0)
-        display->print('>');
+        display->print(F(">"));
     else
-        display->print(' ');
+        display->print(F(" "));
 
     display->setCursor(0, 5);
     if (this->getTabIndex() == 1)
-        display->print('>');
+        display->print(F(">"));
     else
-        display->print(' '); 
+        display->print(F(" ")); 
     
     display->setCursor(DISPLAY_COLUMNS - display->strWidth(back), DISPLAY_ROWS - 1);
     if (this->getTabIndex() == 2)
-        display->print('>');
+        display->print(F(">"));
     else
-        display->print(' ');
+        display->print(F(" "));
 }

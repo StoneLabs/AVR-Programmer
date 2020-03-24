@@ -12,9 +12,9 @@ void FlashPage::confirm()
 
 void FlashPage::initRender(SSD1306Ascii* display)
 {
-	display->println("Flash complete.");
+	display->println(F("Flash complete."));
 	display->println();
-	display->println("Please check fuses!");
+	display->println(F("Please check fuses!"));
 
 	// Display back button in bottom right
 	const char* back = "> OK";

@@ -45,9 +45,9 @@ void LoadingPage::render(SSD1306Ascii* display)
 
 	switch (this->symbol)
 	{
-	case 0: display->print("|"); break;
-	case 1: display->print("/"); break;
-	case 2: display->print("-"); break;
-	case 3: display->print("\\"); break;
+	case 0: display->print(F("|")); break;
+	case 1: display->print(F("/")); break;
+	case 2: display->print(F("-")); break;
+	case 3: display->print(F("\\")); break;
 	}
 }

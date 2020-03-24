@@ -17,22 +17,22 @@ void ReadFusesPage::confirm()
 
 void ReadFusesPage::initRender(SSD1306Ascii* display)
 {
-    display->println("Device Fuses:");
+    display->println(F("Device Fuses:"));
 
     // Display Fuses
-    display->print("Low:  0b");
+    display->print(F("Low:  0b"));
     DisplayUtils::printBin(display, this->lowFuse);
     display->println();
-    display->print("High: 0b");
+    display->print(F("High: 0b"));
     DisplayUtils::printBin(display, this->highFuse);
     display->println();
-    display->print("Ext:  0b");
+    display->print(F("Ext:  0b"));
     DisplayUtils::printBin(display, this->extFuse);
     display->println();
-    display->print("Lock: 0b");
+    display->print(F("Lock: 0b"));
     DisplayUtils::printBin(display, this->lockFuse);
     display->println();
-    display->print("Cal:  0b");
+    display->print(F("Cal:  0b"));
     DisplayUtils::printBin(display, this->calibration);
     display->println();
     

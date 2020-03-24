@@ -28,11 +28,11 @@ void MainPage::confirm()
 
 void MainPage::initRender(SSD1306Ascii* display)
 {
-    display->println("STONE LABS (TM) ISP.");
-    display->println("  Read signature.");
-    display->println("  Erase chip.");
-    display->println("  Write HEX file.");
-    display->println("  Read fuses.");
+    display->println(F("STONE LABS (TM) ISP."));
+    display->println(F("  Read signature."));
+    display->println(F("  Erase chip."));
+    display->println(F("  Write HEX file."));
+    display->println(F("  Read fuses."));
 }
 
 void MainPage::render(SSD1306Ascii *display)
@@ -41,8 +41,8 @@ void MainPage::render(SSD1306Ascii *display)
     {
         display->setCursor(0, i + 1);
         if (this->getTabIndex() == i)
-            display->print('>');
+            display->print(F(">"));
         else
-            display->print(' ');
+            display->print(F(" "));
     }
 }
