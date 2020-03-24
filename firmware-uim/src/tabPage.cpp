@@ -12,7 +12,10 @@ TabPage::TabPage(PageManager* manager, byte tabLength)
 
 void TabPage::left()
 {
-    this->tabIndex--;
+    if (this->tabIndex == 0)
+        this->tabIndex = this->tabLength-1;
+    else
+        this->tabIndex--;
     this->tabIndex %= this->tabLength;
 }
 
