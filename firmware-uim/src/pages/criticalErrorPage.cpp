@@ -8,11 +8,11 @@ CriticalErrorPage::CriticalErrorPage(PageManager* manager, byte error)
 
 void CriticalErrorPage::initRender(SSD1306Ascii* display)
 {
-	display->println("CRITICAL ERROR");
+	display->println(F("CRITICAL ERROR"));
 	display->println();
-	display->print("Code: ");
+	display->print(F("Code: "));
 	DisplayUtils::printHex(display, this->errorByte);
 
 	display->setCursor(0, DISPLAY_ROWS - 1);
-	display->print("Manual restart req.!");
+	display->print(F("Manual restart req.!"));
 }

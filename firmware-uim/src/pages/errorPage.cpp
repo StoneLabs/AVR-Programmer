@@ -13,52 +13,52 @@ void ErrorPage::confirm()
 
 void ErrorPage::initRender(SSD1306Ascii* display)
 {
-	display->print("Error: ");
+	display->print(F("Error: "));
 	DisplayUtils::printHex(display, this->errorByte);
 	
 	display->setCursor(0, 3);
 	switch (errorByte)
 	{
 	case error_unknownCommand:
-		display->println("Internal error.");
+		display->println(F("Internal error."));
 		break;
 	case error_programmingMode:
-		display->println("Coudn't enter pro-");
-		display->println("gramming mode.");
+		display->println(F("Coudn't enter pro-"));
+		display->println(F("gramming mode."));
 		break;
 	case error_openFile:
-		display->println("Coudn't open file.");
+		display->println(F("Coudn't open file."));
 		break;
 	case error_bootloaderSupport:
-		display->println("Bootloader setting");
-		display->println("not supported for this");
-		display->println("chip.");
+		display->println(F("Bootloader setting"));
+		display->println(F("not supported for this"));
+		display->println(F("chip."));
 		break;
 	case error_hexInvalid:
-		display->println("Hex file invalid.");
-		display->println("Line without ':'");
+		display->println(F("Hex file invalid."));
+		display->println(F("Line without ':'"));
 		break;
 	case error_hexLineTooLong:
-		display->println("Hex line too long.");
+		display->println(F("Hex line too long."));
 		break;
 	case error_hexUnsupportedEntry:
-		display->println("Hex contains unknown");
-		display->println("entry type.");
+		display->println(F("Hex contains unknown"));
+		display->println(F("entry type."));
 		break;
 	case error_hexCheckSum:
-		display->println("Hex file invalid.");
-		display->println("Checksum error!");
+		display->println(F("Hex file invalid."));
+		display->println(F("Checksum error!"));
 		break;
 	case error_hexFlashBounds:
-		display->println("Hex file invalid.");
-		display->println("Too big for flash!");
+		display->println(F("Hex file invalid."));
+		display->println(F("Too big for flash!"));
 		break;
 	case error_hexCharSymbol:
-		display->println("Hex file invalid.");
-		display->println("Invalid characters.");
+		display->println(F("Hex file invalid."));
+		display->println(F("Invalid characters."));
 		break;
 	default:
-		display->println("Unknown error.");
+		display->println(F("Unknown error."));
 		break;
 	}
 

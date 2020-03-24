@@ -15,14 +15,14 @@ void LockedDevicePage::confirm()
 
 void LockedDevicePage::initRender(SSD1306Ascii* display)
 {
-	display->println("Device locked.");
+	display->println(F("Device locked."));
 
 	// Display HEX signature
-	display->print("HEX: ");
+	display->print(F("HEX: "));
 	DisplayUtils::printHex(display, this->b1);
-	display->print(", ");
+	display->print(F(", "));
 	DisplayUtils::printHex(display, this->b2);
-	display->print(", ");
+	display->print(F(", "));
 	DisplayUtils::printHex(display, this->b3);
 	display->println();
 

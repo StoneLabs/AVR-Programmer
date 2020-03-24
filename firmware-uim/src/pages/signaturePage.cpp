@@ -42,24 +42,24 @@ void SignaturePage::confirm()
 
 void SignaturePage::initRender(SSD1306Ascii* display)
 {
-	display->println("Device Signature:");
+	display->println(F("Device Signature:"));
     
     // Display HEX signature
-	display->print("HEX: ");
+	display->print(F("HEX: "));
     DisplayUtils::printHex(display, this->b1);
-    display->print(", ");
+    display->print(F(", "));
     DisplayUtils::printHex(display, this->b2);
-    display->print(", ");
+    display->print(F(", "));
     DisplayUtils::printHex(display, this->b3);
     display->println();
     display->println();
     
     // Display device name
-    display->print("-> ");
+    display->print(F("-> "));
     if (this->signatureKnown)
         display->println(this->signature.desc);
     else
-        display->println("Unknown signature");
+        display->println(F("Unknown signature"));
     
     // Display back button in bottom right
     const char* back = "> Back";
