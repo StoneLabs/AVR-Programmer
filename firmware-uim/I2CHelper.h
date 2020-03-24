@@ -9,10 +9,16 @@
 #include <Wire.h>
 
 #define PROGRAMMER_ADDRESS 0x08
-#define PROGRAMMER_DATASIZE 29
+#define COMMAND_DATASIZE 31
+#define ANSWER_DATASIZE 29
+
 #define ACTIVE_POLL_DELAY_MS 50
 #define DEBUG true
 
+typedef struct {
+    byte cmd;
+    byte data[31];
+} Command;
 typedef struct {
     bool busy;
     byte cmd;
@@ -51,6 +57,7 @@ enum : byte
 };
 
 void programmer_request(byte command);
+void programmer_request(Command& command);
 bool programmer_answer(Answer& value);
 
 void programmer_requestanswer(byte command, Answer& value);
