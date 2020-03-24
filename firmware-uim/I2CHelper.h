@@ -61,8 +61,20 @@ enum : byte
     // Meta errors
     error_unknownCommand = 0x01,
 
-    // Specific errors
-    error_ProgrammingMode = 0x10,
+    // General errors
+    error_programmingMode = 0x10,
+    error_openFile = 0x11,
+
+    // Flashing specific errors
+    error_bootloaderSupport = 0x20,
+
+    // Hex file specific error
+    error_hexInvalid = 0x30,
+    error_hexLineTooLong = 0x31,
+    error_hexUnsupportedEntry = 0x32,
+    error_hexCheckSum = 0x33,
+    error_hexFlashBounds = 0x34,
+    error_hexCharSymbol = 0x35,
 };
 
 void programmer_request(byte command);

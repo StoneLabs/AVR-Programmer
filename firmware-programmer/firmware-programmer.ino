@@ -11,6 +11,7 @@
 // Debug level can be changed in debug.h
 #include "src/debug.h"
 #include "src/programmer/bbprogrammer.h"
+#include "i2c_enums.h"
 #include "helper.h"
 
 #define P_SCK 7
@@ -21,34 +22,6 @@
 using namespace programmer;
 
 #define SFN_LENGTH 13
-
-enum : byte
-{
-    //// Meta operations
-    cmd_ping = 0x01,
-
-    // Open next file (will cycle around)
-    cmd_openNextFile = 0x02,
-
-    // Rewinds to first file in directory
-    cmd_rewindFile = 0x03,
-
-    //// Read operations
-    cmd_readSignature = 0x10,
-    cmd_readFuses = 0x11,
-
-    //// Write operations
-    cmd_erase = 0x20,
-    cmd_flashFile = 0x21,
-};
-enum : byte
-{
-    // Meta errors
-    error_unknownCommand = 0x01,
-
-    // Specific errors
-    error_ProgrammingMode = 0x10,
-};
 
 typedef struct {
     byte cmd;
@@ -148,7 +121,7 @@ void loop()
             Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
             if (!bbprogrammer->startProgramming(5))
             {
-                answerError(error_ProgrammingMode);
+                answerError(error_programmingMode);
                 return;
             }
             Debugln(DEBUG_INFO, F("-> Reading signature byte."));
@@ -161,7 +134,7 @@ void loop()
             Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
             if (!bbprogrammer->startProgramming(5))
             {
-                answerError(error_ProgrammingMode);
+                answerError(error_programmingMode);
                 return;
             }
             Debugln(DEBUG_INFO, F("-> Erasing chip."));
@@ -174,7 +147,7 @@ void loop()
             Debugln(DEBUG_INFO, F("-> Entering Programming mode."));
             if (!bbprogrammer->startProgramming(5))
             {
-                answerError(error_ProgrammingMode);
+                answerError(error_programmingMode);
                 return;
             }
 
@@ -251,15 +224,23 @@ void loop()
             Debug(DEBUG_INFO, F("\n-> Flashing HEX source /"));
             Debugln(DEBUG_INFO, (char*)command.data);
             if (!file.open((char*)command.data, O_READ))
-                HaltError(F("Error: Couldn't open source file."));
+            {
+                answerError(error_openFile);
+                return;
+            }
 
             // Flash file. Will not be closed by flashFile()
-            flashFile(&file, bbprogrammer);
-
+            byte status = flashFile(&file, bbprogrammer);
             file.close();
 
+            if (status >= 0x00)
+            {
+                answerError(status);
+                return;
+            }
         default:
-            break;
+            answerError(error_unknownCommand);
+            return;
         }
 
         Debugln(DEBUG_INFO, F("-> Command finished."));

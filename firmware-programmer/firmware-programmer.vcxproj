@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper.h" />
+    <ClInclude Include="i2c_enums.h" />
     <ClInclude Include="src\debug.h" />
     <ClInclude Include="src\programmer\bbprogrammer.h" />
     <ClInclude Include="src\programmer\signatues.h" />
