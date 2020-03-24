@@ -10,6 +10,7 @@
 
 #define DISPLAY_COLUMNS 128
 #define DISPLAY_ROWS 8
+#define DISPLAY_COLUMNS_FONT 5
 
 // Forward decleration
 class PageManager;

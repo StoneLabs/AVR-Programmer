@@ -127,7 +127,6 @@
     <ClInclude Include="src\pages\readFusesPage.h" />
     <ClInclude Include="src\pages\signatureInitPage.h" />
     <ClInclude Include="src\pages\signaturePage.h" />
-    <ClInclude Include="src\pages\mainInitPage.h" />
     <ClInclude Include="src\pages\loadingPage.h" />
     <ClInclude Include="src\pages\emptyPage.h" />
     <ClInclude Include="src\pages\delayPage.h" />
@@ -153,7 +152,6 @@
     <ClCompile Include="src\pages\readFusesPage.cpp" />
     <ClCompile Include="src\pages\signatureInitPage.cpp" />
     <ClCompile Include="src\pages\signaturePage.cpp" />
-    <ClCompile Include="src\pages\mainInitPage.cpp" />
     <ClCompile Include="src\pages\loadingPage.cpp" />
     <ClCompile Include="src\pages\emptyPage.cpp" />
     <ClCompile Include="src\pages\delayPage.cpp" />

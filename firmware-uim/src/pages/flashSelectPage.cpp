@@ -28,7 +28,7 @@ void FlashSelectPage::confirm()
         this->pageManager->changePage(new FlashInitPage(this->pageManager));
         break;
     case 2:
-        this->pageManager->changePage(new MainInitPage(this->pageManager));
+        this->pageManager->changePage(new MainPage(this->pageManager));
         break;
     default:
         break;

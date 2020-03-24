@@ -22,6 +22,7 @@ void FlashSelectInitPage::update()
 
 			this->pageManager->changePage(
 				new FlashSelectPage(this->pageManager, fileName));
+			return;
 		}
 		else
 		{

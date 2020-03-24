@@ -10,12 +10,20 @@
 #include "../../I2CHelper.h"
 #include "../pageManager.h"
 #include "loadingPage.h"
-#include "mainInitPage.h"
+#include "mainPage.h"
+
+#define SPLASH_SCREEN
 
 class BootPage : public LoadingPage
 {
+private:
+	bool programmerOn = false;
+	unsigned long startTime = 0;
+	unsigned long minDelay = 0;
+	Answer answer;
+
 public:
-	BootPage(PageManager* manager);
+	BootPage(PageManager* manager, unsigned long minSplashTime = 0);
 
 	void init() override;
 	void update() override;

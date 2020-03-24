@@ -12,7 +12,7 @@ ReadFusesPage::ReadFusesPage(PageManager* manager, byte lowFuse, byte highFuse, 
 
 void ReadFusesPage::confirm()
 {
-	this->pageManager->changePage(new MainInitPage(this->pageManager));
+	this->pageManager->changePage(new MainPage(this->pageManager));
 }
 
 void ReadFusesPage::initRender(SSD1306Ascii* display)

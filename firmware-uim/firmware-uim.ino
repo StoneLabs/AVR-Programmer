@@ -28,9 +28,10 @@ void setup() {
     PCIFR |= bit(PCIF2);    // clear any outstanding interrupts on Interrupt block 2
     PCICR |= bit(PCIE2);    // enable pin change interrupts on Interrupt block 2 (D0-7)
 
-    // Setup page manager with init page as start page
+    // Setup page manager with boot page as start page.
+    // Minimum welcome screen duration 3 seconds.
     ui = new PageManager(&display);
-    ui->changePage(new BootPage(ui));
+    ui->changePage(new BootPage(ui, 3000));
 }
 
 bool press5 = false, press6 = false, press7 = false;
