@@ -1,3 +1,8 @@
+#define XSTR(s) STR(s)
+#define STR(s) #s
+
+#define __PVERSION__ "v-1.0"
+
 #include "src/page.h"
 #include "src/pageManager.h"
 #include "src/pages/bootPage.h"
@@ -14,7 +19,10 @@ void setup() {
     while (!Serial) {};
     
     // Connect screen
-    Serial.println(F("Welcome. STONE LABS(TM)"));
+    Serial.println(F("\n\nStone Labs. Smart ISP"));
+    Serial.println(F("SmartISP - User Interface Module"));
+    Serial.println(F("Verion " XSTR(__PVERSION__) " compiled at " __DATE__ " " __TIME__ " using Arduino IDE version " XSTR(ARDUINO)  " Debug level " XSTR(DEBUG)));
+
     display.begin(&Adafruit128x64, 0x3C);
     display.setFont(Adafruit5x7);
     

@@ -1,7 +1,7 @@
 #define XSTR(s) STR(s)
 #define STR(s) #s
 
-#define __PVERSION__ "pre-0.01"
+#define __PVERSION__ "v-1.0"
 
 // External Dependencies
 #include <SPI.h>
@@ -48,6 +48,7 @@ void setup() {
     while (!Serial) {}
 
     Debugln(DEBUG_INFO, F("\n\nStone Labs. Smart ISP"));
+    Debugln(DEBUG_INFO, F("SmartISP - Programmer Module"));
     Debugln(DEBUG_INFO, F("Verion " XSTR(__PVERSION__) " compiled at " __DATE__ " " __TIME__ " using Arduino IDE version " XSTR(ARDUINO)  " Debug level " XSTR(DEBUG)));
 
     Debugln(DEBUG_INFO, F("\n-> Starting I2C slave mode."));
