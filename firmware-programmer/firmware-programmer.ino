@@ -42,7 +42,10 @@ enum : byte
     cmd_flashFile = 0x21,
 };
 
-
+typedef struct {
+    byte cmd;
+    byte data[31];
+} Command;
 typedef struct {
     bool busy;
     byte cmd;
@@ -52,6 +55,7 @@ typedef struct {
 
 
 // Global variables
+Command command;
 Answer answer;
 SdFat sd;
 SdFile file;
@@ -238,21 +242,28 @@ void loop()
 }
 
 // Interrupt handler
-
 void receiveEvent(int HowMany)
 {
-    if (HowMany != 1 || answer.busy == true)
+    if (HowMany != sizeof(command) || answer.busy == true)
         return;
+
+    // Read incoming bytes to command
+    // Clearing command argument buffer is not needed
+    // as it will be overwritten anyway.
+    byte* p = (byte*)&command;
+    for (unsigned int i = 0; i < sizeof command; i++)
+        *(p++) = Wire.read();
 
     // Clear error byte and busy bit
     answer.busy = true;
     answer.error = 0x00;
 
+    // Set response command to incoming command
+    answer.cmd = command.cmd;
+
     // Clear response array
     for (int i = 0; i < 28; i++)
         answer.data[i] = 0x00;
-
-    answer.cmd = Wire.read();
 }
 
 void requestEvent()

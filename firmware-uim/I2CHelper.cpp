@@ -2,13 +2,34 @@
 
 void programmer_request(byte command)
 {
-#if DEBUG
-    Serial.print(F("-> 0x"));
-    Serial.println(command, HEX);
-#endif
+    Command sendCommand;
+    sendCommand.cmd = command;
+
+    // Send no arguments by default
+    for (unsigned int i = 0; i < COMMAND_DATASIZE; i++)
+        sendCommand.data[i] = 0x00;
+    
+    // Commit request
+    programmer_request(sendCommand);
+}
+
+void programmer_request(Command& command)
+{
+
+    #if DEBUG
+        Serial.print(F("\n-> CMD=0x"));
+        Serial.print(command.cmd, HEX);
+        Serial.print(F(" DATA="));
+        for (int i = 0; i < COMMAND_DATASIZE; i++)
+        {
+            Serial.print(" 0x");
+            Serial.print(command.data[i], HEX);
+        }
+        Serial.println();
+    #endif
     // Send command to Programmer
     Wire.beginTransmission(PROGRAMMER_ADDRESS);
-    Wire.write(command);
+    Wire.write((byte*)&command, sizeof(command));
     Wire.endTransmission();
 }
 
@@ -30,7 +51,7 @@ bool programmer_answer(Answer& value)
     Serial.print(F(" CMD=0x"));
     Serial.print(value.cmd, HEX);
     Serial.print(F(" DATA="));
-    for (int i = 0; i < PROGRAMMER_DATASIZE; i++)
+    for (int i = 0; i < ANSWER_DATASIZE; i++)
     {
         Serial.print(" 0x");
         Serial.print(value.data[i], HEX);
