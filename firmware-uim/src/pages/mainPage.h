@@ -13,6 +13,7 @@
 #include "eraseInitPage.h"
 #include "readFusesInitPage.h"
 #include "flashSelectInitPage.h"
+#include "writeFuseSelectPage.h"
 
 class MainPage : public TabPage
 {
