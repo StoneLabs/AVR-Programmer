@@ -1083,6 +1083,8 @@ www.isabellenhuette.de&lt;p&gt;
 <sheets>
 <sheet>
 <plain>
+<text x="170.18" y="-5.08" size="1.778" layer="91">SD-CARD</text>
+<text x="220.98" y="-2.54" size="1.778" layer="91">OLED</text>
 </plain>
 <instances>
 <instance part="PROGRAMMER" gate="G$1" x="187.96" y="68.58" smashed="yes" rot="MR0">
@@ -1128,33 +1130,6 @@ www.isabellenhuette.de&lt;p&gt;
 <wire x1="53.34" y1="96.52" x2="58.42" y2="96.52" width="0.1524" layer="91"/>
 <pinref part="PROGRAMMER" gate="G$1" pin="D4"/>
 <wire x1="160.02" y1="86.36" x2="175.26" y2="86.36" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$2" class="0">
-<segment>
-<pinref part="TARGET" gate="1" pin="PB2(SS/OC1B/PCINT2)"/>
-<wire x1="119.38" y1="45.72" x2="154.94" y2="45.72" width="0.1524" layer="91"/>
-<wire x1="154.94" y1="45.72" x2="154.94" y2="83.82" width="0.1524" layer="91"/>
-<pinref part="PROGRAMMER" gate="G$1" pin="*D5"/>
-<wire x1="154.94" y1="83.82" x2="175.26" y2="83.82" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$3" class="0">
-<segment>
-<pinref part="TARGET" gate="1" pin="PB3(MOSI/OC2A/PCINT3)"/>
-<wire x1="119.38" y1="43.18" x2="157.48" y2="43.18" width="0.1524" layer="91"/>
-<wire x1="157.48" y1="43.18" x2="157.48" y2="81.28" width="0.1524" layer="91"/>
-<pinref part="PROGRAMMER" gate="G$1" pin="*D6"/>
-<wire x1="157.48" y1="81.28" x2="175.26" y2="81.28" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$4" class="0">
-<segment>
-<pinref part="TARGET" gate="1" pin="PB4(MISO/PCINT4)"/>
-<wire x1="119.38" y1="40.64" x2="160.02" y2="40.64" width="0.1524" layer="91"/>
-<pinref part="PROGRAMMER" gate="G$1" pin="D7"/>
-<wire x1="160.02" y1="40.64" x2="160.02" y2="78.74" width="0.1524" layer="91"/>
-<wire x1="160.02" y1="78.74" x2="175.26" y2="78.74" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$5" class="0">
@@ -1311,6 +1286,33 @@ www.isabellenhuette.de&lt;p&gt;
 <pinref part="LEFT" gate="G$1" pin="P$2"/>
 <wire x1="269.24" y1="83.82" x2="302.26" y2="83.82" width="0.1524" layer="91"/>
 <wire x1="302.26" y1="83.82" x2="302.26" y2="78.74" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$2" class="0">
+<segment>
+<pinref part="PROGRAMMER" gate="G$1" pin="D7"/>
+<wire x1="175.26" y1="78.74" x2="160.02" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="78.74" x2="160.02" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="TARGET" gate="1" pin="PB5(SCK/PCINT5)"/>
+<wire x1="160.02" y1="38.1" x2="119.38" y2="38.1" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$3" class="0">
+<segment>
+<pinref part="TARGET" gate="1" pin="PB4(MISO/PCINT4)"/>
+<wire x1="119.38" y1="40.64" x2="157.48" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="157.48" y1="40.64" x2="157.48" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="PROGRAMMER" gate="G$1" pin="*D6"/>
+<wire x1="157.48" y1="81.28" x2="175.26" y2="81.28" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$4" class="0">
+<segment>
+<pinref part="TARGET" gate="1" pin="PB3(MOSI/OC2A/PCINT3)"/>
+<wire x1="119.38" y1="43.18" x2="154.94" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="154.94" y1="43.18" x2="154.94" y2="83.82" width="0.1524" layer="91"/>
+<pinref part="PROGRAMMER" gate="G$1" pin="*D5"/>
+<wire x1="154.94" y1="83.82" x2="175.26" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
