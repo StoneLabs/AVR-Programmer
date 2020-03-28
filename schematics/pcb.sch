@@ -72,7 +72,12 @@
 <layer number="97" name="Info" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="98" name="Guide" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="100" name="Mechanical" color="13" fill="1" visible="yes" active="yes"/>
+<layer number="144" name="DrillLegend" color="7" fill="1" visible="no" active="yes"/>
+<layer number="145" name="DrillLegend_01-16" color="2" fill="9" visible="no" active="yes"/>
+<layer number="146" name="DrillLegend_01-20" color="3" fill="9" visible="no" active="yes"/>
 <layer number="200" name="200bmp" color="1" fill="10" visible="no" active="no"/>
+<layer number="250" name="Descript" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="251" name="SMDround" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
 <schematic xreflabel="%F%N/%S.%C%R" xrefpart="/%S.%C%R">
 <libraries>
@@ -8881,6 +8886,354 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 </deviceset>
 </devicesets>
 </library>
+<library name="Wurth_Switch_WS-SLTV" urn="urn:adsk.eagle:library:18255059">
+<description>&lt;BR&gt;Wurth Elektronik - Switches - Slide Switches - WS-SLTV&lt;br&gt;&lt;Hr&gt;
+
+&lt;BR&gt;
+&lt;TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0&gt;
+&lt;TR&gt;   
+&lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;&lt;BR&gt;&lt;br&gt;
+      &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&lt;BR&gt;
+       &lt;BR&gt;
+       &lt;BR&gt;
+       &lt;BR&gt;&lt;BR&gt;&lt;/FONT&gt;
+    &lt;/TD&gt;
+&lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;&lt;br&gt;
+      -----&lt;BR&gt;
+      -----&lt;BR&gt;
+      -----&lt;BR&gt;
+      -----&lt;BR&gt;
+      -----&lt;BR&gt;&lt;BR&gt;&lt;/FONT&gt;
+    &lt;/TD&gt;
+    &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt; &lt;FONT FACE=ARIAL SIZE=3&gt;&lt;br&gt;
+      ---------------------------&lt;BR&gt;
+&lt;B&gt;&lt;I&gt;&lt;span style='font-size:26pt;
+  color:#FF6600;'&gt;WE &lt;/span&gt;&lt;/i&gt;&lt;/b&gt;
+&lt;BR&gt;
+      ---------------------------&lt;BR&gt;&lt;b&gt;Würth Elektronik&lt;/b&gt;&lt;/FONT&gt;
+    &lt;/TD&gt;
+    &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;&lt;br&gt;
+      ---------O---&lt;BR&gt;
+      ----O--------&lt;BR&gt;
+      ---------O---&lt;BR&gt;
+      ----O--------&lt;BR&gt;
+      ---------O---&lt;BR&gt;&lt;BR&gt;&lt;/FONT&gt;
+    &lt;/TD&gt;
+   
+&lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;&lt;BR&gt;
+      &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&lt;BR&gt;
+       &lt;BR&gt;
+       &lt;BR&gt;
+       &lt;BR&gt;
+       &lt;BR&gt;&lt;BR&gt;&lt;/FONT&gt;
+    &lt;/TD&gt;
+  &lt;/TR&gt;
+
+  &lt;TR&gt;
+    &lt;TD COLSPAN=7&gt;&amp;nbsp;
+    &lt;/TD&gt;
+  &lt;/TR&gt;
+  
+&lt;/TABLE&gt;
+&lt;B&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;More than you expect&lt;BR&gt;&lt;BR&gt;&lt;BR&gt;&lt;/B&gt;
+
+&lt;HR&gt;&lt;BR&gt;
+&lt;b&gt;Würth Elektronik eiSos GmbH &amp; Co. KG&lt;/b&gt;&lt;br&gt;
+EMC &amp; Inductive Solutions&lt;br&gt;
+
+Max-Eyth-Str.1&lt;br&gt;
+D-74638 Waldenburg&lt;br&gt;
+&lt;br&gt;
+Tel: +49 (0)7942-945-0&lt;br&gt;
+Fax:+49 (0)7942-945-5000&lt;br&gt;
+&lt;br&gt;
+&lt;a href="http://www.we-online.com/web/en/electronic_components/produkte_pb/bauteilebibliotheken/eagle_4.php"&gt;www.we-online.com/eagle&lt;/a&gt;&lt;br&gt;
+&lt;a href="mailto:libraries@we-online.com"&gt;libraries@we-online.com&lt;/a&gt; &lt;BR&gt;&lt;BR&gt;
+&lt;br&gt;&lt;HR&gt;&lt;BR&gt;
+Neither Autodesk nor Würth Elektronik eiSos does warrant that this library is error-free or &lt;br&gt;
+that it meets your specific requirements.&lt;br&gt;&lt;BR&gt;
+Please contact us for more information.&lt;br&gt;
+&lt;HR&gt;
+&lt;br&gt;Eagle Version 9, Library Revision 2020a, 2020-02-24&lt;br&gt;
+&lt;HR&gt;
+Copyright: Würth Elektronik</description>
+<packages>
+<package name="452404020202" urn="urn:adsk.eagle:footprint:18255060/1" library_version="2">
+<description>&lt;b&gt;WS-SLTV&lt;/b&gt;&lt;br&gt;THT Mini Slide Switch, Same Side Connection 9.0x3.5 mm</description>
+<pad name="1" x="2.5" y="1.65" drill="0.9"/>
+<pad name="2" x="0" y="1.65" drill="0.9"/>
+<pad name="3" x="-2.5" y="1.65" drill="0.9"/>
+<pad name="4" x="2.5" y="-1.65" drill="0.9"/>
+<pad name="5" x="0" y="-1.65" drill="0.9"/>
+<pad name="6" x="-2.5" y="-1.65" drill="0.9"/>
+<wire x1="-4.5" y1="1.75" x2="4.5" y2="1.75" width="0.1" layer="51"/>
+<wire x1="4.5" y1="1.75" x2="4.5" y2="-1.75" width="0.1" layer="51"/>
+<wire x1="4.5" y1="-1.75" x2="-4.5" y2="-1.75" width="0.1" layer="51"/>
+<wire x1="-4.5" y1="-1.75" x2="-4.5" y2="1.75" width="0.1" layer="51"/>
+<wire x1="-3.5" y1="1.85" x2="-4.6" y2="1.85" width="0.2" layer="21"/>
+<wire x1="-4.6" y1="1.85" x2="-4.6" y2="-1.85" width="0.2" layer="21"/>
+<wire x1="-4.6" y1="-1.85" x2="-3.4" y2="-1.85" width="0.2" layer="21"/>
+<wire x1="3.5" y1="1.85" x2="4.6" y2="1.85" width="0.2" layer="21"/>
+<wire x1="4.6" y1="1.85" x2="4.6" y2="-1.85" width="0.2" layer="21"/>
+<wire x1="4.6" y1="-1.85" x2="3.4" y2="-1.85" width="0.2" layer="21"/>
+<wire x1="-1.5" y1="-1.85" x2="-1" y2="-1.85" width="0.2" layer="21"/>
+<wire x1="1" y1="-1.85" x2="1.5" y2="-1.85" width="0.2" layer="21"/>
+<wire x1="1.5" y1="1.85" x2="1" y2="1.85" width="0.2" layer="21"/>
+<wire x1="-1" y1="1.85" x2="-1.5" y2="1.85" width="0.2" layer="21"/>
+<polygon width="0.1" layer="39">
+<vertex x="-4.8" y="2.55"/>
+<vertex x="4.8" y="2.55"/>
+<vertex x="4.8" y="-2.55"/>
+<vertex x="-4.8" y="-2.55"/>
+</polygon>
+<text x="0" y="3.34" size="0.8128" layer="25" align="bottom-center">&gt;NAME</text>
+<text x="-2.4" y="-3.7" size="0.8128" layer="27">&gt;VALUE</text>
+<circle x="3.45" y="0.75" radius="0.1" width="0.2" layer="21"/>
+</package>
+</packages>
+<packages3d>
+<package3d name="452404020202" urn="urn:adsk.eagle:package:18255064/2" type="model" library_version="2">
+<description>&lt;b&gt;WS-SLTV&lt;/b&gt;&lt;br&gt;THT Mini Slide Switch, Same Side Connection 9.0x3.5 mm</description>
+<packageinstances>
+<packageinstance name="452404020202"/>
+</packageinstances>
+</package3d>
+</packages3d>
+<symbols>
+<symbol name="WS-SLTX2" urn="urn:adsk.eagle:symbol:18255062/1" library_version="2">
+<description>WS-SLTX2</description>
+<circle x="1.905" y="0" radius="0.508" width="0.254" layer="94"/>
+<circle x="1.905" y="-2.54" radius="0.508" width="0.254" layer="94"/>
+<circle x="1.905" y="2.54" radius="0.508" width="0.254" layer="94"/>
+<circle x="1.905" y="-5.08" radius="0.508" width="0.254" layer="94"/>
+<pin name="1" x="5.08" y="2.54" visible="pad" length="short" direction="pas" rot="R180"/>
+<pin name="COM" x="-5.08" y="2.54" visible="pad" length="short" direction="pas"/>
+<pin name="3" x="5.08" y="0" visible="pad" length="short" direction="pas" rot="R180"/>
+<pin name="4" x="5.08" y="-2.54" visible="pad" length="short" direction="pas" rot="R180"/>
+<pin name="COM1" x="-5.08" y="-2.54" visible="pad" length="short" direction="pas"/>
+<pin name="6" x="5.08" y="-5.08" visible="pad" length="short" direction="pas" rot="R180"/>
+<text x="1.727" y="5.134" size="1.27" layer="95" align="bottom-center">&gt;NAME</text>
+<text x="-2.01" y="-7.674" size="1.27" layer="96">&gt;VALUE</text>
+<text x="-3.9" y="0.46" size="1.27" layer="94">com</text>
+<text x="-3.9" y="-4.76" size="1.27" layer="94">com</text>
+<wire x1="-1.71" y1="2.93" x2="1.42" y2="0.17" width="0.254" layer="94"/>
+<wire x1="-1.77" y1="-2.16" x2="1.36" y2="-5.16" width="0.254" layer="94"/>
+<wire x1="0.26" y1="1.1" x2="0.26" y2="-3.94" width="0.254" layer="94" style="shortdash"/>
+<polygon width="0.254" layer="94">
+<vertex x="-2.032" y="2.032" curve="-90"/>
+<vertex x="-2.54" y="2.54" curve="-90"/>
+<vertex x="-2.032" y="3.048" curve="-90"/>
+<vertex x="-1.524" y="2.54" curve="-90"/>
+</polygon>
+<polygon width="0.254" layer="94">
+<vertex x="-2.032" y="-3.048" curve="-90"/>
+<vertex x="-2.54" y="-2.54" curve="-90"/>
+<vertex x="-2.032" y="-2.032" curve="-90"/>
+<vertex x="-1.524" y="-2.54" curve="-90"/>
+</polygon>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="452404020202" urn="urn:adsk.eagle:component:18255066/2" prefix="S" uservalue="yes" library_version="2">
+<description>&lt;b&gt;WS-SLTV THT Mini Slide Switch, Same Side Connection 9.0x3.5 mm &lt;/B&gt;&lt;BR&gt;&lt;BR&gt;
+
+&lt;B&gt;Properties&lt;/B&gt;&lt;BR&gt;
+&lt;BR&gt;Actuator Material:PA9T
+&lt;BR&gt;Actuator Flammability Rating:UL94 HB
+&lt;BR&gt;Actuator Color:Black
+&lt;BR&gt;Frame Material:LCP
+&lt;BR&gt;Frame Flammability Rating:UL94 V-0
+&lt;BR&gt;Frame Color:Black
+&lt;BR&gt;Contact Material:Copper Alloy
+&lt;BR&gt;Contact Plating:Silver
+&lt;BR&gt;Terminal Material:Copper Alloy
+&lt;BR&gt;Terminal Plating:Silver
+&lt;BR&gt;Schematic:DPDT
+&lt;BR&gt;Switching Function:On-On
+&lt;BR&gt;Connection Type:Same Side Connection
+&lt;BR&gt;Operating Temperature:-40 up to +85 °C
+&lt;BR&gt;Qty.:200
+&lt;BR&gt;&lt;BR&gt;
+&lt;B&gt;Material Properties&lt;/B&gt;
+&lt;BR&gt;Cover Material :Stainless Steel
+&lt;BR&gt;&lt;BR&gt;
+&lt;BR&gt;
+&lt;B&gt;Mechanical Properties&lt;/B&gt;
+&lt;BR&gt;Electrical Life:2000 Steps
+&lt;BR&gt;Switching Function:On-On
+&lt;BR&gt;Connection Type:Same Side Connection
+&lt;BR&gt;&lt;BR&gt;
+&lt;B&gt;Packaging Properties&lt;/B&gt;
+&lt;BR&gt;Packaging :Bulk
+&lt;BR&gt;&lt;BR&gt;
+&lt;br&gt;&lt;a href="https://www.we-online.com/catalog/media/o107346v209%20Family_WS-SLTV_452404020202.jpg" title="Enlarge picture"&gt;
+&lt;img src="https://www.we-online.com/catalog/media/o107346v209%20Family_WS-SLTV_452404020202.jpg"  width="320"&gt;&lt;/a&gt;&lt;p&gt;
+
+&lt;/b&gt;&lt;br&gt;            
+Details see: &lt;a href="https://www.we-online.com/catalog/en/SLTV_9X3_5_THT/"&gt;https://www.we-online.com/catalog/en/SLTV_9X3_5_THT/&lt;/a&gt;&lt;p&gt;
+&lt;br&gt;Updated by yingchun,Shan;2020-02-24
+&lt;br&gt;2020(C) Würth Elektronik</description>
+<gates>
+<gate name="G$1" symbol="WS-SLTX2" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="452404020202">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="3" pad="3"/>
+<connect gate="G$1" pin="4" pad="4"/>
+<connect gate="G$1" pin="6" pad="6"/>
+<connect gate="G$1" pin="COM" pad="2"/>
+<connect gate="G$1" pin="COM1" pad="5"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:18255064/2"/>
+</package3dinstances>
+<technologies>
+<technology name="">
+<attribute name="DATASHEET-URL" value="https://www.we-online.com/catalog/datasheet/452404020202.pdf" constant="no"/>
+<attribute name="PACKAGING" value="Bulk" constant="no"/>
+<attribute name="PART-NUMBER" value="452404020202" constant="no"/>
+<attribute name="QTY" value=" 200 " constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
+<library name="con-wago-500" urn="urn:adsk.eagle:library:195">
+<description>&lt;b&gt;Wago Screw Clamps&lt;/b&gt;&lt;p&gt;
+Grid 5.00 mm&lt;p&gt;
+&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
+<packages>
+<package name="W237-102" urn="urn:adsk.eagle:footprint:10676/1" library_version="2">
+<description>&lt;b&gt;WAGO SCREW CLAMP&lt;/b&gt;</description>
+<wire x1="-3.491" y1="-2.286" x2="-1.484" y2="-0.279" width="0.254" layer="51"/>
+<wire x1="1.488" y1="-2.261" x2="3.469" y2="-0.254" width="0.254" layer="51"/>
+<wire x1="-4.989" y1="-5.461" x2="4.993" y2="-5.461" width="0.1524" layer="21"/>
+<wire x1="4.993" y1="3.734" x2="4.993" y2="3.531" width="0.1524" layer="21"/>
+<wire x1="4.993" y1="3.734" x2="-4.989" y2="3.734" width="0.1524" layer="21"/>
+<wire x1="-4.989" y1="-5.461" x2="-4.989" y2="-3.073" width="0.1524" layer="21"/>
+<wire x1="-4.989" y1="-3.073" x2="-3.389" y2="-3.073" width="0.1524" layer="21"/>
+<wire x1="-3.389" y1="-3.073" x2="-1.611" y2="-3.073" width="0.1524" layer="51"/>
+<wire x1="-1.611" y1="-3.073" x2="1.615" y2="-3.073" width="0.1524" layer="21"/>
+<wire x1="3.393" y1="-3.073" x2="4.993" y2="-3.073" width="0.1524" layer="21"/>
+<wire x1="-4.989" y1="-3.073" x2="-4.989" y2="3.531" width="0.1524" layer="21"/>
+<wire x1="4.993" y1="-3.073" x2="4.993" y2="-5.461" width="0.1524" layer="21"/>
+<wire x1="-4.989" y1="3.531" x2="4.993" y2="3.531" width="0.1524" layer="21"/>
+<wire x1="-4.989" y1="3.531" x2="-4.989" y2="3.734" width="0.1524" layer="21"/>
+<wire x1="4.993" y1="3.531" x2="4.993" y2="-3.073" width="0.1524" layer="21"/>
+<wire x1="1.615" y1="-3.073" x2="3.393" y2="-3.073" width="0.1524" layer="51"/>
+<circle x="-2.5" y="-1.27" radius="1.4986" width="0.1524" layer="51"/>
+<circle x="-2.5" y="2.2098" radius="0.508" width="0.1524" layer="21"/>
+<circle x="2.5038" y="-1.27" radius="1.4986" width="0.1524" layer="51"/>
+<circle x="2.5038" y="2.2098" radius="0.508" width="0.1524" layer="21"/>
+<pad name="1" x="-2.5" y="-1.27" drill="1.1938" shape="long" rot="R90"/>
+<pad name="2" x="2.5" y="-1.27" drill="1.1938" shape="long" rot="R90"/>
+<text x="-5.04" y="-7.62" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
+<text x="-3.8462" y="-5.0038" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+<text x="-4.532" y="0.635" size="1.27" layer="21" ratio="10">1</text>
+<text x="0.421" y="0.635" size="1.27" layer="21" ratio="10">2</text>
+</package>
+</packages>
+<packages3d>
+<package3d name="W237-102" urn="urn:adsk.eagle:package:10688/1" type="box" library_version="2">
+<description>WAGO SCREW CLAMP</description>
+<packageinstances>
+<packageinstance name="W237-102"/>
+</packageinstances>
+</package3d>
+</packages3d>
+<symbols>
+<symbol name="KL" urn="urn:adsk.eagle:symbol:10675/1" library_version="2">
+<circle x="1.27" y="0" radius="1.27" width="0.254" layer="94"/>
+<text x="0" y="0.889" size="1.778" layer="95" rot="R180">&gt;NAME</text>
+<pin name="KL" x="5.08" y="0" visible="off" length="short" direction="pas" rot="R180"/>
+</symbol>
+<symbol name="KL+V" urn="urn:adsk.eagle:symbol:10673/1" library_version="2">
+<circle x="1.27" y="0" radius="1.27" width="0.254" layer="94"/>
+<text x="-2.54" y="-3.683" size="1.778" layer="96">&gt;VALUE</text>
+<text x="0" y="0.889" size="1.778" layer="95" rot="R180">&gt;NAME</text>
+<pin name="KL" x="5.08" y="0" visible="off" length="short" direction="pas" rot="R180"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="W237-102" urn="urn:adsk.eagle:component:10702/2" prefix="X" uservalue="yes" library_version="2">
+<description>&lt;b&gt;WAGO SCREW CLAMP&lt;/b&gt;</description>
+<gates>
+<gate name="-1" symbol="KL" x="0" y="5.08" addlevel="always"/>
+<gate name="-2" symbol="KL+V" x="0" y="0" addlevel="always"/>
+</gates>
+<devices>
+<device name="" package="W237-102">
+<connects>
+<connect gate="-1" pin="KL" pad="1"/>
+<connect gate="-2" pin="KL" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:10688/1"/>
+</package3dinstances>
+<technologies>
+<technology name="">
+<attribute name="MF" value="" constant="no"/>
+<attribute name="MPN" value="237-102" constant="no"/>
+<attribute name="OC_FARNELL" value="unknown" constant="no"/>
+<attribute name="OC_NEWARK" value="70K9898" constant="no"/>
+<attribute name="POPULARITY" value="32" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
+<library name="Parts">
+<packages>
+<package name="128X64-I2C-OLED">
+<pad name="SCL" x="0" y="0" drill="0.6" shape="square"/>
+<pad name="VCC" x="-2.54" y="0" drill="0.6" shape="square"/>
+<pad name="GND" x="-5.08" y="0" drill="0.6" shape="square"/>
+<pad name="SDA" x="2.54" y="0" drill="0.6" shape="square"/>
+<wire x1="-6.35" y1="1.27" x2="3.81" y2="1.27" width="0.127" layer="21"/>
+<wire x1="3.81" y1="1.27" x2="3.81" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="3.81" y1="-1.27" x2="-6.35" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="-6.35" y1="-1.27" x2="-6.35" y2="1.27" width="0.127" layer="21"/>
+</package>
+</packages>
+<symbols>
+<symbol name="128X64-I2C-OLED">
+<pin name="GND" x="-10.16" y="7.62" length="middle" rot="R270"/>
+<pin name="VCC" x="-5.08" y="7.62" length="middle" rot="R270"/>
+<pin name="SCL" x="0" y="7.62" length="middle" rot="R270"/>
+<pin name="SDA" x="5.08" y="7.62" length="middle" rot="R270"/>
+<wire x1="-12.7" y1="5.08" x2="7.62" y2="5.08" width="0.254" layer="94"/>
+<wire x1="7.62" y1="5.08" x2="7.62" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-5.08" x2="-12.7" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="-5.08" x2="-12.7" y2="5.08" width="0.254" layer="94"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="128X64-I2C-OLED">
+<gates>
+<gate name="G$1" symbol="128X64-I2C-OLED" x="2.54" y="0"/>
+</gates>
+<devices>
+<device name="" package="128X64-I2C-OLED">
+<connects>
+<connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="SCL" pad="SCL"/>
+<connect gate="G$1" pin="SDA" pad="SDA"/>
+<connect gate="G$1" pin="VCC" pad="VCC"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -8894,10 +9247,8 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <part name="PROGRAMMER" library="atmega8" deviceset="ATMEGA48/88/168-PU" device=""/>
 <part name="UIM" library="atmega8" deviceset="ATMEGA48/88/168-PU" device=""/>
 <part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
-<part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -8908,11 +9259,11 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <part name="R5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="P+4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="P+5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
-<part name="Q1" library="special" library_urn="urn:adsk.eagle:library:367" deviceset="XTAL/S" device="" package3d_urn="urn:adsk.eagle:package:26647/2"/>
+<part name="Q1" library="special" library_urn="urn:adsk.eagle:library:367" deviceset="XTAL/S" device="" package3d_urn="urn:adsk.eagle:package:26647/2" value="16Mhz"/>
 <part name="C1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="22pF"/>
 <part name="C2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="22pF"/>
 <part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="Q2" library="special" library_urn="urn:adsk.eagle:library:367" deviceset="XTAL/S" device="" package3d_urn="urn:adsk.eagle:package:26647/2"/>
+<part name="Q2" library="special" library_urn="urn:adsk.eagle:library:367" deviceset="XTAL/S" device="" package3d_urn="urn:adsk.eagle:package:26647/2" value="16Mhz"/>
 <part name="C3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="22pF"/>
 <part name="C4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="22pF"/>
 <part name="GND7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -8937,10 +9288,21 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <part name="C6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="0.1uF"/>
 <part name="GND13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="S1" library="Wurth_Switch_WS-SLTV" library_urn="urn:adsk.eagle:library:18255059" deviceset="452404020202" device="" package3d_urn="urn:adsk.eagle:package:18255064/2" value=" "/>
+<part name="GND15" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="BAT" library="con-wago-500" library_urn="urn:adsk.eagle:library:195" deviceset="W237-102" device="" package3d_urn="urn:adsk.eagle:package:10688/1" value="9V"/>
+<part name="C7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="100nF"/>
+<part name="P+10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
+<part name="GND16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="C8" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="100nF"/>
+<part name="U$1" library="Parts" deviceset="128X64-I2C-OLED" device=""/>
+<part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
 <plain>
+<text x="175.26" y="93.98" size="1.778" layer="95">I2C-OLED</text>
 </plain>
 <instances>
 <instance part="PROGRAMMER" gate="1" x="55.88" y="55.88" smashed="yes">
@@ -8954,38 +9316,32 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <instance part="P+1" gate="1" x="93.98" y="-27.94" smashed="yes" rot="R270">
 <attribute name="VALUE" x="88.9" y="-25.4" size="1.778" layer="96"/>
 </instance>
-<instance part="P+2" gate="1" x="20.32" y="55.88" smashed="yes" rot="R90">
-<attribute name="VALUE" x="25.4" y="53.34" size="1.778" layer="96" rot="R180"/>
-</instance>
-<instance part="P+3" gate="1" x="236.22" y="55.88" smashed="yes" rot="MR90">
-<attribute name="VALUE" x="231.14" y="53.34" size="1.778" layer="96" rot="MR180"/>
+<instance part="P+3" gate="1" x="238.76" y="55.88" smashed="yes" rot="MR90">
+<attribute name="VALUE" x="236.22" y="53.34" size="1.778" layer="96" rot="MR180"/>
 </instance>
 <instance part="GND1" gate="1" x="66.04" y="-43.18" smashed="yes">
 <attribute name="VALUE" x="63.5" y="-45.72" size="1.778" layer="96"/>
 </instance>
-<instance part="GND2" gate="1" x="20.32" y="27.94" smashed="yes" rot="R270">
-<attribute name="VALUE" x="17.78" y="30.48" size="1.778" layer="96" rot="R270"/>
+<instance part="GND3" gate="1" x="238.76" y="27.94" smashed="yes" rot="MR270">
+<attribute name="VALUE" x="241.3" y="30.48" size="1.778" layer="96" rot="MR270"/>
 </instance>
-<instance part="GND3" gate="1" x="236.22" y="27.94" smashed="yes" rot="MR270">
-<attribute name="VALUE" x="238.76" y="30.48" size="1.778" layer="96" rot="MR270"/>
+<instance part="GND4" gate="1" x="147.32" y="91.44" smashed="yes" rot="R180">
+<attribute name="VALUE" x="149.86" y="93.98" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND4" gate="1" x="129.54" y="91.44" smashed="yes" rot="R180">
-<attribute name="VALUE" x="132.08" y="93.98" size="1.778" layer="96" rot="R180"/>
+<instance part="GND5" gate="1" x="139.7" y="91.44" smashed="yes" rot="R180">
+<attribute name="VALUE" x="142.24" y="93.98" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND5" gate="1" x="121.92" y="91.44" smashed="yes" rot="R180">
-<attribute name="VALUE" x="124.46" y="93.98" size="1.778" layer="96" rot="R180"/>
+<instance part="R1" gate="G$1" x="139.7" y="81.28" smashed="yes" rot="R90">
+<attribute name="NAME" x="138.2014" y="77.47" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="143.002" y="77.47" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R1" gate="G$1" x="121.92" y="81.28" smashed="yes" rot="R90">
-<attribute name="NAME" x="120.4214" y="77.47" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="125.222" y="77.47" size="1.778" layer="96" rot="R90"/>
+<instance part="R2" gate="G$1" x="147.32" y="81.28" smashed="yes" rot="R90">
+<attribute name="NAME" x="145.8214" y="77.47" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="150.622" y="77.47" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R2" gate="G$1" x="129.54" y="81.28" smashed="yes" rot="R90">
-<attribute name="NAME" x="128.0414" y="77.47" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="132.842" y="77.47" size="1.778" layer="96" rot="R90"/>
-</instance>
-<instance part="R3" gate="G$1" x="127" y="55.88" smashed="yes">
-<attribute name="NAME" x="123.19" y="57.3786" size="1.778" layer="95"/>
-<attribute name="VALUE" x="123.19" y="52.578" size="1.778" layer="96"/>
+<instance part="R3" gate="G$1" x="144.78" y="55.88" smashed="yes">
+<attribute name="NAME" x="140.97" y="57.3786" size="1.778" layer="95"/>
+<attribute name="VALUE" x="140.97" y="52.578" size="1.778" layer="96"/>
 </instance>
 <instance part="R4" gate="G$1" x="17.78" y="83.82" smashed="yes">
 <attribute name="NAME" x="13.97" y="85.3186" size="1.778" layer="95"/>
@@ -9003,7 +9359,7 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 </instance>
 <instance part="Q1" gate="G$1" x="15.24" y="66.04" smashed="yes" rot="R90">
 <attribute name="NAME" x="11.43" y="60.96" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="20.32" y="60.96" size="1.778" layer="96" rot="R90"/>
+<attribute name="VALUE" x="20.32" y="63.5" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="C1" gate="G$1" x="2.54" y="71.12" smashed="yes" rot="R90">
 <attribute name="NAME" x="2.159" y="72.644" size="1.778" layer="95" rot="R90"/>
@@ -9115,30 +9471,68 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <instance part="GND14" gate="1" x="81.28" y="-43.18" smashed="yes">
 <attribute name="VALUE" x="78.74" y="-45.72" size="1.778" layer="96"/>
 </instance>
+<instance part="S1" gate="G$1" x="22.86" y="-25.4" smashed="yes">
+<attribute name="NAME" x="24.587" y="-20.266" size="1.27" layer="95" align="bottom-center"/>
+<attribute name="VALUE" x="20.85" y="-33.074" size="1.27" layer="96"/>
+</instance>
+<instance part="GND15" gate="1" x="20.32" y="-35.56" smashed="yes" rot="R90">
+<attribute name="VALUE" x="22.86" y="-38.1" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="BAT" gate="-1" x="5.08" y="-27.94" smashed="yes">
+<attribute name="NAME" x="5.08" y="-27.051" size="1.778" layer="95" rot="R180"/>
+</instance>
+<instance part="BAT" gate="-2" x="5.08" y="-35.56" smashed="yes">
+<attribute name="VALUE" x="2.54" y="-39.243" size="1.778" layer="96"/>
+<attribute name="NAME" x="5.08" y="-34.671" size="1.778" layer="95" rot="R180"/>
+</instance>
+<instance part="C7" gate="G$1" x="233.68" y="40.64" smashed="yes">
+<attribute name="NAME" x="235.204" y="41.021" size="1.778" layer="95"/>
+<attribute name="VALUE" x="235.204" y="35.941" size="1.778" layer="96"/>
+</instance>
+<instance part="P+10" gate="1" x="17.78" y="55.88" smashed="yes" rot="R90">
+<attribute name="VALUE" x="20.32" y="53.34" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="GND16" gate="1" x="17.78" y="27.94" smashed="yes" rot="R270">
+<attribute name="VALUE" x="15.24" y="30.48" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="C8" gate="G$1" x="22.86" y="40.64" smashed="yes" rot="MR0">
+<attribute name="NAME" x="21.336" y="41.021" size="1.778" layer="95" rot="MR0"/>
+<attribute name="VALUE" x="21.336" y="35.941" size="1.778" layer="96" rot="MR0"/>
+</instance>
+<instance part="U$1" gate="G$1" x="180.34" y="104.14" smashed="yes" rot="MR270"/>
+<instance part="GND2" gate="1" x="160.02" y="114.3" smashed="yes" rot="R270">
+<attribute name="VALUE" x="157.48" y="116.84" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="P+2" gate="1" x="160.02" y="109.22" smashed="yes" rot="R90">
+<attribute name="VALUE" x="157.48" y="109.22" size="1.778" layer="96" rot="R270"/>
+</instance>
 </instances>
 <busses>
 </busses>
 <nets>
 <net name="GND" class="0">
 <segment>
-<pinref part="GND2" gate="1" pin="GND"/>
-<pinref part="PROGRAMMER" gate="1" pin="GND@1"/>
-<wire x1="22.86" y1="27.94" x2="25.4" y2="27.94" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="GND3" gate="1" pin="GND"/>
 <pinref part="UIM" gate="1" pin="GND@1"/>
+<wire x1="236.22" y1="27.94" x2="233.68" y2="27.94" width="0.1524" layer="91"/>
+<pinref part="UIM" gate="1" pin="AGND"/>
 <wire x1="233.68" y1="27.94" x2="231.14" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="231.14" y1="33.02" x2="233.68" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="233.68" y1="33.02" x2="233.68" y2="27.94" width="0.1524" layer="91"/>
+<junction x="233.68" y="27.94"/>
+<pinref part="C7" gate="G$1" pin="2"/>
+<wire x1="233.68" y1="35.56" x2="233.68" y2="33.02" width="0.1524" layer="91"/>
+<junction x="233.68" y="33.02"/>
 </segment>
 <segment>
 <pinref part="GND5" gate="1" pin="GND"/>
 <pinref part="R1" gate="G$1" pin="2"/>
-<wire x1="121.92" y1="88.9" x2="121.92" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="88.9" x2="139.7" y2="86.36" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="R2" gate="G$1" pin="2"/>
 <pinref part="GND4" gate="1" pin="GND"/>
-<wire x1="129.54" y1="86.36" x2="129.54" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="86.36" x2="147.32" y2="88.9" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C1" gate="G$1" pin="1"/>
@@ -9209,17 +9603,40 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <pinref part="GND14" gate="1" pin="GND"/>
 <wire x1="81.28" y1="-38.1" x2="81.28" y2="-40.64" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="BAT" gate="-2" pin="KL"/>
+<pinref part="GND15" gate="1" pin="GND"/>
+<wire x1="10.16" y1="-35.56" x2="17.78" y2="-35.56" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND16" gate="1" pin="GND"/>
+<wire x1="20.32" y1="27.94" x2="22.86" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="27.94" x2="25.4" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="33.02" x2="22.86" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="33.02" x2="22.86" y2="27.94" width="0.1524" layer="91"/>
+<junction x="22.86" y="27.94"/>
+<pinref part="C8" gate="G$1" pin="2"/>
+<wire x1="22.86" y1="35.56" x2="22.86" y2="33.02" width="0.1524" layer="91"/>
+<junction x="22.86" y="33.02"/>
+<pinref part="PROGRAMMER" gate="1" pin="GND@1"/>
+<pinref part="PROGRAMMER" gate="1" pin="AGND"/>
+</segment>
+<segment>
+<pinref part="GND2" gate="1" pin="GND"/>
+<pinref part="U$1" gate="G$1" pin="GND"/>
+<wire x1="162.56" y1="114.3" x2="172.72" y2="114.3" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="+5V" class="0">
 <segment>
-<pinref part="P+2" gate="1" pin="+5V"/>
-<pinref part="PROGRAMMER" gate="1" pin="VCC@1"/>
-<wire x1="22.86" y1="55.88" x2="25.4" y2="55.88" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="P+3" gate="1" pin="+5V"/>
 <pinref part="UIM" gate="1" pin="VCC@1"/>
+<wire x1="236.22" y1="55.88" x2="233.68" y2="55.88" width="0.1524" layer="91"/>
+<pinref part="UIM" gate="1" pin="AVCC"/>
 <wire x1="233.68" y1="55.88" x2="231.14" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="231.14" y1="48.26" x2="233.68" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="233.68" y1="48.26" x2="233.68" y2="55.88" width="0.1524" layer="91"/>
+<junction x="233.68" y="55.88"/>
 </segment>
 <segment>
 <pinref part="P+4" gate="1" pin="+5V"/>
@@ -9260,41 +9677,66 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <wire x1="81.28" y1="-30.48" x2="81.28" y2="-27.94" width="0.1524" layer="91"/>
 <junction x="81.28" y="-27.94"/>
 </segment>
+<segment>
+<pinref part="P+10" gate="1" pin="+5V"/>
+<wire x1="20.32" y1="55.88" x2="22.86" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="55.88" x2="25.4" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="48.26" x2="22.86" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="48.26" x2="22.86" y2="55.88" width="0.1524" layer="91"/>
+<junction x="22.86" y="55.88"/>
+<pinref part="PROGRAMMER" gate="1" pin="VCC@1"/>
+<pinref part="PROGRAMMER" gate="1" pin="AVCC"/>
+</segment>
+<segment>
+<pinref part="P+2" gate="1" pin="+5V"/>
+<pinref part="U$1" gate="G$1" pin="VCC"/>
+<wire x1="162.56" y1="109.22" x2="172.72" y2="109.22" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="N$1" class="0">
 <segment>
 <pinref part="PROGRAMMER" gate="1" pin="PC5(ADC5/SCLPCINT13)"/>
 <pinref part="UIM" gate="1" pin="PC5(ADC5/SCLPCINT13)"/>
-<wire x1="86.36" y1="71.12" x2="129.54" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="86.36" y1="71.12" x2="147.32" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="R2" gate="G$1" pin="1"/>
-<wire x1="129.54" y1="71.12" x2="170.18" y2="71.12" width="0.1524" layer="91"/>
-<wire x1="129.54" y1="76.2" x2="129.54" y2="71.12" width="0.1524" layer="91"/>
-<junction x="129.54" y="71.12"/>
+<wire x1="147.32" y1="71.12" x2="160.02" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="71.12" x2="170.18" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="76.2" x2="147.32" y2="71.12" width="0.1524" layer="91"/>
+<junction x="147.32" y="71.12"/>
+<pinref part="U$1" gate="G$1" pin="SCL"/>
+<wire x1="172.72" y1="104.14" x2="160.02" y2="104.14" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="104.14" x2="160.02" y2="71.12" width="0.1524" layer="91"/>
+<junction x="160.02" y="71.12"/>
 </segment>
 </net>
 <net name="N$2" class="0">
 <segment>
 <pinref part="UIM" gate="1" pin="PC4(ADC4/SDA/PCINT12)"/>
 <pinref part="PROGRAMMER" gate="1" pin="PC4(ADC4/SDA/PCINT12)"/>
-<wire x1="170.18" y1="73.66" x2="121.92" y2="73.66" width="0.1524" layer="91"/>
 <pinref part="R1" gate="G$1" pin="1"/>
-<wire x1="121.92" y1="73.66" x2="86.36" y2="73.66" width="0.1524" layer="91"/>
-<wire x1="121.92" y1="76.2" x2="121.92" y2="73.66" width="0.1524" layer="91"/>
-<junction x="121.92" y="73.66"/>
+<wire x1="170.18" y1="73.66" x2="165.1" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="165.1" y1="73.66" x2="139.7" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="73.66" x2="86.36" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="76.2" x2="139.7" y2="73.66" width="0.1524" layer="91"/>
+<junction x="139.7" y="73.66"/>
+<pinref part="U$1" gate="G$1" pin="SDA"/>
+<wire x1="172.72" y1="99.06" x2="165.1" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="165.1" y1="99.06" x2="165.1" y2="73.66" width="0.1524" layer="91"/>
+<junction x="165.1" y="73.66"/>
 </segment>
 </net>
 <net name="N$3" class="0">
 <segment>
 <pinref part="PROGRAMMER" gate="1" pin="PD2(INT0/PCINT18)"/>
 <pinref part="R3" gate="G$1" pin="1"/>
-<wire x1="86.36" y1="55.88" x2="121.92" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="86.36" y1="55.88" x2="139.7" y2="55.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$4" class="0">
 <segment>
 <pinref part="R3" gate="G$1" pin="2"/>
 <pinref part="UIM" gate="1" pin="PD2(INT0/PCINT18)"/>
-<wire x1="132.08" y1="55.88" x2="170.18" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="149.86" y1="55.88" x2="170.18" y2="55.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$5" class="0">
@@ -9438,11 +9880,34 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <segment>
 <pinref part="IC1" gate="A1" pin="VI"/>
 <wire x1="55.88" y1="-27.94" x2="45.72" y2="-27.94" width="0.1524" layer="91"/>
-<label x="35.56" y="-27.94" size="1.778" layer="95"/>
 <pinref part="C5" gate="G$1" pin="1"/>
-<wire x1="45.72" y1="-27.94" x2="35.56" y2="-27.94" width="0.1524" layer="91"/>
+<wire x1="45.72" y1="-27.94" x2="27.94" y2="-27.94" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="-30.48" x2="45.72" y2="-27.94" width="0.1524" layer="91"/>
 <junction x="45.72" y="-27.94"/>
+<pinref part="S1" gate="G$1" pin="4"/>
+</segment>
+</net>
+<net name="N$17" class="0">
+<segment>
+<pinref part="BAT" gate="-1" pin="KL"/>
+<pinref part="S1" gate="G$1" pin="COM1"/>
+<wire x1="10.16" y1="-27.94" x2="17.78" y2="-27.94" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$21" class="0">
+<segment>
+<pinref part="UIM" gate="1" pin="AREF"/>
+<pinref part="C7" gate="G$1" pin="1"/>
+<wire x1="231.14" y1="45.72" x2="233.68" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="233.68" y1="45.72" x2="233.68" y2="43.18" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$22" class="0">
+<segment>
+<pinref part="C8" gate="G$1" pin="1"/>
+<wire x1="25.4" y1="45.72" x2="22.86" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="45.72" x2="22.86" y2="43.18" width="0.1524" layer="91"/>
+<pinref part="PROGRAMMER" gate="1" pin="AREF"/>
 </segment>
 </net>
 </nets>
