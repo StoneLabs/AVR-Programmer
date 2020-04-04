@@ -52,7 +52,7 @@
 <layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="yes"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
-<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="no" active="yes"/>
@@ -5543,6 +5543,19 @@
 <rectangle x1="75.3872" y1="67.564" x2="75.9968" y2="67.6656" layer="25" rot="R90"/>
 <rectangle x1="75.5904" y1="68.1736" x2="75.7936" y2="68.2752" layer="25" rot="R90"/>
 <rectangle x1="75.4888" y1="68.6816" x2="75.8952" y2="68.7832" layer="25" rot="R90"/>
+<hole x="1.1176" y="1.1176" drill="0.8"/>
+<hole x="1.1176" y="109.0168" drill="0.8"/>
+<hole x="85.0392" y="109.0168" drill="0.8"/>
+<hole x="85.0392" y="1.1176" drill="0.8"/>
+<hole x="85.0392" y="93.8784" drill="0.8"/>
+<hole x="85.0392" y="73.9648" drill="0.8"/>
+<hole x="54.9656" y="70.5104" drill="0.8"/>
+<hole x="23.4696" y="70.5104" drill="0.8"/>
+<hole x="23.4696" y="91.3384" drill="0.8"/>
+<hole x="54.9656" y="91.3384" drill="0.8"/>
+<hole x="47.752" y="22.6568" drill="0.8"/>
+<hole x="25.908" y="22.5552" drill="0.8"/>
+<hole x="7.9248" y="44.3992" drill="0.8"/>
 </plain>
 <libraries>
 <library name="adafruit" urn="urn:adsk.eagle:library:420">
