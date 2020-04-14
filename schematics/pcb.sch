@@ -20903,8 +20903,6 @@ W = angled&lt;p&gt;
 <part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
@@ -20976,6 +20974,8 @@ W = angled&lt;p&gt;
 <part name="SERIAL1" library="con-lstb" library_urn="urn:adsk.eagle:library:162" deviceset="MA04-1" device="" package3d_urn="urn:adsk.eagle:package:8337/1"/>
 <part name="GND23" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND24" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
+<part name="P+13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -20999,12 +20999,6 @@ W = angled&lt;p&gt;
 </instance>
 <instance part="GND3" gate="1" x="246.38" y="27.94" smashed="yes" rot="MR270">
 <attribute name="VALUE" x="248.92" y="30.48" size="1.778" layer="96" rot="MR270"/>
-</instance>
-<instance part="GND4" gate="1" x="127" y="91.44" smashed="yes" rot="R180">
-<attribute name="VALUE" x="129.54" y="93.98" size="1.778" layer="96" rot="R180"/>
-</instance>
-<instance part="GND5" gate="1" x="119.38" y="91.44" smashed="yes" rot="R180">
-<attribute name="VALUE" x="121.92" y="93.98" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="R1" gate="G$1" x="119.38" y="81.28" smashed="yes" rot="R90">
 <attribute name="NAME" x="117.8814" y="77.47" size="1.778" layer="95" rot="R90"/>
@@ -21286,6 +21280,12 @@ W = angled&lt;p&gt;
 <instance part="GND24" gate="1" x="157.48" y="93.98" smashed="yes">
 <attribute name="VALUE" x="154.94" y="91.44" size="1.778" layer="96"/>
 </instance>
+<instance part="P+1" gate="1" x="119.38" y="91.44" smashed="yes">
+<attribute name="VALUE" x="119.38" y="93.98" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="P+13" gate="1" x="127" y="91.44" smashed="yes">
+<attribute name="VALUE" x="127" y="93.98" size="1.778" layer="96" rot="R180"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -21306,16 +21306,6 @@ W = angled&lt;p&gt;
 <pinref part="C11" gate="G$1" pin="2"/>
 <wire x1="243.84" y1="35.56" x2="243.84" y2="27.94" width="0.1524" layer="91"/>
 <junction x="243.84" y="27.94"/>
-</segment>
-<segment>
-<pinref part="GND5" gate="1" pin="GND"/>
-<pinref part="R1" gate="G$1" pin="2"/>
-<wire x1="119.38" y1="88.9" x2="119.38" y2="86.36" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="R2" gate="G$1" pin="2"/>
-<pinref part="GND4" gate="1" pin="GND"/>
-<wire x1="127" y1="86.36" x2="127" y2="88.9" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C1" gate="G$1" pin="1"/>
@@ -21538,6 +21528,16 @@ W = angled&lt;p&gt;
 <junction x="81.28" y="-27.94"/>
 <pinref part="P+12" gate="1" pin="+5V"/>
 <wire x1="81.28" y1="-22.86" x2="81.28" y2="-27.94" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="P+1" gate="1" pin="+5V"/>
+<pinref part="R1" gate="G$1" pin="2"/>
+<wire x1="119.38" y1="88.9" x2="119.38" y2="86.36" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="R2" gate="G$1" pin="2"/>
+<pinref part="P+13" gate="1" pin="+5V"/>
+<wire x1="127" y1="88.9" x2="127" y2="86.36" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">
