@@ -1,7 +1,7 @@
 #define XSTR(s) STR(s)
 #define STR(s) #s
 
-#define __PVERSION__ "v-1.0"
+#define __PVERSION__ "v-1.1"
 
 // External Dependencies
 #include <SPI.h>
@@ -67,8 +67,9 @@ void setup() {
     OCR1B = 0;       // output every cycle
 
     Debug(DEBUG_INFO, F("\n-> Initializing SD card..."));
-    if (!sd.begin(3, SPI_HALF_SPEED))
-        sd.initErrorHalt();
+    sd.begin(3, SPI_HALF_SPEED); // We dont need an SD card to start
+    //if (!sd.begin(3, SPI_HALF_SPEED))
+    //    sd.initErrorHalt();
 
     Debugln(DEBUG_INFO, F(" [OK]"));
 

@@ -1,7 +1,7 @@
 #define XSTR(s) STR(s)
 #define STR(s) #s
 
-#define __PVERSION__ "v-1.0"
+#define __PVERSION__ "v-1.1"
 
 #include "src/page.h"
 #include "src/pageManager.h"
