@@ -245,6 +245,9 @@ byte flashFile(SdFile* file, programmer::BBProgrammer* bbprogrammer)
     if (!bbprogrammer->startProgramming(5))
         return error_programmingMode;
 
+    Debugln(DEBUG_INFO, F("-> Erasing chip."));
+    bbprogrammer->erase();
+
     Debugln(DEBUG_INFO, F("-> Reading Fuses."));
     bbprogrammer->readFuses();
     printFuses(bbprogrammer->getFuses());
