@@ -5556,6 +5556,7 @@
 <hole x="47.752" y="22.6568" drill="0.8"/>
 <hole x="25.908" y="22.5552" drill="0.8"/>
 <hole x="7.9248" y="44.3992" drill="0.8"/>
+<text x="82.8548" y="68.9356" size="0.8128" layer="25" rot="R270">REVISION 1</text>
 </plain>
 <libraries>
 <library name="adafruit" urn="urn:adsk.eagle:library:420">
