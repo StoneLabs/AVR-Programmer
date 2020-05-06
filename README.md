@@ -4,6 +4,8 @@ Schematics and firmware for a portable In-Service-Programmer. It is designed to 
 
 PCB files and Firmware are tested and worked fine after assembly. (Release_V-1.1)
 
+![Old version of PCB (Release 1.0)](pcb_v-1.0)
+
 Feel free to open an issue in the issue tracker if you have any questions about this project or want a demonstration in image or video form before using it.
 
 # License
