@@ -8340,7 +8340,7 @@ Based on the following sources:&lt;p&gt;
 </class>
 </classes>
 <parts>
-<part name="PROGRAMMER" library="atmega8" deviceset="ATMEGA48/88/168-PU" device=""/>
+<part name="TARGET_ATMEGA328P" library="atmega8" deviceset="ATMEGA48/88/168-PU" device=""/>
 <part name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="P+4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="Q1" library="special" library_urn="urn:adsk.eagle:library:367" deviceset="XTAL/S" device="" package3d_urn="urn:adsk.eagle:package:26647/2" value="16Mhz"/>
@@ -8360,7 +8360,7 @@ Based on the following sources:&lt;p&gt;
 <plain>
 </plain>
 <instances>
-<instance part="PROGRAMMER" gate="1" x="76.2" y="48.26" smashed="yes">
+<instance part="TARGET_ATMEGA328P" gate="1" x="76.2" y="48.26" smashed="yes">
 <attribute name="NAME" x="50.8" y="81.28" size="1.778" layer="95" rot="MR180"/>
 <attribute name="VALUE" x="50.8" y="12.7" size="1.778" layer="96"/>
 </instance>
@@ -8434,8 +8434,8 @@ Based on the following sources:&lt;p&gt;
 <pinref part="C8" gate="G$1" pin="2"/>
 <wire x1="43.18" y1="27.94" x2="43.18" y2="25.4" width="0.1524" layer="91"/>
 <junction x="43.18" y="25.4"/>
-<pinref part="PROGRAMMER" gate="1" pin="GND@1"/>
-<pinref part="PROGRAMMER" gate="1" pin="AGND"/>
+<pinref part="TARGET_ATMEGA328P" gate="1" pin="GND@1"/>
+<pinref part="TARGET_ATMEGA328P" gate="1" pin="AGND"/>
 <pinref part="C10" gate="G$1" pin="1"/>
 <wire x1="33.02" y1="27.94" x2="33.02" y2="20.32" width="0.1524" layer="91"/>
 <junction x="33.02" y="20.32"/>
@@ -8460,8 +8460,8 @@ Based on the following sources:&lt;p&gt;
 <wire x1="45.72" y1="40.64" x2="43.18" y2="40.64" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="40.64" x2="43.18" y2="48.26" width="0.1524" layer="91"/>
 <junction x="43.18" y="48.26"/>
-<pinref part="PROGRAMMER" gate="1" pin="VCC@1"/>
-<pinref part="PROGRAMMER" gate="1" pin="AVCC"/>
+<pinref part="TARGET_ATMEGA328P" gate="1" pin="VCC@1"/>
+<pinref part="TARGET_ATMEGA328P" gate="1" pin="AVCC"/>
 <pinref part="C10" gate="G$1" pin="2"/>
 <wire x1="33.02" y1="48.26" x2="33.02" y2="35.56" width="0.1524" layer="91"/>
 <junction x="33.02" y="48.26"/>
@@ -8476,7 +8476,7 @@ Based on the following sources:&lt;p&gt;
 <net name="RESET" class="0">
 <segment>
 <pinref part="R4" gate="G$1" pin="2"/>
-<pinref part="PROGRAMMER" gate="1" pin="PC6(/RESET/PCINT14)"/>
+<pinref part="TARGET_ATMEGA328P" gate="1" pin="PC6(/RESET/PCINT14)"/>
 <wire x1="43.18" y1="76.2" x2="45.72" y2="76.2" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="76.2" x2="45.72" y2="83.82" width="0.1524" layer="91"/>
 <junction x="45.72" y="76.2"/>
@@ -8493,7 +8493,7 @@ Based on the following sources:&lt;p&gt;
 <segment>
 <pinref part="Q1" gate="G$1" pin="2"/>
 <wire x1="35.56" y1="63.5" x2="45.72" y2="63.5" width="0.1524" layer="91"/>
-<pinref part="PROGRAMMER" gate="1" pin="PB6(XTAL1/TOSC1/PCINT6)"/>
+<pinref part="TARGET_ATMEGA328P" gate="1" pin="PB6(XTAL1/TOSC1/PCINT6)"/>
 <wire x1="45.72" y1="63.5" x2="45.72" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="C1" gate="G$1" pin="2"/>
 <wire x1="35.56" y1="63.5" x2="27.94" y2="63.5" width="0.1524" layer="91"/>
@@ -8502,7 +8502,7 @@ Based on the following sources:&lt;p&gt;
 </net>
 <net name="N$8" class="0">
 <segment>
-<pinref part="PROGRAMMER" gate="1" pin="PB7(XTAL2/TOSC2/PCINT7)"/>
+<pinref part="TARGET_ATMEGA328P" gate="1" pin="PB7(XTAL2/TOSC2/PCINT7)"/>
 <pinref part="Q1" gate="G$1" pin="1"/>
 <wire x1="45.72" y1="55.88" x2="45.72" y2="53.34" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="53.34" x2="35.56" y2="53.34" width="0.1524" layer="91"/>
@@ -8516,20 +8516,20 @@ Based on the following sources:&lt;p&gt;
 <pinref part="C8" gate="G$1" pin="1"/>
 <wire x1="45.72" y1="38.1" x2="43.18" y2="38.1" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="38.1" x2="43.18" y2="35.56" width="0.1524" layer="91"/>
-<pinref part="PROGRAMMER" gate="1" pin="AREF"/>
+<pinref part="TARGET_ATMEGA328P" gate="1" pin="AREF"/>
 </segment>
 </net>
 <net name="N$1" class="0">
 <segment>
 <pinref part="ISP" gate="G$1" pin="4"/>
-<pinref part="PROGRAMMER" gate="1" pin="PB3(MOSI/OC2A/PCINT3)"/>
+<pinref part="TARGET_ATMEGA328P" gate="1" pin="PB3(MOSI/OC2A/PCINT3)"/>
 <wire x1="119.38" y1="22.86" x2="106.68" y2="22.86" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$2" class="0">
 <segment>
 <pinref part="ISP" gate="G$1" pin="1"/>
-<pinref part="PROGRAMMER" gate="1" pin="PB4(MISO/PCINT4)"/>
+<pinref part="TARGET_ATMEGA328P" gate="1" pin="PB4(MISO/PCINT4)"/>
 <wire x1="119.38" y1="20.32" x2="106.68" y2="20.32" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -8541,7 +8541,7 @@ Based on the following sources:&lt;p&gt;
 <label x="114.3" y="27.94" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 <segment>
-<pinref part="PROGRAMMER" gate="1" pin="PB5(SCK/PCINT5)"/>
+<pinref part="TARGET_ATMEGA328P" gate="1" pin="PB5(SCK/PCINT5)"/>
 <wire x1="106.68" y1="17.78" x2="109.22" y2="17.78" width="0.1524" layer="91"/>
 <wire x1="109.22" y1="17.78" x2="109.22" y2="15.24" width="0.1524" layer="91"/>
 <label x="109.22" y="15.24" size="1.778" layer="95" rot="R270" xref="yes"/>
