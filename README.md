@@ -1,14 +1,25 @@
-# Stone Labs. AVR-Programmer
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/StoneLabs/AVR-Programmer?label=Version&style=flat-square) ![GitHub issues](https://img.shields.io/github/issues-raw/StoneLabs/AVR-Programmer?style=flat-square) ![Maintenance](https://img.shields.io/maintenance/yes/2020?style=flat-square)
 
+<img src="schematics/media/StoneLabs.png" align="right" width="200" />
+
+# Stone Labs. AVR-Programmer
 Schematics and firmware for a portable In-Service-Programmer. It is designed to be powered by a 9V battery and uses an OLED Display module for user interaction. INTEL HEX Files can be flashed to target chips via an ISP-6 port directly from an SD-Card.
 
 # PCB
 
-PCB files and Firmware are tested and worked fine after assembly. (Release_V-1.1)
+The Programmer is designed to sit on a portable ~9x11cm PCB. Eagle files for the PCB can be found in the `schematics` folder. Target chips can be programmed with the 6-pin Header located at the top of the PCB. There is also an 8Mhz clock pin available (TCLK) in case the target needs an external clock and none is available. BOM for the programmer can be found in `schematics/bom-grouped.csv`. All parts are available from DIGI-KEY. The price per assembled PCB should be around 10-30 bucks depending on the order quantity.
 
-Picture of V1.0 PCB:
 
-![Old version of PCB (Release 1.0)](/pcb_v-1.0.png)
+Aside from the programmer, there is target PCB design under `schematics-target`. The target can hold an ATmega328P like chip that can be programmed by connecting the target boards ISP Header to the programmer ISP-Port.
+
+[Picture of PCB revision 1 (Release_V-1.0)](/pcb_v-1.0.png)
+
+| PCB | Version | Status | 
+| - | - | - |
+| Main PCB | Release_V-1.0 | Pull-Ups R1, R2 are connected incorrectly (to GND instead of +5V)! Assembled and tested. Works without R1, R2. |
+| Main PCB | Release_V-1.1 | Fixed only R1, R2 and should work better than V-1.0. Untested! |
+| Main PCB | Release_V-1.1+ | No hardware change. |
+| Target PCB | Release_V-1.2 | Untested but ordered. Updating soon. |
 
 # Supported chips
 
@@ -65,6 +76,7 @@ Picture of V1.0 PCB:
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega3290P   |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | At90USB82     |
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega3290    |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | At90USB162    |
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega329A    |
+
 # License
 
 This is free and unencumbered software released into the public domain.
@@ -91,3 +103,5 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <http://unlicense.org/>
+
+### That being said, I'd really like to hear from you if you plan on using this project somewhere. And I for sure wouldn't mind some part if you use it commercially ;) (e.g. selling it etc.)
