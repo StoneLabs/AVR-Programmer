@@ -56,8 +56,8 @@ Aside from the programmer, there is target PCB design under `schematics-target`.
 |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega16U2    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega645     |
 |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega16U4    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega6490A   |
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega16      |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega6490P   |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega2560    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega6490    |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega2561    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega649A    |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega2560    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega6490    |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega2561    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega649A    |
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega324A    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega649P    |
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega324PA   |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega649     |
 |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega324P    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega64A     |

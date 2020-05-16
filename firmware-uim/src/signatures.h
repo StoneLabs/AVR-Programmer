@@ -22,6 +22,8 @@ const Signature signatures[] PROGMEM =
       { { 0x1E, 0x96, 0x08 }, "ATmega640"  },
       { { 0x1E, 0x97, 0x03 }, "ATmega1280" },
       { { 0x1E, 0x97, 0x04 }, "ATmega1281" },
+      { { 0x1E, 0x98, 0x01 }, "ATmega2560" },
+      { { 0x1E, 0x98, 0x02 }, "ATmega2561" },
 
     // AT90USB family
       { { 0x1E, 0x93, 0x82 }, "At90USB82"  },
