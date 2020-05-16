@@ -45,6 +45,8 @@ const Signature signatures[] PROGMEM =
       { { 0x1E, 0x96, 0x08 }, "ATmega640",   0x10000UL,   0x400U,   0x100UL, highFuse,   false,   0b10000000, 0b01100000},
       { { 0x1E, 0x97, 0x03 }, "ATmega1280",  0x20000UL,   0x400U,   0x100UL, highFuse,   false,   0b10000000, 0b01100000},
       { { 0x1E, 0x97, 0x04 }, "ATmega1281",  0x20000UL,   0x400U,   0x100UL, highFuse,   false,   0b10000000, 0b01100000},
+      { { 0x1E, 0x98, 0x01 }, "ATmega2560",  0x40000UL,   0x400U,   0x100UL, highFuse,   false,   0b10000000, 0b01100000},
+      { { 0x1E, 0x98, 0x02 }, "ATmega2561",  0x40000UL,   0x400U,   0x100UL, highFuse,   false,   0b10000000, 0b01100000},
 
     // AT90USB family
       { { 0x1E, 0x93, 0x82 }, "At90USB82",    0x2000UL,   0x200U,    0x80UL, highFuse,   false,   0b11000000, 0b00100000},
