@@ -22,7 +22,7 @@ void MainPage::confirm()
         this->pageManager->changePage(new ReadFusesInitPage(this->pageManager));
         break;
     case 4:
-        this->pageManager->changePage(new WriteFuseSelectInitPage(this->pageManager));
+        this->pageManager->changePage(new WriteFuseSelectInit1Page(this->pageManager));
         break;
     default:
         break;

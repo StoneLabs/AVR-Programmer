@@ -18,12 +18,18 @@ private:
 	const char* back = "  Back";
 	const char* ok = "  Confirm";
 	
+	byte sig1, sig2, sig3;
+	Signature signature = Signature();
+	bool signatureKnown = false;
+
 	byte fuse;
 	byte fuseValue;
 
 public:
-	WriteFuseInputPage(PageManager* manager, byte fuse, byte initValue);
+	WriteFuseInputPage(PageManager* manager, byte sig1, byte sig2, byte sig3, byte fuse, byte initValue);
+
 	void confirm() override;
+	void init() override;
 
 	void initRender(SSD1306Ascii* display) override;
 	void render(SSD1306Ascii* display) override;
