@@ -1,10 +1,31 @@
 #include "writeFuseInputPage.h"
 
-WriteFuseInputPage::WriteFuseInputPage(PageManager* manager, byte fuse, byte initValue)
+WriteFuseInputPage::WriteFuseInputPage(PageManager* manager, byte sig1, byte sig2, byte sig3, byte fuse, byte initValue)
 	: TabPage ( manager, 10 )
 {
+    this->sig1 = sig1;
+    this->sig2 = sig2;
+    this->sig3 = sig3;
+
     this->fuse = fuse;
     this->fuseValue = initValue;
+}
+
+void WriteFuseInputPage::init()
+{
+    for (byte j = 0; j < NUMITEMS(signatures); j++)
+    {
+        // Copy from PROGMEM to Memory
+        memcpy_P(&this->signature, &signatures[j], sizeof this->signature);
+        if (this->signature.sig[0] == this->sig1 &&
+            this->signature.sig[1] == this->sig2 &&
+            this->signature.sig[2] == this->sig3)
+        {
+            // Signature found and known
+            this->signatureKnown = true;
+            return;
+        }
+    }
 }
 
 void WriteFuseInputPage::confirm()
@@ -30,6 +51,20 @@ void WriteFuseInputPage::confirm()
 void WriteFuseInputPage::initRender(SSD1306Ascii* display)
 {
     display->println(F("Change fuse bits."));
+
+    // Print chip name or signature if unknown
+    display->setCursor(0, 1);
+    if (this->signatureKnown)
+        display->println(this->signature.desc);
+    else
+    {
+        display->print(F("Signature: "));
+        DisplayUtils::printHex(display, this->sig1);
+        display->print(F(","));
+        DisplayUtils::printHex(display, this->sig2);
+        display->print(F(","));
+        DisplayUtils::printHex(display, this->sig3);
+    }
 
     display->setCursor(0, 3);
     switch (this->fuse)

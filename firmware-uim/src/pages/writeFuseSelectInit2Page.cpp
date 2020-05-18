@@ -1,16 +1,19 @@
-#include "writeFuseSelectInitPage.h"
+#include "writeFuseSelectInit2Page.h"
 
-WriteFuseSelectInitPage::WriteFuseSelectInitPage(PageManager* manager)
-	: LoadingPage ( manager, "Loading..." )
+WriteFuseSelectInit2Page::WriteFuseSelectInit2Page(PageManager* manager, byte sig1, byte sig2, byte sig3)
+	: LoadingPage ( manager, "Loading fuses..." )
 {
+	this->sig1 = sig1;
+	this->sig2 = sig2;
+	this->sig3 = sig3;
 }
 
-void WriteFuseSelectInitPage::init()
+void WriteFuseSelectInit2Page::init()
 {
 	programmer_request(cmd_readFuses);
 }
 
-void WriteFuseSelectInitPage::update()
+void WriteFuseSelectInit2Page::update()
 {
 	if (programmer_answer(answer))
 	{
@@ -22,7 +25,7 @@ void WriteFuseSelectInitPage::update()
 		if (answer.cmd == cmd_readFuses)
 		{
 			this->pageManager->changePage(
-				new WriteFuseSelectPage(this->pageManager,
+				new WriteFuseSelectPage(this->pageManager, this->sig1, this->sig2, this->sig3,
 					answer.data[lowFuse], answer.data[highFuse], answer.data[extFuse],
 					answer.data[lockFuse], answer.data[calibrationFuse]));
 			return;

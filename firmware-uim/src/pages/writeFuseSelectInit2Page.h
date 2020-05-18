@@ -14,13 +14,14 @@
 #include "writeFuseSelectPage.h"
 #include "mainPage.h"
 
-class WriteFuseSelectInitPage : public LoadingPage
+class WriteFuseSelectInit2Page : public LoadingPage
 {
 private:
 	Answer answer;
+	byte sig1, sig2, sig3;
 
 public:
-	WriteFuseSelectInitPage(PageManager* manager);
+	WriteFuseSelectInit2Page(PageManager* manager, byte sig1, byte sig2, byte sig3);
 	
 	void init() override;
 	void update() override;
