@@ -113,6 +113,7 @@
     <None Include="firmware-uim.ino" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\fuseNames.h" />
     <ClInclude Include="src\pages\bootPage.h" />
     <ClInclude Include="src\pages\criticalErrorPage.h" />
     <ClInclude Include="src\pages\eraseInitPage.h" />
@@ -138,7 +139,8 @@
     <ClInclude Include="src\pages\writeFuseInitPage.h" />
     <ClInclude Include="src\pages\writeFuseInputPage.h" />
     <ClInclude Include="src\pages\writeFusePage.h" />
-    <ClInclude Include="src\pages\writeFuseSelectInitPage.h" />
+    <ClInclude Include="src\pages\writeFuseSelectInit1Page.h" />
+    <ClInclude Include="src\pages\writeFuseSelectInit2Page.h" />
     <ClInclude Include="src\pages\writeFuseSelectPage.h" />
     <ClInclude Include="src\signatures.h" />
     <ClInclude Include="src\tabPage.h" />
@@ -170,7 +172,8 @@
     <ClCompile Include="src\pages\writeFuseInitPage.cpp" />
     <ClCompile Include="src\pages\writeFuseInputPage.cpp" />
     <ClCompile Include="src\pages\writeFusePage.cpp" />
-    <ClCompile Include="src\pages\writeFuseSelectInitPage.cpp" />
+    <ClCompile Include="src\pages\writeFuseSelectInit1Page.cpp" />
+    <ClCompile Include="src\pages\writeFuseSelectInit2Page.cpp" />
     <ClCompile Include="src\pages\writeFuseSelectPage.cpp" />
     <ClCompile Include="src\tabPage.cpp" />
   </ItemGroup>
