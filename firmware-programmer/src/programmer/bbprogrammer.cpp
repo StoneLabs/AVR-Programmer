@@ -2,6 +2,25 @@
 
 namespace programmer
 {
+    byte BBProgrammer::Fuse::get(byte fuse) const
+    {
+        switch (fuse)
+        {
+        case lowFuse:
+            return this->low;
+        case highFuse:
+            return this->high;
+        case extFuse:
+            return this->extended;
+        case lockFuse:
+            return this->lock;
+        case calibrationFuse:
+            return this->calibration;
+        default:
+            HaltError(F("Invalid fuse requested at Fuse::get()!"));
+        }
+    }
+
     BBProgrammer::BBProgrammer(byte p_sck, byte p_mosi, byte p_miso, byte p_reset)
     {
         // Setup software SPI
