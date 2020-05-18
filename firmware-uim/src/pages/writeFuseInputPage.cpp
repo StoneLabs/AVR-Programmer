@@ -83,6 +83,15 @@ void WriteFuseInputPage::initRender(SSD1306Ascii* display)
         break;
     }
 
+    // Display Fuse bit name prefix
+    if (this->fuse == lowFuse ||
+        this->fuse == extFuse ||
+        this->fuse == highFuse)
+    {
+        display->setCursor(0, 5);
+        display->print(F("->"));
+    }
+
     display->setCursor(0, DISPLAY_ROWS - 1);
     display->print(this->back);
     display->setCursor(DISPLAY_COLUMNS - display->strWidth(this->ok), DISPLAY_ROWS - 1);
@@ -103,6 +112,34 @@ void WriteFuseInputPage::render(SSD1306Ascii* display)
             display->print("^");
         else
             display->print(" ");
+    }
+
+    // Display Fuse bit name if chip signature is known
+    display->setCursor(3 * DISPLAY_COLUMNS_FONT, 5);
+    if (this->signatureKnown)
+    {
+        if (this->getTabIndex() < 8)
+        {
+            // Allocate buffer for name of bit and copy from PROGMEM
+            char bitName[FBIT_MAX_LENGTH] = "";
+            switch (this->fuse)
+            {
+            case lowFuse:
+                strcpy_P(bitName, this->signature.lowFuseNames[this->getTabIndex()]);
+                break;
+            case highFuse:
+                strcpy_P(bitName, this->signature.highFuseNames[this->getTabIndex()]);
+                break;
+            case extFuse:
+                strcpy_P(bitName, this->signature.extFuseNames[this->getTabIndex()]);
+                break;
+            }
+            display->clearToEOL();
+            display->println(bitName);
+        }
+        else
+            // Back or Confirm button
+            display->clearToEOL();
     }
 
     display->setCursor(0, DISPLAY_ROWS - 1);
