@@ -352,21 +352,23 @@ byte flashFile(SdFile* file, programmer::BBProgrammer* bbprogrammer)
     }
     else
     {
-        // Change bootloader fuse
-        if (signature->fuseWithBootloaderSize != highFuse)
+        // Change bootloader fuse in correct fuse byte
+        if (signature->fuseWithBootloaderSize != highFuse &&
+            signature->fuseWithBootloaderSize != extFuse)
         {
             // Bootloader setting not supported for current chip
             bbprogrammer->stopProgramming();
             return error_bootloaderSupport;
         }
 
-        // Bootloader fuse:
+        // Bootloader fuse bits appear to be the same on all AVR chips:
         // http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf page 243 and 239
         byte newBootloaderFuse = 0x0;
+        byte oldBootloaderFuse = fuse.get(signature->fuseWithBootloaderSize);
         if (lowestBootLoader == signature->flashSize)
         {
             Debugln(DEBUG_INFO, F("No bootlaoder detected."));
-            newBootloaderFuse = (fuse.high & 0b11111000) | 0b001; // Application reset at 0x0000
+            newBootloaderFuse = (oldBootloaderFuse & 0b11111000) | 0b001; // Application reset at 0x0000
         }
         else
         {
@@ -375,27 +377,37 @@ byte flashFile(SdFile* file, programmer::BBProgrammer* bbprogrammer)
 
             // bootloader fuse depending on bootloader location
             if (lowestBootLoader == (signature->flashSize - signature->baseBootSize))
-                newBootloaderFuse = (fuse.high & 0b11111000) | 0b110;
+                newBootloaderFuse = (oldBootloaderFuse & 0b11111000) | 0b110;
             else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 2))
-                newBootloaderFuse = (fuse.high & 0b11111000) | 0b100;
+                newBootloaderFuse = (oldBootloaderFuse & 0b11111000) | 0b100;
             else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 4))
-                newBootloaderFuse = (fuse.high & 0b11111000) | 0b010;
+                newBootloaderFuse = (oldBootloaderFuse & 0b11111000) | 0b010;
             else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 8))
-                newBootloaderFuse = (fuse.high & 0b11111000) | 0b000;
+                newBootloaderFuse = (oldBootloaderFuse & 0b11111000) | 0b000;
         }
-        Debug(DEBUG_INFO, F("Changing high fuse: "));
-        Debug(DEBUG_INFO, fuse.high, BIN);
+
+        // Can only be highFuse or extFuse due to earlier checks.
+        if (signature->fuseWithBootloaderSize == highFuse)
+            Debug(DEBUG_INFO, F("Changing bootloader bits (high fuse): "));
+        if (signature->fuseWithBootloaderSize == extFuse)
+            Debug(DEBUG_INFO, F("Changing bootloader bits (ext fuse): "));
+        Debug(DEBUG_INFO, oldBootloaderFuse, BIN);
         Debug(DEBUG_INFO, F(" -> "));
         Debug(DEBUG_INFO, newBootloaderFuse, BIN);
         Debug(DEBUG_INFO, F("..."));
 
         // Write new fuse
-        bbprogrammer->setHighFuse(newBootloaderFuse);
+        if (signature->fuseWithBootloaderSize == highFuse)
+            bbprogrammer->setHighFuse(newBootloaderFuse);
+        if (signature->fuseWithBootloaderSize == extFuse)
+            bbprogrammer->setExtFuse(newBootloaderFuse);
         Debugln(DEBUG_INFO, F(" [OK]"));
     }
     
     // Change low fuse for external clock
-    Debug(DEBUG_INFO, F("Changing low fuse: "));
+    // This should be same position in low fuse for all AVR chips?
+    // Please report if this is incorrect!
+    Debug(DEBUG_INFO, F("Changing low fuse for external 16Mhz clock: "));
     Debug(DEBUG_INFO, fuse.low, BIN);
     Debug(DEBUG_INFO, F(" -> "));
     Debug(DEBUG_INFO, 0xff, BIN);

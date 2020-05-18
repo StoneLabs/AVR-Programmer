@@ -65,6 +65,9 @@ namespace programmer
             byte extended;
             byte lock;
             byte calibration;
+
+            // Get fuse by signature.h fuse enum
+            byte get(byte fuse) const;
         } Fuse;
 
     private:
