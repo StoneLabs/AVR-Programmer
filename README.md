@@ -16,10 +16,10 @@ Aside from the programmer, there is target PCB design under `schematics-target`.
 
 | PCB | Version | Status | 
 | - | - | - |
-| Main PCB | Release_V-1.0 | Pull-Ups R1, R2 are connected incorrectly (to GND instead of +5V)! Assembled and tested. Works without R1, R2. |
-| Main PCB | Release_V-1.1 | Fixed only R1, R2 and should work better than V-1.0. Untested! |
-| Main PCB | Release_V-1.1+ | No hardware change. |
-| Target PCB | Release_V-1.2 | Untested but ordered. Updating soon. |
+| Main PCB | Hardware_V-1.0 | Pull-Ups R1, R2 are connected incorrectly (to GND instead of +5V)! Assembled and tested. Works without R1, R2. |
+| Main PCB | Hardware_V-1.1 | Fixed only R1, R2 and should work better than V-1.0. Untested! |
+| Main PCB | Hardware_V-1.1+ | No hardware change. |
+| Target PCB | Hardware_V-1.2 | Untested but ordered. Updating soon. |
 
 # Supported chips
 
