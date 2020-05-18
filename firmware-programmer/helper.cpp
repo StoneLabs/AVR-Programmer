@@ -303,23 +303,27 @@ byte flashFile(SdFile* file, programmer::BBProgrammer* bbprogrammer)
 
                 Debug(DEBUG_DEBUG, F(" [FLASHED]"));
 
-                // Check bootloader positions *(1/2/4/8)
-                for (int i = 1; i <= 8; i *= 2)
+                // Check for bootloader if target has bootloader support
+                if (signature->fuseWithBootloaderSize != NO_FUSE)
                 {
-                    // Possible bootlaoder position in current page?
-                    unsigned long bootloaderAddress = signature->flashSize - signature->baseBootSize * i;
-                    if (bootloaderAddress < pageaddr || bootloaderAddress > pageaddr + signature->pageSize - 1)
-                        continue; // If not skip this position
-
-                    unsigned long bootloaderPageAddress = bootloaderAddress - pageaddr;
-
-                    // Check if bootloader position caintains instruction
-                    if (page[bootloaderPageAddress] != 0xFF)
+                    // Check bootloader positions *(1/2/4/8)
+                    for (int i = 1; i <= 8; i *= 2)
                     {
-                        Debug(DEBUG_DEBUG, F(" Found bootloader at 0x"));
-                        Debug(DEBUG_DEBUG, signature->flashSize - signature->baseBootSize, HEX);
-                        if (bootloaderAddress < lowestBootLoader)
-                            lowestBootLoader = bootloaderAddress;
+                        // Possible bootlaoder position in current page?
+                        unsigned long bootloaderAddress = signature->flashSize - signature->baseBootSize * i;
+                        if (bootloaderAddress < pageaddr || bootloaderAddress > pageaddr + signature->pageSize - 1)
+                            continue; // If not skip this position
+
+                        unsigned long bootloaderPageAddress = bootloaderAddress - pageaddr;
+
+                        // Check if bootloader position caintains instruction
+                        if (page[bootloaderPageAddress] != 0xFF)
+                        {
+                            Debug(DEBUG_DEBUG, F(" Found bootloader at 0x"));
+                            Debug(DEBUG_DEBUG, signature->flashSize - signature->baseBootSize, HEX);
+                            if (bootloaderAddress < lowestBootLoader)
+                                lowestBootLoader = bootloaderAddress;
+                        }
                     }
                 }
                 Debugln(DEBUG_DEBUG);
@@ -340,47 +344,56 @@ byte flashFile(SdFile* file, programmer::BBProgrammer* bbprogrammer)
     // Flashing done. Show user feedback
     Debugln(DEBUG_INFO, F("Flashing complete."));
 
-    // Change bootloader fuse
-    if (signature->fuseWithBootloaderSize != highFuse)
+    // If current chip supports bootloader, update corresponding fuse
+    if (signature->fuseWithBootloaderSize == NO_FUSE)
     {
-        // Bootloader setting not supported for current chip
-        bbprogrammer->stopProgramming();
-        return error_bootloaderSupport;
-    }
-
-    // Bootloader fuse:
-    // http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf page 243 and 239
-    byte newBootloaderFuse = 0x0;
-    if (lowestBootLoader == signature->flashSize)
-    {
-        Debugln(DEBUG_INFO, F("No bootlaoder detected."));
-        newBootloaderFuse = (fuse.high & 0b11111000) | 0b001; // Application reset at 0x0000
+        // Debug output, that we'll not look for a bootloader for this chip.
+        Debugln(DEBUG_DEBUG, F("No bootloader capability for target."));
     }
     else
     {
-        Debug(DEBUG_INFO, F("Bootloader detected at 0x"));
-        Debugln(DEBUG_INFO, lowestBootLoader, HEX);
+        // Change bootloader fuse
+        if (signature->fuseWithBootloaderSize != highFuse)
+        {
+            // Bootloader setting not supported for current chip
+            bbprogrammer->stopProgramming();
+            return error_bootloaderSupport;
+        }
 
-        // bootloader fuse depending on bootloader location
-        if (lowestBootLoader == (signature->flashSize - signature->baseBootSize))
-            newBootloaderFuse = (fuse.high & 0b11111000) | 0b110;
-        else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 2))
-            newBootloaderFuse = (fuse.high & 0b11111000) | 0b100;
-        else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 4))
-            newBootloaderFuse = (fuse.high & 0b11111000) | 0b010;
-        else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 8))
-            newBootloaderFuse = (fuse.high & 0b11111000) | 0b000;
+        // Bootloader fuse:
+        // http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf page 243 and 239
+        byte newBootloaderFuse = 0x0;
+        if (lowestBootLoader == signature->flashSize)
+        {
+            Debugln(DEBUG_INFO, F("No bootlaoder detected."));
+            newBootloaderFuse = (fuse.high & 0b11111000) | 0b001; // Application reset at 0x0000
+        }
+        else
+        {
+            Debug(DEBUG_INFO, F("Bootloader detected at 0x"));
+            Debugln(DEBUG_INFO, lowestBootLoader, HEX);
+
+            // bootloader fuse depending on bootloader location
+            if (lowestBootLoader == (signature->flashSize - signature->baseBootSize))
+                newBootloaderFuse = (fuse.high & 0b11111000) | 0b110;
+            else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 2))
+                newBootloaderFuse = (fuse.high & 0b11111000) | 0b100;
+            else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 4))
+                newBootloaderFuse = (fuse.high & 0b11111000) | 0b010;
+            else if (lowestBootLoader == (signature->flashSize - signature->baseBootSize * 8))
+                newBootloaderFuse = (fuse.high & 0b11111000) | 0b000;
+        }
+        Debug(DEBUG_INFO, F("Changing high fuse: "));
+        Debug(DEBUG_INFO, fuse.high, BIN);
+        Debug(DEBUG_INFO, F(" -> "));
+        Debug(DEBUG_INFO, newBootloaderFuse, BIN);
+        Debug(DEBUG_INFO, F("..."));
+
+        // Write new fuse
+        bbprogrammer->setHighFuse(newBootloaderFuse);
+        Debugln(DEBUG_INFO, F(" [OK]"));
     }
-    Debug(DEBUG_INFO, F("Changing high fuse: "));
-    Debug(DEBUG_INFO, fuse.high, BIN);
-    Debug(DEBUG_INFO, F(" -> "));
-    Debug(DEBUG_INFO, newBootloaderFuse, BIN);
-    Debug(DEBUG_INFO, F("..."));
-
-    // Write new fuse
-    bbprogrammer->setHighFuse(newBootloaderFuse);
-    Debugln(DEBUG_INFO, F(" [OK]"));
-
+    
     // Change low fuse for external clock
     Debug(DEBUG_INFO, F("Changing low fuse: "));
     Debug(DEBUG_INFO, fuse.low, BIN);
