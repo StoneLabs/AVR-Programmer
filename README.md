@@ -29,23 +29,24 @@ Aside from the programmer, there is target PCB design under `schematics-target`.
 
 ||Chip||Chip|
 | - | - | - | - |
-|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega1280    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega329PA   |
-|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega1281    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega329P    |
-|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega1284P   |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega329     |
-|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega1284    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega32A     |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega128A    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega32C1    |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega128RFA1 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega32HVB   |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega128     |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega32M1    |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega162     |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega32U2    |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega164A    |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega32U4    |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega164PA   |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega32      |
-|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega164P    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega48A     |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega165A    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega48PA    |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega165PA   |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega48P     |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega165P    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega48      |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega168A    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega640     |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega168PA   |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega644A    |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega168P    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega644PA   |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega1280    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega329A    |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega1281    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega329PA   |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega1284P   |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega329P    |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega1284    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega329     |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega128A    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega32A     |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega128RFA1 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega32C1    |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega128     |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega32HVB   |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega162     |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega32M1    |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega164A    |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega32U2    |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega164PA   |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega32U4    |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega164P    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega32      |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega165A    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega48A     |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega165PA   |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega48PA    |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega165P    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega48P     |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega168A    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega48      |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega168PA   |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega640     |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega168P    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega644A    |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega168V    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega644PA   |
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega168     |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega644P    |
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega169A    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega644     |
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega169PA   |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega6450A   |
@@ -67,15 +68,19 @@ Aside from the programmer, there is target PCB design under `schematics-target`.
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega3250    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega8515    |
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega325A    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega8535    |
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega325PA   |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega88A     |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega325P    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega88PA    |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega325P    |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega88PA    |
 |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega325     |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega88P     |
 |  ![#32CD32](https://via.placeholder.com/15/32CD32/000000?text=+) | ATmega328P    |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega88      |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega328     |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega8A      |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega3290A   |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega8U2     |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega3290PA  |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega8       |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega3290P   |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | At90USB82     |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega3290    |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | At90USB162    |
-|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega329A    |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega328PB   |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega8A      |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega328     |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATmega8U2     |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega3290A   |  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega8       |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega3290PA  |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | At90USB82     |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega3290P   |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | At90USB162    |
+|  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) | ATmega3290    |                                                                  |               |
+| | | | |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATtiny24      |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATtiny25      |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATtiny44      |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATtiny45      |
+|  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATtiny84      |  ![#FFA500](https://via.placeholder.com/15/FFA500/000000?text=+) | ATtiny85      |
 
 # License
 

@@ -11,7 +11,24 @@ typedef struct {
 // see Atmega datasheets
 const Signature signatures[] PROGMEM =
 {
+    // Attiny84 family
+      { { 0x1E, 0x91, 0x0B }, "ATtiny24"   },
+      { { 0x1E, 0x92, 0x07 }, "ATtiny44"   },
+      { { 0x1E, 0x93, 0x0C }, "ATtiny84"   },
+
+    // Attiny85 family
+      { { 0x1E, 0x91, 0x08 }, "ATtiny25"   },
+      { { 0x1E, 0x92, 0x06 }, "ATtiny45"   },
+      { { 0x1E, 0x93, 0x0B }, "ATtiny85"   },
+
+    // Atmega328 family
+      { { 0x1E, 0x92, 0x0A }, "ATmega48PA" },
+      { { 0x1E, 0x93, 0x0F }, "ATmega88PA" },
+      { { 0x1E, 0x94, 0x0B }, "ATmega168PA"},
+      { { 0x1E, 0x94, 0x06 }, "ATmega168V" },
       { { 0x1E, 0x95, 0x0F }, "ATmega328P" },
+      { { 0x1E, 0x95, 0x16 }, "ATmega328PB"},
+      { { 0x1E, 0x95, 0x14 }, "ATmega328"  },
 
     // Atmega644 family
       { { 0x1E, 0x95, 0x08 }, "ATmega324P" },

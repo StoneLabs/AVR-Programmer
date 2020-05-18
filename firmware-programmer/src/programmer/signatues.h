@@ -31,9 +31,25 @@ const Signature signatures[] PROGMEM =
 
     //     signature        description     flash size    bootloader  flash   bootloader  timed    Safety      Safety
     //                                                       size     page     fuse       writes   Mask One    Mask Zero
-    //                                                                size   
+    //                                                                size
+    // Attiny84 family
+      { { 0x1E, 0x91, 0x0B }, "ATtiny24",      0x800UL,        0,    0x20UL,  NO_FUSE,   false,   0b11000000, 0b00100000},
+      { { 0x1E, 0x92, 0x07 }, "ATtiny44",     0x1000UL,        0,    0x40UL,  NO_FUSE,   false,   0b11000000, 0b00100000},
+      { { 0x1E, 0x93, 0x0C }, "ATtiny84",     0x2000UL,        0,    0x40UL,  NO_FUSE,   false,   0b11000000, 0b00100000},
+
+    // Attiny85 family
+      { { 0x1E, 0x91, 0x08 }, "ATtiny25",      0x800UL,        0,    0x20UL,  NO_FUSE,   false,   0b11000000, 0b00100000},
+      { { 0x1E, 0x92, 0x06 }, "ATtiny45",     0x1000UL,        0,    0x40UL,  NO_FUSE,   false,   0b11000000, 0b00100000},
+      { { 0x1E, 0x93, 0x0B }, "ATtiny85",     0x2000UL,        0,    0x40UL,  NO_FUSE,   false,   0b11000000, 0b00100000},
+
     // Atmega328 family
+      { { 0x1E, 0x92, 0x0A }, "ATmega48PA",   0x2000UL,        0,    0x40UL,  NO_FUSE,   false,   0b11000000, 0b00100000},
+      { { 0x1E, 0x93, 0x0F }, "ATmega88PA",   0x2000UL,   0x100U,    0x80UL,  extFuse,   false,   0b11000000, 0b00100000},
+      { { 0x1E, 0x94, 0x0B }, "ATmega168PA",  0x4000UL,   0x100U,    0x80UL,  extFuse,   false,   0b11000000, 0b00100000},
+      { { 0x1E, 0x94, 0x06 }, "ATmega168V",   0x4000UL,   0x100U,    0x80UL,  extFuse,   false,   0b11000000, 0b00100000},
       { { 0x1E, 0x95, 0x0F }, "ATmega328P",   0x8000UL,   0x200U,    0x80UL, highFuse,   false,   0b11000000, 0b00100000},
+      { { 0x1E, 0x95, 0x16 }, "ATmega328PB",  0x8000UL,   0x200U,    0x80UL, highFuse,   false,   0b11000000, 0b00100000},
+      { { 0x1E, 0x95, 0x14 }, "ATmega328",    0x8000UL,   0x200U,    0x80UL, highFuse,   false,   0b11000000, 0b00100000},
 
     // Atmega644 family
       { { 0x1E, 0x95, 0x08 }, "ATmega324P",   0x8000UL,   0x200U,    0x80UL, highFuse,   false,   0b10000000, 0b01100000},
