@@ -13,8 +13,6 @@ typedef struct {
     byte safetyMaskZero;         // All bits in high that must be   programmed: zero (i.e. (val & safetyMaskZero) != 0             is forbidden)
 } Signature;
 
-#define NO_FUSE (byte)0xFF
-
 enum
 {
     lowFuse = 0,
@@ -23,6 +21,7 @@ enum
     lockFuse = 3,
     calibrationFuse = 4,
 };
+#define NO_FUSE (byte)0xFF
 
 // see Atmega datasheets
 const Signature signatures[] PROGMEM =
