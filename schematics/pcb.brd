@@ -5557,6 +5557,16 @@
 <hole x="25.908" y="22.5552" drill="0.8"/>
 <hole x="7.9248" y="44.3992" drill="0.8"/>
 <text x="82.8548" y="68.9356" size="0.8128" layer="25" rot="R270">REVISION 1</text>
+<text x="67.1576" y="48.0568" size="1.016" layer="25" rot="R45">RESET</text>
+<text x="67.1576" y="55.6768" size="1.016" layer="25" rot="R45">GND</text>
+<text x="67.1576" y="50.5968" size="1.016" layer="25" rot="R45">RX</text>
+<text x="67.1576" y="53.1368" size="1.016" layer="25" rot="R45">TX</text>
+<text x="67.056" y="29.0576" size="1.016" layer="25" rot="R45">RESET</text>
+<text x="67.056" y="36.6776" size="1.016" layer="25" rot="R45">GND</text>
+<text x="67.056" y="31.5976" size="1.016" layer="25" rot="R45">RX</text>
+<text x="67.056" y="34.1376" size="1.016" layer="25" rot="R45">TX</text>
+<text x="32.8168" y="100.8888" size="1.016" layer="25" rot="R90" align="bottom-center">5V</text>
+<text x="40.8432" y="100.8888" size="1.016" layer="25" rot="R90" align="top-center">GND</text>
 </plain>
 <libraries>
 <library name="adafruit" urn="urn:adsk.eagle:library:420">
