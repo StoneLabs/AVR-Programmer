@@ -1,0 +1,45 @@
+// You can use 
+// https://mermaid-js.github.io/mermaid-live-editor/
+// for editing and plotting
+
+// Diagram
+
+graph TD
+	BootPage[Boot page] --> MainPage
+
+  MainPage --> SignatureInitPage
+  MainPage --> EraseInitPage
+  MainPage --> FlashSelectInitPage
+  MainPage --> ReadFusesInitPage
+  MainPage --> WriteFuseSelectInit1Page
+
+  SignatureInitPage --> |signature bytes| SignaturePage
+  SignaturePage --> MainPage
+
+  EraseInitPage --> ErasePage
+  ErasePage --> MainPage
+
+  FlashSelectInitPage --> |Next file name| FlashSelectPage
+  FlashSelectPage --> FlashSelectInitPage
+  FlashSelectPage --> MainPage
+  FlashSelectPage --> |File to write| FlashInitPage
+  FlashInitPage --> FlashPage
+  FlashPage --> MainPage
+
+  ReadFusesInitPage --> |Fuse bytes| ReadFusesPage
+  ReadFusesPage --> MainPage
+
+  WriteFuseSelectInit1Page --> |signature bytes| WriteFuseSelectInit2Page
+  WriteFuseSelectInit2Page --> |signature bytes, current fuse bytes| WriteFuseSelectPage
+  WriteFuseSelectPage --> MainPage
+  WriteFuseSelectPage --> |signature bytes, current fuse bytes, selected fuse| WriteFuseInputPage
+  WriteFuseInputPage --> MainPage
+  WriteFuseInputPage --> |selected fuse, new fuse byte| WriteFuseInitPage
+  WriteFuseInitPage --> WriteFusePage
+  WriteFusePage --> MainPage
+
+// Configuration
+  
+{
+  "theme": "dark"
+}
