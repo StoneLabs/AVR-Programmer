@@ -21,6 +21,13 @@ Aside from the programmer, there is target PCB design under `schematics-target`.
 | Main PCB | Hardware_V-1.1+ | No functional hardware change. |
 | Target PCB | Hardware_V-1.2 | Assembled and tested. Fully functional. |
 
+# INTEL HEX
+
+All `.hex` or `.HEX` files in the root folder of the SD-Card can be flashed to the target using the Programmer. The algorithm used for flashing the program to the target is very robust against weirdly formed hex files (e.g. line swaps, different lengths of lines in the same file, etc.). HEX record types 00, 01, and 02 are fully supported. Type 03 entries will be ignored with a warning sent to the programmers Serial output. Type 04 and 05 are not supported and HEX files containing those record types can't be flashed. (This shouldn't be an issue for AVR chips).
+
+
+The programmer will also scan all possible bootloader positions for the current target and automatically set the fuse containing the bootloader position bits as needed.
+
 # Supported chips
 
 ![#32CD32](https://via.placeholder.com/15/32CD32/000000?text=+) Supported and tested  
