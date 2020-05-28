@@ -8341,7 +8341,7 @@ Based on the following sources:&lt;p&gt;
 </classes>
 <parts>
 <part name="TARGET_ATMEGA328P" library="atmega8" deviceset="ATMEGA48/88/168-PU" device=""/>
-<part name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
+<part name="R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10k"/>
 <part name="P+4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="Q1" library="special" library_urn="urn:adsk.eagle:library:367" deviceset="XTAL/S" device="" package3d_urn="urn:adsk.eagle:package:26647/2" value="16Mhz"/>
 <part name="C1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="22pF"/>
@@ -8349,8 +8349,8 @@ Based on the following sources:&lt;p&gt;
 <part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="P+10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="GND16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="C8" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="100nF"/>
-<part name="C10" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="100nF"/>
+<part name="C4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="100nF"/>
+<part name="C3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="100nF"/>
 <part name="ISP" library="atmel" deviceset="AVR-ISP-6" device=""/>
 <part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -8364,7 +8364,7 @@ Based on the following sources:&lt;p&gt;
 <attribute name="NAME" x="50.8" y="81.28" size="1.778" layer="95" rot="MR180"/>
 <attribute name="VALUE" x="50.8" y="12.7" size="1.778" layer="96"/>
 </instance>
-<instance part="R4" gate="G$1" x="38.1" y="76.2" smashed="yes">
+<instance part="R1" gate="G$1" x="38.1" y="76.2" smashed="yes">
 <attribute name="NAME" x="34.29" y="77.6986" size="1.778" layer="95"/>
 <attribute name="VALUE" x="34.29" y="72.898" size="1.778" layer="96"/>
 </instance>
@@ -8392,11 +8392,11 @@ Based on the following sources:&lt;p&gt;
 <instance part="GND16" gate="1" x="30.48" y="20.32" smashed="yes" rot="R270">
 <attribute name="VALUE" x="27.94" y="22.86" size="1.778" layer="96" rot="R270"/>
 </instance>
-<instance part="C8" gate="G$1" x="43.18" y="33.02" smashed="yes" rot="MR0">
+<instance part="C4" gate="G$1" x="43.18" y="33.02" smashed="yes" rot="MR0">
 <attribute name="NAME" x="41.656" y="33.401" size="1.778" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="41.656" y="28.321" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="C10" gate="G$1" x="33.02" y="30.48" smashed="yes" rot="R180">
+<instance part="C3" gate="G$1" x="33.02" y="30.48" smashed="yes" rot="R180">
 <attribute name="NAME" x="31.496" y="30.099" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="31.496" y="35.179" size="1.778" layer="96" rot="R180"/>
 </instance>
@@ -8431,12 +8431,12 @@ Based on the following sources:&lt;p&gt;
 <wire x1="45.72" y1="25.4" x2="43.18" y2="25.4" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="25.4" x2="43.18" y2="20.32" width="0.1524" layer="91"/>
 <junction x="43.18" y="20.32"/>
-<pinref part="C8" gate="G$1" pin="2"/>
+<pinref part="C4" gate="G$1" pin="2"/>
 <wire x1="43.18" y1="27.94" x2="43.18" y2="25.4" width="0.1524" layer="91"/>
 <junction x="43.18" y="25.4"/>
 <pinref part="TARGET_ATMEGA328P" gate="1" pin="GND@1"/>
 <pinref part="TARGET_ATMEGA328P" gate="1" pin="AGND"/>
-<pinref part="C10" gate="G$1" pin="1"/>
+<pinref part="C3" gate="G$1" pin="1"/>
 <wire x1="33.02" y1="27.94" x2="33.02" y2="20.32" width="0.1524" layer="91"/>
 <junction x="33.02" y="20.32"/>
 </segment>
@@ -8450,7 +8450,7 @@ Based on the following sources:&lt;p&gt;
 <net name="+5V" class="1">
 <segment>
 <pinref part="P+4" gate="1" pin="+5V"/>
-<pinref part="R4" gate="G$1" pin="1"/>
+<pinref part="R1" gate="G$1" pin="1"/>
 <wire x1="30.48" y1="76.2" x2="33.02" y2="76.2" width="0.1524" layer="91"/>
 </segment>
 <segment>
@@ -8462,7 +8462,7 @@ Based on the following sources:&lt;p&gt;
 <junction x="43.18" y="48.26"/>
 <pinref part="TARGET_ATMEGA328P" gate="1" pin="VCC@1"/>
 <pinref part="TARGET_ATMEGA328P" gate="1" pin="AVCC"/>
-<pinref part="C10" gate="G$1" pin="2"/>
+<pinref part="C3" gate="G$1" pin="2"/>
 <wire x1="33.02" y1="48.26" x2="33.02" y2="35.56" width="0.1524" layer="91"/>
 <junction x="33.02" y="48.26"/>
 </segment>
@@ -8475,7 +8475,7 @@ Based on the following sources:&lt;p&gt;
 </net>
 <net name="RESET" class="0">
 <segment>
-<pinref part="R4" gate="G$1" pin="2"/>
+<pinref part="R1" gate="G$1" pin="2"/>
 <pinref part="TARGET_ATMEGA328P" gate="1" pin="PC6(/RESET/PCINT14)"/>
 <wire x1="43.18" y1="76.2" x2="45.72" y2="76.2" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="76.2" x2="45.72" y2="83.82" width="0.1524" layer="91"/>
@@ -8513,7 +8513,7 @@ Based on the following sources:&lt;p&gt;
 </net>
 <net name="N$22" class="0">
 <segment>
-<pinref part="C8" gate="G$1" pin="1"/>
+<pinref part="C4" gate="G$1" pin="1"/>
 <wire x1="45.72" y1="38.1" x2="43.18" y2="38.1" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="38.1" x2="43.18" y2="35.56" width="0.1524" layer="91"/>
 <pinref part="TARGET_ATMEGA328P" gate="1" pin="AREF"/>
