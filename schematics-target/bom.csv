@@ -1,0 +1,9 @@
+"Part";"Value";"Device";"Package";"Description";"";
+"C1";"22pF";"C-EUC0805";"C0805";"CAPACITOR, European symbol";"";
+"C2";"22pF";"C-EUC0805";"C0805";"CAPACITOR, European symbol";"";
+"C3";"100nF";"C-EUC0805";"C0805";"CAPACITOR, European symbol";"";
+"C4";"100nF";"C-EUC0805";"C0805";"CAPACITOR, European symbol";"";
+"ISP";"AVR-ISP-6";"AVR-ISP-6";"AVR-ISP-6";"AVR ISP-6 Serial Programming Header";"";
+"Q1";"16Mhz";"XTAL/S";"QS";"CRYSTAL";"";
+"R1";"10k";"R-EU_R0805";"R0805";"RESISTOR, European symbol";"";
+"TARGET_ATMEGA328P";"ATMEGA48/88/168-PU";"ATMEGA48/88/168-PU";"DIL28-3";"";"";
